@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.36.2.8 2009/11/14 13:16:48 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.36.2.9 2009/12/16 09:23:26 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -653,6 +653,7 @@ extern void cancel_request(CancelPacket *sp);
 /* pool_process_query.c */
 void free_select_result(POOL_SELECT_RESULT *result);
 void reset_variables(void);
+POOL_STATUS pool_extract_error_message(POOL_CONNECTION *backend, int major, bool unread, char **message);
 
 /* pool_relcache.c */
 POOL_RELCACHE *pool_create_relcache(int cachesize, char *sql,
