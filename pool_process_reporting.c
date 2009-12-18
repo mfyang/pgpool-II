@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.2 2009/12/06 08:46:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.3 2009/12/18 00:30:53 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -52,9 +52,15 @@ void process_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 		char desc[POOLCONFIG_MAXDESCLEN+1];
 	} POOL_REPORT_STATUS;
 
-#define MAXITEMS 128
+/*
+ * Report data buffer.
+ * 128 is the max number of configuration items.
+ * In addition, we need MAX_NUM_BACKENDS*4
+ * for backend descriptions.
+ */
+#define MAXITEMS (128 + MAX_NUM_BACKENDS*4)		
 
-	POOL_REPORT_STATUS status[MAXITEMS];
+	static POOL_REPORT_STATUS status[MAXITEMS];
 
 	short nrows;
 	int size;
