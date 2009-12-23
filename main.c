@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.57 2009/12/16 09:35:41 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.58 2009/12/23 09:30:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1476,6 +1476,8 @@ int health_check(void)
 {
 	int fd;
 	int sts;
+	static bool is_first = true;
+	static char *dbname;
 
 	/* V2 startup packet */
 	typedef struct {
@@ -1486,13 +1488,21 @@ int health_check(void)
 	char kind;
 	int i;
 
+	/* Do health check during recovery */
 	if (*InRecovery)
 		return 0;
+
+ Retry:
+	/*
+	 * First we try with "postgres" database.
+	 */
+	if (is_first)
+		dbname = "postgres";
 
 	memset(&mysp, 0, sizeof(mysp));
 	mysp.len = htonl(296);
 	mysp.sp.protoVersion = htonl(PROTO_MAJOR_V2 << 16);
-	strcpy(mysp.sp.database, "template1");
+	strcpy(mysp.sp.database, dbname);
 	strncpy(mysp.sp.user, pool_config->health_check_user, sizeof(mysp.sp.user) - 1);
 	*mysp.sp.options = '\0';
 	*mysp.sp.unused = '\0';
@@ -1554,12 +1564,24 @@ int health_check(void)
 			return i+1;
 		}
 
+		if (is_first)
+			is_first = false;
+
 		/*
 		 * If a backend raised a FATAL error(max connections error or
 		 * starting up error?), do not send a Terminate message.
 		 */
 		if ((kind != 'E') && (write(fd, "X", 1) < 0))
 		{
+			if (!strcmp(dbname, "postgres"))
+			{
+				/*
+				 * Retry with template1
+				 */
+				dbname = "template1";
+				goto Retry;
+			}
+
 			pool_error("health check failed during write. host %s at port %d is down. reason: %s. Perhaps wrong health check user?",
 					   BACKEND_INFO(i).backend_hostname,
 					   BACKEND_INFO(i).backend_port,
