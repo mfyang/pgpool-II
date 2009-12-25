@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.17 2009/11/29 08:29:14 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.18 2009/12/25 00:35:18 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -346,11 +346,12 @@ POOL_STATUS NotificationResponse(POOL_CONNECTION *frontend,
 			return POOL_CONTINUE;
 		}
 
-		if (IsA(node, PrepareStmt) || IsA(node, DeallocateStmt) ||
+		if (IsA(node, PrepareStmt) ||
 			IsA(node, VariableSetStmt) || IsA(node, DiscardStmt))
 		{
 			/*
-			 * PREPARE, DEALLOCATE and SET statements must be replicated.
+			 * PREPARE, SET and DISCARD statements must be
+			 * replicated even if we are in master/slave mode.
 			 */
 			if (MASTER_SLAVE && TSTATE(backend) != 'E')
 				force_replication = 1;
