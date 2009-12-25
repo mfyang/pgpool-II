@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.141.2.31 2009/12/18 00:31:59 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.141.2.32 2009/12/25 01:54:58 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -3936,6 +3936,9 @@ Portal *lookup_prepared_statement_by_portal(PreparedStatementList *p, const char
 	return NULL;
 }
 
+/*
+ * Send DEALLOCATE message to backend by using SimpleQuery.
+ */
 static int send_deallocate(POOL_CONNECTION_POOL *backend, PreparedStatementList *p,
 					int n)
 {
@@ -3951,8 +3954,8 @@ static int send_deallocate(POOL_CONNECTION_POOL *backend, PreparedStatementList 
 	query = malloc(len);
 	if (query == NULL)
 	{
-		pool_error("send_deallocate: malloc failed: %s", strerror(errno));
-		exit(1);
+		pool_error("send_deallocate: malloc failed");
+		return -1;
 	}
 	sprintf(query, "DEALLOCATE \"%s\"", p_stmt->name);
 
@@ -3978,6 +3981,11 @@ parse_copy_data(char *buf, int len, char delimiter, int col_id)
 	char *str, *p = NULL;
 
 	str = malloc(len + 1);
+	if (str == NULL)
+	{
+		pool_error("parse_copy_data: malloc failed");
+		return NULL;
+	}
 
 	/* buf is terminated by '\n'. */
 	/* skip '\n' in for loop.     */
@@ -4019,7 +4027,7 @@ parse_copy_data(char *buf, int len, char delimiter, int col_id)
 		p = malloc(j);
 		if (p == NULL)
 		{
-			pool_error("parse_copy_data: malloc failed: %s", strerror(errno));
+			pool_error("parse_copy_data: malloc failed");
 			return NULL;
 		}
 		strcpy(p, str);
