@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.18 2009/12/25 00:35:18 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.19 2010/01/02 09:19:13 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -2520,7 +2520,7 @@ static int is_temp_table(POOL_CONNECTION_POOL *backend, Node *node)
 		}
 	}
 
-	hasrelistemp = (int)pool_search_relcache(hasrelistemp_cache, backend, "pg_class");
+	hasrelistemp = pool_search_relcache(hasrelistemp_cache, backend, "pg_class")==0?0:1;
 	if (hasrelistemp)
 		query = ISTEMPQUERY84;
 	else
@@ -2544,6 +2544,6 @@ static int is_temp_table(POOL_CONNECTION_POOL *backend, Node *node)
 	/*
 	 * Search relcache.
 	 */
-	result = (int)pool_search_relcache(relcache, backend, str);
+	result = pool_search_relcache(relcache, backend, str)==0?0:1;
 	return result;
 }

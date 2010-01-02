@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.13.2.3 2009/08/22 04:19:49 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.13.2.4 2010/01/02 09:19:13 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -254,7 +254,7 @@ POOL_CONNECTION_POOL *pool_create_cp(void)
 	p = oldestp;
 	pool_send_frontend_exits(p);
 
-	pool_debug("discarding old %d th connection. user: %s database: %s",
+	pool_debug("discarding old %zd th connection. user: %s database: %s",
 			   oldestp - pool_connection_pool,
 			   MASTER_CONNECTION(p)->sp->user,
 			   MASTER_CONNECTION(p)->sp->database);
