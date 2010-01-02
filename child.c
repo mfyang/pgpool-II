@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.37 2009/12/02 14:19:56 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.38 2010/01/02 09:32:24 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2009	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -1405,13 +1405,13 @@ POOL_CONNECTION_POOL_SLOT *make_persistent_db_connection(
 	int len, len1;
 	int status;
 
-	cp = malloc(sizeof(POOL_CONNECTION_POOL));
+	cp = malloc(sizeof(POOL_CONNECTION_POOL_SLOT));
 	if (cp == NULL)
 	{
 		pool_error("make_persistent_db_connection: could not allocate memory");
 		return NULL;
 	}
-	memset(cp, 0, sizeof(POOL_CONNECTION_POOL));
+	memset(cp, 0, sizeof(POOL_CONNECTION_POOL_SLOT));
 
 	startup_packet = malloc(sizeof(*startup_packet));
 	if (startup_packet == NULL)
