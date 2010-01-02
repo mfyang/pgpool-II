@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.4 2009/11/15 08:27:35 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.5 2010/01/02 09:17:48 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -46,7 +46,7 @@ POOL_RELCACHE *pool_create_relcache(int cachesize, char *sql,
 	ip = (PoolRelCache *)malloc(sizeof(PoolRelCache)*cachesize);
 	if (ip == NULL)
 	{
-		pool_error("pool_create_relcache: cannot allocate memory %d", sizeof(PoolRelCache)*cachesize);
+		pool_error("pool_create_relcache: cannot allocate memory %zd", sizeof(PoolRelCache)*cachesize);
 		return NULL;
 	}
 	memset(ip, 0, sizeof(PoolRelCache)*cachesize);
@@ -54,7 +54,7 @@ POOL_RELCACHE *pool_create_relcache(int cachesize, char *sql,
 	p = (POOL_RELCACHE *)malloc(sizeof(POOL_RELCACHE));
 	if (p == NULL)
 	{
-		pool_error("pool_create_relcache: cannot allocate memory %d", sizeof(POOL_RELCACHE));
+		pool_error("pool_create_relcache: cannot allocate memory %zd", sizeof(POOL_RELCACHE));
 		free(ip);
 		return NULL;
 	}
@@ -205,7 +205,7 @@ void *pool_search_relcache(POOL_RELCACHE *relcache, POOL_CONNECTION_POOL *backen
 void *int_register_func(POOL_SELECT_RESULT *res)
 {
 	if (res->numrows >= 1)
-		return (void *)atoi(res->data[0]);
+		return (void *)atol(res->data[0]);
 	return (void *)0;
 }
 

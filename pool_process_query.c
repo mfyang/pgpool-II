@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.184 2009/12/25 01:58:51 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.185 2010/01/02 09:17:48 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2924,7 +2924,7 @@ int need_insert_lock(POOL_CONNECTION_POOL *backend, char *query, Node *node)
 	/*
 	 * Search relcache.
 	 */
-	result = (int)pool_search_relcache(relcache, backend, str);
+	result = pool_search_relcache(relcache, backend, str)==0?0:1;
 	return result;
 }
 
