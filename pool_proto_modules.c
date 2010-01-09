@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.19 2010/01/02 09:19:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.20 2010/01/09 09:16:40 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2009	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -1561,7 +1561,9 @@ POOL_STATUS ProcessFrontendResponse(POOL_CONNECTION *frontend,
 			/* fall through */
 
 		default:
-			if (MAJOR(backend) == PROTO_MAJOR_V3)
+			if ((MAJOR(backend) == PROTO_MAJOR_V3) &&
+			    (fkind == 'S' || fkind == 'H' || fkind == 'D' || fkind == 'f'||
+				 fkind == 'C' || fkind == 'B' || fkind == 'F' || fkind == 'd' || fkind == 'c'))
 			{
 				if (MASTER_SLAVE &&
 					(TSTATE(backend) != 'I' || receive_extended_begin))
