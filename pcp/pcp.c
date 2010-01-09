@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.8 2008/12/31 10:25:40 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.8.2.1 2010/01/09 00:51:12 t-ishii Exp $
  *
  * Handles PCP connection, and protocol communication with pgpool-II
  * These are client APIs. Server program should use APIs in pcp_stream.c
@@ -293,7 +293,7 @@ pcp_disconnect(void)
 	{
 		/* backend had closed connection already */
 	}
-	if (debug) fprintf(stderr, "DEBUG: send: tos=\"X\", len=%d\n", sizeof(int));
+	if (debug) fprintf(stderr, "DEBUG: send: tos=\"X\", len=%zd\n", sizeof(int));
 
 	pcp_close(pc);
 	pc = NULL;
