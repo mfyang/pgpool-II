@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.141.2.34 2010/01/09 09:04:22 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.141.2.35 2010/01/09 09:24:21 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -291,6 +291,8 @@ POOL_STATUS pool_process_query(POOL_CONNECTION *frontend,
 							was_error = 1;
 							if (!VALID_BACKEND(i))
 								break;
+
+							pool_log("pool_process_query: postmaster of backend: %d goes down", i);
 							notice_backend_error(i);
 							sleep(5);
 							break;
