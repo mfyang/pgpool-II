@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.39 2010/01/09 09:10:11 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.40 2010/01/19 07:23:28 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -172,10 +172,11 @@ void do_child(int unix_fd, int inet_fd)
 		int ssl_request = 0;
 		StartupPacket *sp;
 
+		idle = 1;
+
 		/* pgpool stop request already sent? */
 		check_stop_request();
 
-		idle = 1;
 		accepted = 0;
 
 		/* perform accept() */
