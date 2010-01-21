@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.20 2010/01/09 09:16:40 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.6.2.21 2010/01/21 05:49:10 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -912,7 +912,7 @@ POOL_STATUS Parse(POOL_CONNECTION *frontend,
 	len = ntohl(len) - 4;
 	string = pool_read2(frontend, len);
 
-	pool_debug("Parse: portal name <%s>", string);
+	pool_debug("Parse: statement name <%s>", string);
 
 	name = string;
 	stmt = string + strlen(string) + 1;
@@ -964,6 +964,11 @@ POOL_STATUS Parse(POOL_CONNECTION *frontend,
 		/* translate Parse message to PrepareStmt */
 		p_stmt = palloc(sizeof(PrepareStmt));
 		p_stmt->type = T_PrepareStmt;
+
+		/* XXX: there's a confusion here. Someone mixed up statement
+		 * name with portal name. It is regarded that statment name ==
+		 * portal name. Someday we should fix this. Sigh.
+		 */
 		p_stmt->name = pstrdup(name);
 		p_stmt->query = copyObject(node);
 		portal->stmt = (Node *)p_stmt;
