@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.50 2010/01/09 09:10:11 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.51 2010/01/23 15:21:25 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -198,6 +198,8 @@ typedef struct {
 	char *system_db_schema;		/* system DB schema name */
 	char *system_db_user;		/* user name to access system DB */
 	char *system_db_password;	/* password to access system DB */
+
+	char *lobj_lock_table;		/* table name to lock for rewriting lo_creat */
 
 	BackendDesc *backend_desc;	/* PostgreSQL Server description. Placed on shared memory */
 
@@ -664,10 +666,13 @@ extern void cancel_request(CancelPacket *sp);
 extern void check_stop_request(void);
 
 /* pool_process_query.c */
-void free_select_result(POOL_SELECT_RESULT *result);
 void reset_variables(void);
 void per_node_statement_log(POOL_CONNECTION_POOL *backend, int node_id, char *query);
 POOL_STATUS pool_extract_error_message(POOL_CONNECTION *backend, int major, bool unread, char **message);
+POOL_STATUS do_command(POOL_CONNECTION *frontend, POOL_CONNECTION *backend,
+					   char *query, int protoMajor, int pid, int key, int no_ready_for_query);
+POOL_STATUS do_query(POOL_CONNECTION *backend, char *query, POOL_SELECT_RESULT **result);
+void free_select_result(POOL_SELECT_RESULT *result);
 
 /* pool_relcache.c */
 POOL_RELCACHE *pool_create_relcache(int cachesize, char *sql,
@@ -677,5 +682,8 @@ void pool_discard_relcache(POOL_RELCACHE *relcache);
 void *pool_search_relcache(POOL_RELCACHE *relcache, POOL_CONNECTION_POOL *backend, char *table);
 void *int_register_func(POOL_SELECT_RESULT *res);
 void *int_unregister_func(void *data);
+
+/* pool_lobj.c */
+char *pool_rewrite_lo_creat(char kind, char *packet, int packet_len, POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, int* len);
 
 #endif /* POOL_H */
