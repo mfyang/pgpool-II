@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample,v 1.30 2010/01/23 15:21:25 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample,v 1.31 2010/01/26 14:49:58 t-ishii Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -219,3 +219,12 @@ client_idle_limit_in_recovery = 0
 # command in replication mode. The table must exist and has writable
 # permission to public. If the table name is '', no rewriting occurs.
 lobj_lock_table = ''
+
+# If true, enable SSL support for both frontend and backend connections.
+# note that you must also set ssl_key and ssl_cert for SSL to work in
+# the frontend connections.
+ssl = false
+# path to the SSL private key file
+#ssl_key = './server.key'
+# path to the SSL public certificate file
+#ssl_key = './server.cert'

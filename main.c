@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.58 2009/12/23 09:30:43 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.59 2010/01/26 14:49:58 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2009	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -265,6 +265,12 @@ int main(int argc, char **argv)
 				exit(1);
 		}
 	}
+
+#ifdef USE_SSL
+	/* global ssl init */
+	SSL_library_init();
+	SSL_load_error_strings();
+#endif /* USE_SSL */
 
 	mypid = getpid();
 

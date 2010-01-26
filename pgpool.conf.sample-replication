@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample for replication mode
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-replication,v 1.1 2009/12/06 09:57:32 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-replication,v 1.2 2010/01/26 14:49:58 t-ishii Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -214,3 +214,17 @@ recovery_timeout = 90
 # explicit transactions!)  0 means no disconnect. This parameter only
 # takes effect in recovery 2nd stage.
 client_idle_limit_in_recovery = 0
+
+# Specify table name to lock. This is used when rewriting lo_creat
+# command in replication mode. The table must exist and has writable
+# permission to public. If the table name is '', no rewriting occurs.
+lobj_lock_table = ''
+
+# If true, enable SSL support for both frontend and backend connections.
+# note that you must also set ssl_key and ssl_cert for SSL to work in
+# the frontend connections.
+ssl = false
+# path to the SSL private key file
+#ssl_key = './server.key'
+# path to the SSL public certificate file
+#ssl_key = './server.cert'
