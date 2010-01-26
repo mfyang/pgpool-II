@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.4 2010/01/17 08:19:14 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.5 2010/01/26 09:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -265,7 +265,7 @@ get_current_timestamp(POOL_CONNECTION_POOL *backend)
 	POOL_STATUS		 status;
 	static char		timestamp[32];
 
-	status = do_query(MASTER(backend), "SELECT now()", &res);
+	status = do_query(MASTER(backend), "SELECT now()", &res, MAJOR(backend));
 	if (status != POOL_CONTINUE)
 	{
 		pool_error("get_current_timestamp: do_query faild");

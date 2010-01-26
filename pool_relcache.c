@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.5 2010/01/02 09:17:48 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.6 2010/01/26 09:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -142,7 +142,7 @@ void *pool_search_relcache(POOL_RELCACHE *relcache, POOL_CONNECTION_POOL *backen
 
 	per_node_statement_log(backend, MASTER_NODE_ID, query);
 
-	if (do_query(MASTER(backend), query, &res) != POOL_CONTINUE)
+	if (do_query(MASTER(backend), query, &res, MAJOR(backend)) != POOL_CONTINUE)
 	{
 		pool_error("pool_search_relcache: do_query failed");
 		if (res)
