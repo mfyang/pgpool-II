@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.2 2010/01/26 09:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.3 2010/01/31 02:54:06 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -171,7 +171,7 @@ char *pool_rewrite_lo_creat(char kind, char *packet, int packet_len,
 	 */
 	if (TSTATE(backend) == 'E')
 	{
-		pool_log("pool_check_lo_creat: failed to execute: %s", LOCK_QUERY);
+		pool_log("pool_check_lo_creat: failed to execute: %s", qbuf);
 		return NULL;
 	}
 
