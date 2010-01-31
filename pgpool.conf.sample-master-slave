@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample for master/slave mode
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-master-slave,v 1.2 2010/01/26 14:49:58 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-master-slave,v 1.3 2010/01/31 02:22:24 t-ishii Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -227,4 +227,14 @@ ssl = false
 # path to the SSL private key file
 #ssl_key = './server.key'
 # path to the SSL public certificate file
-#ssl_key = './server.cert'
+#ssl_cert = './server.cert'
+
+# If either ssl_ca_cert or ssl_ca_cert_dir is set, then certificate
+# verification will be performed to establish the authenticity of the
+# certificate.  If neither is set to a nonempty string then no such
+# verification takes place.  ssl_ca_cert should be a path to a single
+# PEM format file containing CA root certificate(s), whereas ssl_ca_cert_dir
+# should be a directory containing such files.  These are analagous to the
+# -CAfile and -CApath options to openssl verify(1), respectively.
+#ssl_ca_cert = ''
+#ssl_ca_cert_dir = ''
