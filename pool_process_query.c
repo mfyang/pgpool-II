@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.190 2010/01/30 01:57:18 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.191 2010/02/01 09:05:20 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1864,6 +1864,18 @@ void reset_variables(void)
 	execute_select = 0;
 	receive_extended_begin = 0;
 }
+
+
+/*
+ * if connection_cache == 0, we don't need reset_query.
+ * but we need reset prepared list.
+ */
+void reset_connection(void)
+{
+	reset_variables();
+	reset_prepared_list(&prepared_list);
+}
+
 
 /*
  * Reset backend status. return values are:

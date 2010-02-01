@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.5 2010/01/26 09:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.6 2010/02/01 09:05:20 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -636,7 +636,7 @@ rewrite_timestamp(POOL_CONNECTION_POOL *backend, Node *node,
 			int				 i;
 			PrepareStmt		*p_stmt = (PrepareStmt *) node;
 
-			for (i = ctx.num_params; i <= portal->num_tsparams; i++)
+			for (i = 0; i < portal->num_tsparams; i++)
 				p_stmt->argtypes =
 				   	lappend(p_stmt->argtypes, SystemTypeName("timestamptz"));
 		}
