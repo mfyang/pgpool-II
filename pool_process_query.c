@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.191 2010/02/01 09:05:20 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.192 2010/02/02 05:43:50 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1561,7 +1561,7 @@ POOL_STATUS SimpleForwardToBackend(char kind, POOL_CONNECTION *frontend, POOL_CO
 			}
 		}
 	}
-	else	/* Othe than Bind, Describe or Close message */
+	else	/* Other than Bind, Describe or Close message */
 	{
 		for (i=0;i<NUM_BACKENDS;i++)
 		{
