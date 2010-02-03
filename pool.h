@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.55 2010/02/01 09:05:20 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.56 2010/02/03 08:11:42 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -693,7 +693,8 @@ extern void check_stop_request(void);
 extern void reset_variables(void);
 extern void reset_connection(void);
 extern void per_node_statement_log(POOL_CONNECTION_POOL *backend, int node_id, char *query);
-extern POOL_STATUS pool_extract_error_message(POOL_CONNECTION *backend, int major, bool unread, char **message);
+extern void per_node_error_log(POOL_CONNECTION_POOL *backend, int node_id, char *query, char *prefix, bool unread);
+extern int pool_extract_error_message(bool read_kind, POOL_CONNECTION *backend, int major, bool unread, char **message);
 extern POOL_STATUS do_command(POOL_CONNECTION *frontend, POOL_CONNECTION *backend,
 					   char *query, int protoMajor, int pid, int key, int no_ready_for_query);
 extern POOL_STATUS do_query(POOL_CONNECTION *backend, char *query, POOL_SELECT_RESULT **result, int major);
