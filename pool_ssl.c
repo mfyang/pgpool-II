@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_ssl.c,v 1.4 2010/02/03 10:31:10 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_ssl.c,v 1.5 2010/02/04 00:31:21 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -82,7 +82,11 @@ void pool_ssl_negotiate_clientserver(POOL_CONNECTION *cp) {
 			cp->ssl_active = 1;
 			break;
 		case 'N':
-			pool_error("pool_ssl: server doesn't want to talk SSL");
+			/*
+			 * If backend does not support SSL but pgpool does, we get this.
+			 * i.e. This is normal.
+			 */
+			pool_debug("pool_ssl: server doesn't want to talk SSL");
 			break;
 		default:
 			pool_error("pool_ssl: unhandled response: %c", server_response);
