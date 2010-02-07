@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.59 2010/01/26 14:49:58 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.60 2010/02/07 03:04:06 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -804,7 +804,7 @@ static int read_status_file(void)
 		pool_log("Backend status file %s does not exist", fnamebuf);
 		return -1;
 	}
-	if (fread(&backend_rec, 1, sizeof(backend_rec), fd) <= 0)
+	if (fread(&backend_rec, 1, sizeof(backend_rec), fd) != sizeof(backend_rec))
 	{
 		pool_error("Could not read backend status file as %s. reason: %s",
 				   fnamebuf, strerror(errno));
@@ -848,7 +848,7 @@ static int write_status_file(void)
 		backend_rec.status[i] = BACKEND_INFO(i).backend_status;
 	}
 
-	if (fwrite(&backend_rec, 1, sizeof(backend_rec), fd) <= 0)
+	if (fwrite(&backend_rec, 1, sizeof(backend_rec), fd) != sizeof(backend_rec))
 	{
 		pool_error("Could not write backend status file as %s. reason: %s",
 				   fnamebuf, strerror(errno));
