@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.60 2010/02/07 03:04:06 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.61 2010/02/13 11:23:55 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -796,6 +796,7 @@ static int read_status_file(void)
 	FILE *fd;
 	char fnamebuf[POOLMAXPATHLEN];
 	int i;
+	bool someone_wakeup = false;
 
 	snprintf(fnamebuf, sizeof(fnamebuf), "%s/%s", pool_config->logdir, STATUS_FILE_NAME);
 	fd = fopen(fnamebuf, "r");
@@ -818,7 +819,21 @@ static int read_status_file(void)
 		if (backend_rec.status[i] == CON_DOWN)
 			BACKEND_INFO(i).backend_status = CON_DOWN;
 		else
+		{
 			BACKEND_INFO(i).backend_status = CON_CONNECT_WAIT;
+			someone_wakeup = true;
+		}
+	}
+
+	/*
+	 * If no one woke up, we regard the status file bogus
+	 */
+	if (someone_wakeup == false)
+	{
+		for (i=0;i< pool_config->backend_desc->num_backends;i++)
+		{
+			BACKEND_INFO(i).backend_status = CON_CONNECT_WAIT;
+		}
 	}
 
 	return 0;
