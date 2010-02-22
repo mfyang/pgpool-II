@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.35 2010/02/07 03:05:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.36 2010/02/22 03:53:11 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1169,7 +1169,8 @@ POOL_STATUS Parse(POOL_CONNECTION *frontend,
 			rewrite_query = rewrite_timestamp(backend, node, rewrite_to_params, portal);
 			if (rewrite_query != NULL)
 			{
-				string = palloc(strlen(name) + strlen(rewrite_query) + 2);
+				int alloc_len = len - strlen(stmt) + strlen(rewrite_query);
+				string = palloc(alloc_len);
 				strcpy(string, name);
 				strcpy(string + strlen(name) + 1, rewrite_query);
 				memcpy(string + strlen(name) + strlen(rewrite_query) + 2,
