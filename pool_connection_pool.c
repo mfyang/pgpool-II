@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.17 2010/01/02 09:17:48 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.18 2010/02/27 04:21:12 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2009	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -504,7 +504,7 @@ int connect_inet_domain_socket_by_port(char *host, int port)
 	hp = gethostbyname(host);
 	if ((hp == NULL) || (hp->h_addrtype != AF_INET))
 	{
-		pool_error("connect_inet_domain_socket: gethostbyname() failed: %s host: %s", strerror(errno), host);
+		pool_error("connect_inet_domain_socket: gethostbyname() failed: %s host: %s", hsterror(h_errno), host);
 		close(fd);
 		return -1;
 	}
