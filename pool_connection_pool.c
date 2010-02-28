@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.18 2010/02/27 04:21:12 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.19 2010/02/28 09:22:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -504,7 +504,7 @@ int connect_inet_domain_socket_by_port(char *host, int port)
 	hp = gethostbyname(host);
 	if ((hp == NULL) || (hp->h_addrtype != AF_INET))
 	{
-		pool_error("connect_inet_domain_socket: gethostbyname() failed: %s host: %s", hsterror(h_errno), host);
+		pool_error("connect_inet_domain_socket: gethostbyname() failed: %s host: %s", hstrerror(h_errno), host);
 		close(fd);
 		return -1;
 	}
