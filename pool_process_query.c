@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.196 2010/02/10 09:41:43 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.197 2010/03/02 15:31:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1521,7 +1521,10 @@ POOL_STATUS SimpleForwardToBackend(char kind, POOL_CONNECTION *frontend, POOL_CO
 		else
 		{
 			portal = lookup_prepared_statement_by_statement(&prepared_list, stmt_name);
-			portal->portal_name = strdup(portal_name);
+			if (portal)
+			{
+				portal->portal_name = strdup(portal_name);
+			}
 		}
 
 		/* rewrite bind message */
