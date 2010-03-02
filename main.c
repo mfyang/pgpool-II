@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.61 2010/02/13 11:23:55 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.62 2010/03/02 15:25:35 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1509,7 +1509,7 @@ int health_check(void)
 	char kind;
 	int i;
 
-	/* Do health check during recovery */
+	/* Do not execute health check during recovery */
 	if (*InRecovery)
 		return 0;
 
