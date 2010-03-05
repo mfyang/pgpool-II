@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.197 2010/03/02 15:31:43 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.198 2010/03/05 06:49:53 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -3460,6 +3460,9 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 	int degenerate_node_num = 0;		/* number of backends degeneration requested */
 	int degenerate_node[MAX_NUM_BACKENDS];		/* degeneration requested backend list */
 
+	POOL_MEMORY_POOL *old_context = NULL;
+	POOL_MEMORY_POOL *parser_context = NULL;
+
 	memset(kind_map, 0, sizeof(kind_map));
 
 	for (i=0;i<NUM_BACKENDS;i++)
@@ -3627,6 +3630,10 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 						List *parse_tree_list;
 						Node *node;
 
+						/* Switch to parser memory context */
+						old_context = pool_memory;
+						pool_memory = parser_context;
+
 						parse_tree_list = raw_parser(query_string_buffer);
 
 						if (parse_tree_list != NIL)
@@ -3648,6 +3655,10 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 							}
 						}
 						free_parser();
+
+						/* Switch to old memory context */
+						parser_context = pool_memory;
+						pool_memory = old_context;
 					}
 				}
 				else
