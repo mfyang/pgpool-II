@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.31 2010/01/31 02:22:24 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.32 2010/03/19 11:53:00 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1411,6 +1411,11 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 			if(dist_num < 0)
 			{
 				pool_error("failed to get systemdb info");
+				return(-1);
+			}
+			if (!pool_config->replication_enabled)
+			{
+				pool_error("pool_config: parallel_mode requires replication_mode turned on");
 				return(-1);
 			}
 		}
