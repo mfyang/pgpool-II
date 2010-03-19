@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.43 2010/03/03 00:31:39 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.44 2010/03/19 07:31:19 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1202,6 +1202,7 @@ static RETSIGTYPE die(int sig)
 
 		case SIGINT:	/* fast shutdown */
 		case SIGQUIT:	/* immediate shutdown */
+			child_exit(0);
 			break;
 		default:
 			pool_error("die() received unknown signal: %d", sig);
