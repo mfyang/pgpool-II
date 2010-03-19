@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.36 2010/02/22 03:53:11 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.37 2010/03/19 07:23:44 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1280,7 +1280,7 @@ POOL_STATUS Parse(POOL_CONNECTION *frontend,
 		else
 		{
 			/*
-			 * Check if other than dealock error detected.  If so, emit
+			 * Check if other than deadlock error detected.  If so, emit
 			 * log. This is usefull when invalid encoding error occurs. In
 			 * this case, PostgreSQL does not report what statement caused
 			 * that error and make users confused.
