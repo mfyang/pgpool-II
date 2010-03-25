@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.32 2010/03/19 11:53:00 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.33 2010/03/25 04:24:09 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1413,9 +1413,9 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				pool_error("failed to get systemdb info");
 				return(-1);
 			}
-			if (!pool_config->replication_enabled)
+			if (!pool_config->replication_enabled && !pool_config->load_balance_mode)
 			{
-				pool_error("pool_config: parallel_mode requires replication_mode turned on");
+				pool_error("pool_config: parallel_mode requires replication_mode or load_balance_mode turned on");
 				return(-1);
 			}
 		}
