@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.26.2.12 2010/01/09 09:04:22 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.26.2.13 2010/04/13 04:59:12 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1085,22 +1085,23 @@ void cancel_request(CancelPacket *sp)
 	int i;
 	ConnectionInfo *c = NULL;
 	CancelPacket cp;
+	int loop_num = pool_config->num_init_children*pool_config->max_pool*MAX_NUM_BACKENDS;
 
 	pool_debug("Cancel request received");
 
 	/* look for cancel key from shmem info */
-	for (i=0;i<pool_config->num_init_children*pool_config->max_pool;i++)
+	for (i=0;i<loop_num;i++)
 	{
 		c = &con_info[i];
 
 		if (c->pid == sp->pid && c->key == sp->key)
 		{
 			pool_debug("found pid:%d key:%d i:%d",c->pid, c->key,i);
-			c = &con_info[i/pool_config->max_pool * pool_config->max_pool];
+			c = &con_info[i/(pool_config->max_pool * pool_config->max_pool)];
 			break;
 		}
 	}
-	if (i == pool_config->num_init_children*pool_config->max_pool)
+	if (i == loop_num)
 		return;	/* invalid key */
 
 	for (i=0;i<NUM_BACKENDS;i++,c++)

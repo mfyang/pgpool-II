@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.45.2.9 2009/11/14 11:35:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.45.2.10 2010/04/13 04:59:12 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -384,7 +384,16 @@ int main(int argc, char **argv)
 		inet_fd = create_inet_domain_socket(pool_config->listen_addresses, pool_config->port);
 	}
 
-	size = pool_config->num_init_children * pool_config->max_pool * sizeof(ConnectionInfo);
+	/*
+	 * con_info is a 3 dimension array: i corresponds to pgpool child
+	 * process, j corresponds to connection pool in each process and k
+	 * corresponds to backends in each connection pool.
+	 *
+	 * XXX: Before 2010/4/12 this was a 2 dimension array: i
+	 * corresponds to pgpool child process, j corresponds to
+	 * connection pool in each process. Of course this was wrong.
+	 */
+	size = pool_config->num_init_children * pool_config->max_pool * MAX_NUM_BACKENDS * sizeof(ConnectionInfo);
 	con_info = pool_shared_memory_create(size);
 	if (con_info == NULL)
 	{
@@ -403,7 +412,7 @@ int main(int argc, char **argv)
 	memset(pids, 0, size);
 	for (i = 0; i < pool_config->num_init_children; i++)
 	{
-		pids[i].connection_info = &con_info[i * pool_config->max_pool];
+		pids[i].connection_info = &con_info[i * pool_config->max_pool * MAX_NUM_BACKENDS];
 	}
 
 	/* create fail over/switch over event area */
