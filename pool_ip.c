@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_ip.c,v 1.3 2009/08/22 04:04:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_ip.c,v 1.4 2010/04/22 08:10:38 t-ishii Exp $
  *
  * This file was imported from PostgreSQL 8.0.8 source code.
  * See below for the copyright and description.
@@ -451,6 +451,7 @@ SockAddr_cidr_mask(struct sockaddr_storage * mask, char *numbits, int family)
 						& 0xffffffffUL;
 				else
 					maskl = 0;
+				memset(&mask4, 0, sizeof(mask4));
 				mask4.sin_addr.s_addr = htonl(maskl);
 				memcpy(mask, &mask4, sizeof(mask4));
 				break;

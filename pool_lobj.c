@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.3 2010/01/31 02:54:06 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.4 2010/04/22 08:10:38 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -101,9 +101,9 @@ char *pool_rewrite_lo_creat(char kind, char *packet, int packet_len,
 	}
 
 	/*
-	 * Get lo_crea oid
+	 * Get lo_creat oid
 	 */
-	lo_creat_oid = (int)pool_search_relcache(relcache_lo_creat, backend, "pg_proc");
+	lo_creat_oid = (int)(intptr_t)pool_search_relcache(relcache_lo_creat, backend, "pg_proc");
 
 	memmove(&orig_fcall_oid, packet, sizeof(int32));
 	orig_fcall_oid = ntohl(orig_fcall_oid);
@@ -132,7 +132,7 @@ char *pool_rewrite_lo_creat(char kind, char *packet, int packet_len,
 	/*
 	 * Get lo_create oid
 	 */
-	lo_create_oid = (int)pool_search_relcache(relcache_lo_create, backend, "pg_proc");
+	lo_create_oid = (int)(intptr_t)pool_search_relcache(relcache_lo_create, backend, "pg_proc");
 
 	pool_debug("pool_check_lo_creat: lo_creat_oid: %d lo_create_oid: %d",
 			   lo_creat_oid, lo_create_oid);

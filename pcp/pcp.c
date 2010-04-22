@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.8 2008/12/31 10:25:40 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.9 2010/04/22 08:10:38 t-ishii Exp $
  *
  * Handles PCP connection, and protocol communication with pgpool-II
  * These are client APIs. Server program should use APIs in pcp_stream.c
@@ -127,7 +127,7 @@ pcp_connect(char *hostname, int port, char *username, char *password)
 		}
 
 		memset((char *) &addr, 0, sizeof(addr));
-		((struct sockaddr *) &addr)->sa_family = AF_INET;
+		addr.sin_family = AF_INET;
 		hp = gethostbyname(hostname);
 		if ((hp == NULL) || (hp->h_addrtype != AF_INET))
 		{
@@ -293,7 +293,7 @@ pcp_disconnect(void)
 	{
 		/* backend had closed connection already */
 	}
-	if (debug) fprintf(stderr, "DEBUG: send: tos=\"X\", len=%d\n", sizeof(int));
+	if (debug) fprintf(stderr, "DEBUG: send: tos=\"X\", len=%d\n", (int) sizeof(int));
 
 	pcp_close(pc);
 	pc = NULL;
