@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.201 2010/04/22 08:10:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.202 2010/05/10 09:35:45 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1209,7 +1209,11 @@ POOL_STATUS SimpleForwardToFrontend(char kind, POOL_CONNECTION *frontend, POOL_C
 			free(pending_prepared_portal);
 		}
 	}
-	else if (kind == 'C' && select_in_transaction)
+	/* 
+	 * The response of Execute command will be EmptyQueryResponse(I),
+	 * if Bind error occurs.
+	 */
+	else if ((kind == 'C' || kind == 'I') && select_in_transaction)
 	{
 		select_in_transaction = 0;
 		execute_select = 0;
