@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.58 2010/03/06 12:54:01 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.59 2010/05/12 04:58:13 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -206,6 +206,10 @@ typedef struct {
 	char *system_db_password;	/* password to access system DB */
 
 	char *lobj_lock_table;		/* table name to lock for rewriting lo_creat */
+
+	int debug_level;			/* debug message verbosity level.
+								 * 0: no message, 1 <= : more verbose
+								 */
 
 	BackendDesc *backend_desc;	/* PostgreSQL Server description. Placed on shared memory */
 
@@ -483,6 +487,7 @@ typedef struct {
  * global variables
  */
 extern pid_t mypid; /* parent pid */
+extern bool run_as_pcp_child;
 extern POOL_CONFIG *pool_config;	/* configuration values */
 extern POOL_CONNECTION_POOL *pool_connection_pool;	/* connection pool */
 extern volatile sig_atomic_t backend_timer_expired; /* flag for connection closed timer is expired */

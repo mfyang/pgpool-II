@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.34 2010/04/18 13:43:36 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.35 2010/05/12 04:58:13 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -182,6 +182,7 @@ int pool_init_config(void)
 	pool_config->ssl_key = "";
 	pool_config->ssl_ca_cert = "";
 	pool_config->ssl_ca_cert_dir = "";
+	pool_config->debug_level = 0;
 
 	res = gethostname(localhostname,sizeof(localhostname));
 	if(res !=0 )
@@ -1322,6 +1323,19 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				return(-1);
 			}
 			pool_config->ssl_ca_cert_dir = str;
+		}
+
+		else if (!strcmp(key, "debug_level") && CHECK_CONTEXT(INIT_CONFIG|RELOAD_CONFIG, context))
+		{
+			int v = atoi(yytext);
+
+			if (token != POOL_INTEGER || v < 0)
+			{
+				pool_error("pool_config: %s must be equal or higher than 0 numeric value", key);
+				fclose(fd);
+				return(-1);
+			}
+			pool_config->debug_level = v;
 		}
 	}
 

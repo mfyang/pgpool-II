@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.4 2010/01/31 02:55:00 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.5 2010/05/12 04:58:13 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -324,6 +324,11 @@ void process_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 	strncpy(status[i].name, "ssl_cert", POOLCONFIG_MAXNAMELEN);
 	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->ssl_cert);
 	strncpy(status[i].desc, "path to the SSL public certificate file", POOLCONFIG_MAXDESCLEN);
+	i++;
+
+	strncpy(status[i].name, "debug_level", POOLCONFIG_MAXNAMELEN);
+	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%d", pool_config->debug_level);
+	strncpy(status[i].desc, "debug message level", POOLCONFIG_MAXDESCLEN);
 	i++;
 
 	strncpy(status[i].name, "parallel_mode", POOLCONFIG_MAXNAMELEN);
