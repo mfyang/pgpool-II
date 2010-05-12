@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_error.c,v 1.5 2010/05/12 04:58:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_error.c,v 1.6 2010/05/12 09:02:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -93,11 +93,15 @@ void pool_debug(const char *fmt,...)
 #endif
 
 	if (run_as_pcp_child)
+	{
 		if (!debug)
 			return;
+	}
 	else
+	{
 		if (pool_config->debug_level <= 0)
 			return;
+	}
 
 	POOL_SETMASK2(&BlockSig, &oldmask);
 
