@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.66 2010/05/12 04:58:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.67 2010/05/16 08:38:16 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1225,11 +1225,13 @@ static RETSIGTYPE exit_handler(int sig)
 }
 
 /*
- * calculate next master node id
+ * Calculate next valid master node id.
+ * If no valid node found, returns -1.
  */
 static int get_next_master_node(void)
 {
 	int i;
+
 	for (i=0;i<pool_config->backend_desc->num_backends;i++)
 	{
 		/*
@@ -1240,12 +1242,17 @@ static int get_next_master_node(void)
 		 */
 		if (RAW_MODE)
 		{
+			/* if in raw mode, we can switch to a standby node */
 			if (BACKEND_INFO(i).backend_status == CON_CONNECT_WAIT)
 				break;
 		}
 		else if (VALID_BACKEND(i))
 			break;
 	}
+
+	if (i == pool_config->backend_desc->num_backends)
+		i = -1;
+
 	return i;
 }
 
@@ -1379,7 +1386,7 @@ static void failover(void)
 
 	new_master = get_next_master_node();
 
-	if (new_master == pool_config->backend_desc->num_backends)
+	if (new_master < 0)
 	{
 		pool_error("failover_handler: no valid DB node found");
 	}
@@ -1449,8 +1456,11 @@ static void failover(void)
 			trigger_failover_command(i, pool_config->failover_command);
 	}
 
-	pool_log("failover_handler: set new master node: %d", new_master);
-	Req_info->master_node_id = new_master;
+	if (new_master >= 0)
+	{
+		pool_log("failover_handler: set new master node: %d", new_master);
+		Req_info->master_node_id = new_master;
+	}
 
 /* no need to wait since it will be done in reap_handler */
 #ifdef NOT_USED
