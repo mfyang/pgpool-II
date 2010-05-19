@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.59 2010/05/12 04:58:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.60 2010/05/19 19:08:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -563,6 +563,7 @@ extern void pool_ssl_negotiate_clientserver(POOL_CONNECTION *cp);
 extern void pool_ssl_close(POOL_CONNECTION *cp);
 extern int pool_ssl_read(POOL_CONNECTION *cp, void *buf, int size);
 extern int pool_ssl_write(POOL_CONNECTION *cp, const void *buf, int size);
+extern bool pool_ssl_pending(POOL_CONNECTION *cp);
 
 extern POOL_STATUS ErrorResponse(POOL_CONNECTION *frontend, 
 								  POOL_CONNECTION_POOL *backend);
