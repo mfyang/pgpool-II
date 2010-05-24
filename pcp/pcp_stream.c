@@ -1,10 +1,10 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_stream.c,v 1.4 2008/01/29 01:56:38 y-asaba Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_stream.c,v 1.5 2010/05/24 07:25:35 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2008	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -352,7 +352,7 @@ pcp_check_fd(PCP_CONNECTION *pc, int notimeout)
         FD_SET(fd, &readmask);
         FD_SET(fd, &exceptmask);
 
-        if (notimeout || (pcp_timeout.tv_sec + pcp_timeout.tv_usec == 0))
+        if (notimeout || (pcp_timeout.tv_sec + pcp_timeout.tv_usec) == 0)
             tp = NULL;
         else
         {
