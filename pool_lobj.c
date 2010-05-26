@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.4 2010/04/22 08:10:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.5 2010/05/26 06:21:25 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -29,6 +29,8 @@
 #include <netinet/in.h>
 
 #include "pool.h"
+#include "pool_lobj.h"
+#include "pool_relcache.h"
 
 /*
  * Rewrite lo_creat call to lo_create call if:

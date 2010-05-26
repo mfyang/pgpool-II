@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.7 2010/02/17 14:00:14 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.8 2010/05/26 06:21:25 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -25,6 +25,7 @@
 
 #include "pool.h"
 #include "pool_timestamp.h"
+#include "pool_relcache.h"
 #include "parser/parsenodes.h"
 #include "parser/gramparse.h"
 #include "parser/pool_memory.h"

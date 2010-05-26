@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.6 2010/01/26 09:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.7 2010/05/26 06:21:25 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "pool.h"
+#include "pool_relcache.h"
 
 /*
  * Create relation cache
