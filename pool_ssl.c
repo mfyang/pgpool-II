@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_ssl.c,v 1.6 2010/05/19 19:08:43 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_ssl.c,v 1.7 2010/05/31 07:08:30 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -26,6 +26,7 @@
 
 #include "config.h"
 #include "pool.h"
+#include "pool_stream.h"
 
 #ifdef USE_SSL
 

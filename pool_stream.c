@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
-* $Header: /cvsroot/pgpool/pgpool-II/pool_stream.c,v 1.19 2010/01/26 14:49:58 t-ishii Exp $
+* $Header: /cvsroot/pgpool/pgpool-II/pool_stream.c,v 1.20 2010/05/31 07:08:30 t-ishii Exp $
 *
 * pgpool: a language independent connection pool server for PostgreSQL
 * written by Tatsuo Ishii
@@ -34,10 +34,12 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "pool.h"
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
 
-#define READBUFSZ 1024
-#define WRITEBUFSZ 8192
+#include "pool.h"
+#include "pool_stream.h"
 
 static int mystrlen(char *str, int upper, int *flag);
 static int mystrlinelen(char *str, int upper, int *flag);
@@ -823,4 +825,46 @@ int pool_unread(POOL_CONNECTION *cp, void *data, int len)
 	cp->len = n;
 	cp->po = 0;
 	return 0;
+}
+
+/*
+ * set non-block flag
+ */
+void pool_set_nonblock(int fd)
+{
+	int var;
+
+	/* set fd to none blocking */
+	var = fcntl(fd, F_GETFL, 0);
+	if (var == -1)
+	{
+		pool_error("fcntl failed. %s", strerror(errno));
+		child_exit(1);
+	}
+	if (fcntl(fd, F_SETFL, var | O_NONBLOCK) == -1)
+	{
+		pool_error("fcntl failed. %s", strerror(errno));
+		child_exit(1);
+	}
+}
+
+/*
+ * unset non-block flag
+ */
+void pool_unset_nonblock(int fd)
+{
+	int var;
+
+	/* set fd to none blocking */
+	var = fcntl(fd, F_GETFL, 0);
+	if (var == -1)
+	{
+		pool_error("fcntl failed. %s", strerror(errno));
+		child_exit(1);
+	}
+	if (fcntl(fd, F_SETFL, var & ~O_NONBLOCK) == -1)
+	{
+		pool_error("fcntl failed. %s", strerror(errno));
+		child_exit(1);
+	}
 }

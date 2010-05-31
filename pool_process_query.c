@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.204 2010/05/26 06:21:25 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.205 2010/05/31 07:08:30 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -47,6 +47,7 @@
 #include "pool_proto_modules.h"
 #include "pool_lobj.h"
 #include "pool_relcache.h"
+#include "pool_stream.h"
 
 #ifndef FD_SETSIZE
 #define FD_SETSIZE 512
