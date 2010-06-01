@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_system.c,v 1.6 2009/08/22 04:04:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_system.c,v 1.7 2010/06/01 09:03:00 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2008	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pool.h"
+#include "pool_config.h"
 
 static int create_prepared_statement(DistDefInfo *dist_info);
 static int  get_col_list(DistDefInfo *info);

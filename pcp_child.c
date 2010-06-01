@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp_child.c,v 1.13 2010/03/06 12:54:01 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp_child.c,v 1.14 2010/06/01 09:02:59 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2008	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -53,6 +53,7 @@
 #include "pcp/pcp_stream.h"
 #include "pcp/pcp.h"
 #include "md5.h"
+#include "pool_config.h"
 
 #define MAX_FILE_LINE_LEN    512
 #define MAX_USER_PASSWD_LEN  128

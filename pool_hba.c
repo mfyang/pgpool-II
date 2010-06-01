@@ -1,12 +1,12 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_hba.c,v 1.7 2010/05/31 07:08:30 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_hba.c,v 1.8 2010/06/01 09:02:59 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Portions Copyright (c) 2003-2008	PgPool Global Development Group
+ * Portions Copyright (c) 2003-2010	PgPool Global Development Group
  * Portions Copyright (c) 1996-2005, PostgreSQL Global Development Group
  * Portions Copyright (c) 1994, Regents of the University of California                                          *
  * Permission to use, copy, modify, and distribute this software and
@@ -34,6 +34,7 @@
 #include "pool_path.h"
 #include "pool_ip.h"
 #include "pool_stream.h"
+#include "pool_config.h"
 #include "parser/pool_memory.h"
 #include "parser/pg_list.h"
 

@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_error.c,v 1.6 2010/05/12 09:02:22 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_error.c,v 1.7 2010/06/01 09:02:59 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -29,6 +29,7 @@
 #include <stdlib.h>
 
 #include "pool.h"
+#include "pool_config.h"
 
 #define MAXSTRFTIME 128
 

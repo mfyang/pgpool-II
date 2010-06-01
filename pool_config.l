@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.35 2010/05/12 04:58:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.36 2010/06/01 09:02:59 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -26,6 +26,7 @@
 %{
 
 #include "pool.h"
+#include "pool_config.h"
 
 #include <stdio.h>
 #include <stdlib.h>

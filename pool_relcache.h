@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.h,v 1.1 2010/05/26 06:21:25 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.h,v 1.2 2010/06/01 09:03:00 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -25,7 +25,43 @@
 
 #ifndef POOL_RELCACHE_H
 #define POOL_RELCACHE_H
-#include "pool.h"
+
+/* ------------------------
+ * Relation cache structure
+ *-------------------------
+*/
+#define MAX_ITEM_LENGTH	1024
+
+/* Relation lookup cache structure */
+
+typedef void *(*func_ptr) ();
+
+typedef struct {
+	char dbname[MAX_ITEM_LENGTH];	/* database name */
+	char relname[MAX_ITEM_LENGTH];	/* table name */
+	void *data;	/* user data */
+	int refcnt;		/* reference count */
+	int session_id;		/* LocalSessionId */
+} PoolRelCache;
+
+typedef struct {
+	int num;		/* number of cache items */
+	char sql[MAX_ITEM_LENGTH];	/* Query to relation */
+	/*
+	 * User defined function to be called at data register.
+	 * Argument is POOL_SELECT_RESULT *.
+	 * This function must return a pointer to be
+	 * saved in cache->data.
+	 */
+	func_ptr	register_func;
+	/*
+	 * User defined function to be called at data unregister.
+	 * Argument cache->data.
+	 */
+	func_ptr	unregister_func;
+	bool cache_is_session_local;		/* True if cache life time is session local */
+	PoolRelCache *cache;	/* cache data */
+} POOL_RELCACHE;
 
 extern POOL_RELCACHE *pool_create_relcache(int cachesize, char *sql,
 									func_ptr register_func, func_ptr unregister_func,

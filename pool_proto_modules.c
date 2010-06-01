@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.39 2010/05/31 07:08:30 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.40 2010/06/01 09:03:00 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -49,6 +49,7 @@
 #include "pool_proto_modules.h"
 #include "pool_relcache.h"
 #include "pool_stream.h"
+#include "pool_config.h"
 #include "parser/pool_string.h"
 
 int force_replication;

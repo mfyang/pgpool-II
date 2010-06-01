@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_cache.c,v 1.11 2010/05/31 07:08:30 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_cache.c,v 1.12 2010/06/01 09:03:00 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2008	PgPool Global Development Group
+ * Copyright (c) 2003-2010	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -38,6 +38,7 @@
 #include "pool.h"
 #include "md5.h"
 #include "pool_stream.h"
+#include "pool_config.h"
 
 #define QUERY_CACHE_TABLE_NAME "query_cache"
 #define CACHE_REGISTER_PREPARED_STMT "register_prepared_stmt"
