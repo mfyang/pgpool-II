@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.8 2010/06/02 09:23:22 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.9 2010/06/02 10:04:37 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -108,7 +108,7 @@ void *pool_search_relcache(POOL_RELCACHE *relcache, POOL_CONNECTION_POOL *backen
 		return NULL;
 	}
 
-	local_session_id = pool_get_local_session_id;
+	local_session_id = pool_get_local_session_id();
 	if (local_session_id < 0)
 	{
 		pool_error("pool_search_relcache: pool_get_local_session_id failed");
