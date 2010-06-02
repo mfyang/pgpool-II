@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.26 2010/06/02 06:52:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.27 2010/06/02 08:51:19 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -163,6 +163,7 @@ POOL_CONNECTION_POOL *pool_get_cp(char *user, char *database, int protoMajor, in
 				}
 			}
 			POOL_SETMASK(&oldmask);
+			p->pool_index = i;
 			return p;
 		}
 		p++;
@@ -632,6 +633,7 @@ static POOL_CONNECTION_POOL *new_connection(POOL_CONNECTION_POOL *p)
 	if (active_backend_count > 0)
 	{
 		p->info->create_time = time(NULL);
+		p->pool_index = i;
 		return p;
 	}
 

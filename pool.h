@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.66 2010/06/02 06:52:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.67 2010/06/02 08:51:19 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -203,6 +203,7 @@ typedef struct {
 } POOL_CONNECTION_POOL_SLOT;
 
 typedef struct {
+	int pool_index;		/* currentlt used index(0 start) of pool */
 	ConnectionInfo *info;		/* connection info on shmem */
     POOL_CONNECTION_POOL_SLOT	*slots[MAX_NUM_BACKENDS];
 } POOL_CONNECTION_POOL;
