@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.1 2010/06/02 08:51:19 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.2 2010/06/02 09:23:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -53,5 +53,6 @@ typedef struct {
 
 extern void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend);
 extern POOL_SESSION_CONTEXT *pool_get_session_context(void);
+extern int pool_get_local_session_id(void);
 
 #endif /* POOL_SESSION_CONTEXT_H */

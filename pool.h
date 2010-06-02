@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.67 2010/06/02 08:51:19 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.68 2010/06/02 09:23:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -354,8 +354,6 @@ extern volatile sig_atomic_t exit_request;
 
 #define QUERY_STRING_BUFFER_LEN 1024
 extern char query_string_buffer[];		/* last query string sent to simpleQuery() */
-
-extern int LocalSessionId;	/* Local session id. incremented when new frontend connected */
 
 /*
  * public functions
