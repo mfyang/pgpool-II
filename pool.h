@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.65 2010/06/01 09:25:37 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.66 2010/06/02 06:52:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -279,8 +279,6 @@ typedef struct {
 #define MAX_NUM_SEMAPHORES		3
 #define CONN_COUNTER_SEM 0
 #define REQUEST_INFO_SEM 1
-
-#define MY_PROCESS_INFO (process_info[my_proc_id])
 
 /*
  * number specified when semaphore is locked/unlocked
