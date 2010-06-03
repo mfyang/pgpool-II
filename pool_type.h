@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_type.h,v 1.11 2009/12/06 12:55:08 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_type.h,v 1.12 2010/06/03 05:48:46 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -81,7 +81,7 @@ typedef char bool;
 #define SM_TTY			64
 
 #define MAX_NUM_BACKENDS 128
-#define MAX_CONNECTION_SLOTS 128
+#define MAX_CONNECTION_SLOTS MAX_NUM_BACKENDS
 #define MAX_DB_HOST_NAMELEN	 128
 #define MAX_PATH_LENGTH 256
 
