@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_cache.c,v 1.12 2010/06/01 09:03:00 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_cache.c,v 1.13 2010/06/04 07:39:42 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -39,6 +39,8 @@
 #include "md5.h"
 #include "pool_stream.h"
 #include "pool_config.h"
+#include "pool_proto_modules.h"
+#include "parser/parsenodes.h"
 
 #define QUERY_CACHE_TABLE_NAME "query_cache"
 #define CACHE_REGISTER_PREPARED_STMT "register_prepared_stmt"
@@ -982,4 +984,33 @@ define_prepared_statements(void)
 
 	free(sql);
 	PQclear(pg_result);
+}
+
+/* --------------------------------
+ * Execute query cache look up
+ * --------------------------------
+ */
+POOL_STATUS pool_execute_query_cache_lookup(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, Node *node)
+{
+	SelectStmt *select = (SelectStmt *)node;
+
+	if (! (select->intoClause || select->lockingClause))
+	{
+		parsed_query = strdup(nodeToString(node));
+		if (parsed_query == NULL)
+		{
+			pool_error("pool_execute_query_cache_lookup: malloc failed");
+			return POOL_ERROR;
+		}
+
+
+		if (pool_query_cache_lookup(frontend, parsed_query, backend->info->database, TSTATE(backend)) == POOL_CONTINUE)
+		{
+			free(parsed_query);
+			parsed_query = NULL;
+			free_parser();
+			return POOL_CONTINUE;
+		}
+	}
+	return POOL_CONTINUE;
 }

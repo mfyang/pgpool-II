@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.2 2010/06/02 09:23:22 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.3 2010/06/04 07:39:42 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -76,7 +76,6 @@ POOL_SESSION_CONTEXT *pool_get_session_context(void)
 {
 	if (!session_context)
 	{
-		pool_error("pool_get_session_context: session context is not initialized");
 		return NULL;
 	}
 
