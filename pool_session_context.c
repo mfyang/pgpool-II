@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.3 2010/06/04 07:39:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.4 2010/06/06 11:14:18 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -94,4 +94,46 @@ int pool_get_local_session_id(void)
 	}
 
 	return session_context->process_context->local_session_id;
+}
+
+/*
+ * Return true if query is in progress
+ */
+bool pool_is_query_in_progress(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_is_query_in_progress: session context is not initialized");
+		return false;
+	}
+
+	return session_context->in_progress;
+}
+
+/*
+ * Set query is in progress
+ */
+void pool_set_query_in_progress(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_set_query_in_progress: session context is not initialized");
+		return;
+	}
+
+	session_context->in_progress = true;
+}
+
+/*
+ * Un set query is in progress
+ */
+void pool_unset_query_in_progress(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_unset_query_in_progress: session context is not initialized");
+		return;
+	}
+
+	session_context->in_progress = false;
 }

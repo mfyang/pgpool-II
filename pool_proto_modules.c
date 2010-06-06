@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.43 2010/06/06 10:17:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.44 2010/06/06 11:14:18 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -60,7 +60,6 @@ int replication_was_enabled;		/* replication mode was enabled */
 int master_slave_was_enabled;	/* master/slave mode was enabled */
 int internal_transaction_started;		/* to issue table lock command a transaction
 												   has been started internally */
-int in_progress = 0;		/* indicates while doing something after receiving Query */
 int mismatch_ntuples;	/* number of updated tuples */
 char *copy_table = NULL;  /* copy table name */
 char *copy_schema = NULL;  /* copy table name */
@@ -1301,7 +1300,7 @@ POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend,
 		pool_flush(frontend);
 	}
 
-	in_progress = 0;
+	pool_unset_query_in_progress();
 
 	/* end load balance mode */
 	if (in_load_balance)
@@ -1545,7 +1544,6 @@ POOL_STATUS ProcessFrontendResponse(POOL_CONNECTION *frontend,
 			return POOL_END;
 
 		case 'Q':  /* Query message*/
-			in_progress = 1;
 			allow_close_transaction = 1;
 			status = SimpleQuery(frontend, backend, NULL);
 			break;
