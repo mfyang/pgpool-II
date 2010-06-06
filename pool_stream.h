@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_stream.h,v 1.1 2010/05/31 07:08:30 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_stream.h,v 1.2 2010/06/06 10:17:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -28,6 +28,19 @@
 
 #define READBUFSZ 1024
 #define WRITEBUFSZ 8192
+
+/*
+ * Return true if read buffer is empty. Argument is POOL_CONNECTION.
+ */
+#define pool_read_buffer_is_empty(connection) ((connection)->len <= 0)
+
+/*
+ * Discard read buffer contents
+ */
+#define pool_discard_read_buffer(connection) \
+    do { \
+       (connection)->len = 0; \
+    } while (0)
 
 extern POOL_CONNECTION *pool_open(int fd);
 extern void pool_close(POOL_CONNECTION *cp);

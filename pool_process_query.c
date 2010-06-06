@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.207 2010/06/04 07:39:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.208 2010/06/06 10:17:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -372,7 +372,7 @@ POOL_STATUS pool_process_query(POOL_CONNECTION *frontend,
 		}
 		else
 		{
-			if (frontend->len > 0 && !in_progress)
+			if (!pool_read_buffer_is_empty(frontend) && !in_progress)
 			{
 				/* We do not read anything from frontend after receiving X packet.
 				 * Just emit log message. This will guard us from buggy frontend.
@@ -380,7 +380,7 @@ POOL_STATUS pool_process_query(POOL_CONNECTION *frontend,
 				if (reset_request)
 				{
 					pool_log("pool_process_query: garbage data from frontend after receiving terminate message ignored");
-					frontend->len = 0;
+					pool_discard_read_buffer(frontend);
 					continue;
 				}
 
@@ -3447,7 +3447,7 @@ static int is_cache_empty(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backe
 	if (pool_ssl_pending(frontend))
 		return 0;
 
-	if (frontend->len > 0 && !in_progress)
+	if (!pool_read_buffer_is_empty(frontend) && !in_progress)
 		return 0;
 
 	for (i=0;i<NUM_BACKENDS;i++)

@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.42 2010/06/04 07:39:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.43 2010/06/06 10:17:32 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1504,7 +1504,7 @@ POOL_STATUS ProcessFrontendResponse(POOL_CONNECTION *frontend,
 	POOL_STATUS status;
 	int i;
 
-	if (frontend->len <= 0 && frontend->no_forward != 0)
+	if (pool_read_buffer_is_empty(frontend) && frontend->no_forward != 0)
 		return POOL_CONTINUE;
 
 	if (pool_read(frontend, &fkind, 1) < 0)
