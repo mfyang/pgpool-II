@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.7 2010/06/01 09:03:00 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.8 2010/06/07 08:29:44 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -177,6 +177,11 @@ void process_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 	strncpy(status[i].name, "master_slave_mode", POOLCONFIG_MAXNAMELEN);
 	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%d", pool_config->master_slave_mode);
 	strncpy(status[i].desc, "if true, operate in master/slave mode", POOLCONFIG_MAXDESCLEN);
+	i++;
+
+	strncpy(status[i].name, "master_slave_sub_mode", POOLCONFIG_MAXNAMELEN);
+	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->master_slave_sub_mode);
+	strncpy(status[i].desc, "master/slave sub mode", POOLCONFIG_MAXDESCLEN);
 	i++;
 
 	strncpy(status[i].name, "connection_cache", POOLCONFIG_MAXNAMELEN);

@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.1 2010/06/01 09:03:00 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.2 2010/06/07 08:29:44 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -63,6 +63,8 @@ typedef struct {
 
 	int print_timestamp;		/* if non 0, print time stamp to each log line */
 	int master_slave_mode;		/* if non 0, operate in master/slave mode */
+	char *master_slave_sub_mode;		/* either "slony" or "stream" */
+
 	int connection_cache;		/* if non 0, cache connection pool */
 	int health_check_timeout;	/* health check timeout */
 	int health_check_period;	/* health check period */

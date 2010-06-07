@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample,v 1.33 2010/05/12 04:58:13 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample,v 1.34 2010/06/07 08:29:44 t-ishii Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -85,6 +85,9 @@ print_timestamp = true
 
 # If true, operate in master/slave mode.
 master_slave_mode = false
+
+# Master/slave sub mode. either 'slony' or 'stream'. Default is 'slony'.
+master_slave_sub_mode = 'slony'
 
 # If true, cache connection pool.
 connection_cache = true
