@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.71 2010/06/09 02:03:15 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.72 2010/06/09 11:33:47 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -683,7 +683,7 @@ static void usage(void)
 	fprintf(stderr, "Start options:\n");
 	fprintf(stderr, "  -c, --clear         Clears query cache (enable_query_cache must be on)\n");
 	fprintf(stderr, "  -n, --dont-detach   Don't run in daemon mode, does not detach control tty\n");
-	fprintf(stderr, "  -D, --discard-status Discard pool_sttaus file and do not restore previous status\n");
+	fprintf(stderr, "  -D, --discard-status Discard pgpool_status file and do not restore previous status\n");
 	fprintf(stderr, "  -d, --debug         Debug mode\n\n");
 	fprintf(stderr, "Stop options:\n");
 	fprintf(stderr, "  -m, --mode=SHUTDOWN-MODE\n");
