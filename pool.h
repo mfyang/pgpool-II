@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.70 2010/06/08 05:39:22 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.71 2010/06/10 06:42:31 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -265,7 +265,7 @@ extern bool pool_is_node_to_be_sent_in_current_query(int node_id);
 #define MASTER_NODE_ID (in_load_balance? selected_slot : Req_info->master_node_id)
 #define IS_MASTER_NODE_ID(node_id) (MASTER_NODE_ID == (node_id))
 #define REPLICATION (pool_config->replication_enabled)
-#define MASTER_SLAVE (pool_config->master_slave_enabled)
+#define MASTER_SLAVE (pool_config->master_slave_mode)
 #define DUAL_MODE (REPLICATION || MASTER_SLAVE)
 #define PARALLEL_MODE (pool_config->parallel_mode)
 #define RAW_MODE (!REPLICATION && !PARALLEL_MODE && !MASTER_SLAVE)
