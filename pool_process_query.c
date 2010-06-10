@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.210 2010/06/08 08:34:26 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.211 2010/06/10 06:45:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -3606,9 +3606,6 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 
 		if (VALID_BACKEND(i))
 		{
-			if (session_context->in_progress && !pool_is_node_to_be_sent(query_context, i))
-				continue;
-
 			do
 			{
 				char *p, *value;
