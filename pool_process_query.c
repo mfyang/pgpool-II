@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.211 2010/06/10 06:45:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.212 2010/06/10 10:05:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -3597,6 +3597,9 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 	POOL_SESSION_CONTEXT *session_context = pool_get_session_context();
 	POOL_QUERY_CONTEXT *query_context = session_context->query_context;
 
+	int num_executed_nodes = 0;
+	int first_node = -1;
+
 	memset(kind_map, 0, sizeof(kind_map));
 
 	for (i=0;i<NUM_BACKENDS;i++)
@@ -3606,6 +3609,11 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 
 		if (VALID_BACKEND(i))
 		{
+			num_executed_nodes++;
+
+			if (first_node < 0)
+				first_node = i;
+
 			do
 			{
 				char *p, *value;
@@ -3691,7 +3699,7 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 	}
 #endif
 
-	if (max_count != NUM_BACKENDS)
+	if (max_count != num_executed_nodes)
 	{
 		/*
 		 * not all backends agree with kind. We need to do "decide by majority"
@@ -3723,7 +3731,7 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 		}
 	}
 	else
-		trust_kind = kind_list[MASTER_NODE_ID];
+		trust_kind = kind_list[first_node];
 
 	*decided_kind = trust_kind;
 

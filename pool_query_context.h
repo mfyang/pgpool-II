@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.1 2010/06/04 07:39:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.2 2010/06/10 10:05:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -42,6 +42,7 @@ typedef struct {
 	Node *parse_tree;	/* raw parser output if any */
 	Node *rewritten_parse_tree;	/* rewritten raw parser output if any */
 	bool where_to_send[MAX_NUM_BACKENDS];		/* DB node map to send query */
+	int  virtual_master_node_id;	/* the first DB node to send query */
 
 	bool is_extended;	/* true if extended query */
 
