@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.73 2010/06/10 10:05:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.74 2010/06/11 09:24:23 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -560,6 +560,7 @@ extern POOL_STATUS do_command(POOL_CONNECTION *frontend, POOL_CONNECTION *backen
 					   char *query, int protoMajor, int pid, int key, int no_ready_for_query);
 extern POOL_STATUS do_query(POOL_CONNECTION *backend, char *query, POOL_SELECT_RESULT **result, int major);
 extern void free_select_result(POOL_SELECT_RESULT *result);
+extern int compare(const void *p1, const void *p2);
 
 /* pool_config.c */
 extern int eval_logical(char *str);

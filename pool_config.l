@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.38 2010/06/08 05:39:21 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.39 2010/06/11 09:24:23 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -676,7 +676,7 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				return(-1);
 			}
 
-			if (strcmp(str, "slony") && strcmp(str, "stream"))
+			if (strcmp(str, MODE_SLONY) && strcmp(str, MODE_STREAMREP))
 			{
 				pool_error("pool_config: %s must be either \"slony\" or \"stream\"", key);
 				fclose(fd);

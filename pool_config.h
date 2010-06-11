@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.2 2010/06/07 08:29:44 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.3 2010/06/11 09:24:23 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -25,6 +25,12 @@
 
 #ifndef POOL_CONFIG_H
 #define POOL_CONFIG_H
+
+/*
+ * Master/slave sub mode
+ */
+#define MODE_STREAMREP "stream"		/* Streaming Replication */
+#define MODE_SLONY "slony"		/* Slony-I */
 
 /*
  * configuration paramters
