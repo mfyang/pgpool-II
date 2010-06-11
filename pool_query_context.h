@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.2 2010/06/10 10:05:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.3 2010/06/11 03:46:16 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -33,8 +33,6 @@
 /*
  * Query context:
  * Manages per query context
- * 拡張問い合わせでは複数のクエリコンテキストが同時に走るかも知れない。
- * 内部で発生する問い合わせもあるし。
  */
 typedef struct {
 	char *original_query;		/* original query string */
