@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.3 2010/06/11 09:24:23 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.4 2010/06/20 07:41:14 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -144,5 +144,6 @@ extern POOL_CONFIG *pool_config;	/* configuration values */
 
 extern int pool_init_config(void);
 extern int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context);
+extern int eval_logical(char *str);
 
 #endif /* POOL_CONFIG_H */
