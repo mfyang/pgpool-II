@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.4 2010/06/11 09:24:23 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.5 2010/06/20 10:31:03 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -262,13 +262,21 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 			else
 			{
 				if (pool_config->load_balance_mode &&
-					MAJOR(backend) == PROTO_MAJOR_V3 &&
-					TSTATE(backend) == 'I' &&
-					is_select_query(node, query))
+					is_select_query(node, query) &&
+					MAJOR(backend) == PROTO_MAJOR_V3)
 				{
-					/* load balance */
-					pool_set_node_to_be_sent(query_context,
-											 session_context->load_balance_node_id);
+					/* Outside of an explicit transaction? */
+					if (TSTATE(backend) == 'I')
+					{
+						/* Load balance */
+						pool_set_node_to_be_sent(query_context,
+												 session_context->load_balance_node_id);
+					}
+					else
+					{
+						/* Send to the primary only */
+						pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+					}
 				}
 				else
 				{
