@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.74 2010/06/20 07:41:14 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.75 2010/06/21 05:46:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2012,6 +2012,9 @@ static void reload_config(void)
 	if (pool_config->parallel_mode)
 		pool_memset_system_db_info(system_db_info->info);
 	kill_all_children(SIGHUP);
+
+	if (worker_pid)
+		kill(worker_pid, SIGHUP);
 }
 
 static void kill_all_children(int sig)

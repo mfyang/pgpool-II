@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.5 2010/06/20 10:31:03 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.6 2010/06/21 05:46:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -268,9 +268,25 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 					/* Outside of an explicit transaction? */
 					if (TSTATE(backend) == 'I')
 					{
-						/* Load balance */
-						pool_set_node_to_be_sent(query_context,
-												 session_context->load_balance_node_id);
+						BackendInfo *bkinfo = pool_get_node_info(session_context->load_balance_node_id);
+
+						/*
+						 * Load balance if possible
+						 */
+
+						/*
+						 * If replication delay is too much, we prefer to send to the primary.
+						 */
+						if (pool_config->delay_threshold &&
+							bkinfo->standby_delay > pool_config->delay_threshold)
+						{
+							pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+						}
+						else
+						{
+							pool_set_node_to_be_sent(query_context,
+													 session_context->load_balance_node_id);
+						}
 					}
 					else
 					{

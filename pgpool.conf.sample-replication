@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample for replication mode
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-replication,v 1.6 2010/06/13 23:53:25 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-replication,v 1.7 2010/06/21 05:46:57 t-ishii Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -88,6 +88,16 @@ master_slave_mode = false
 
 # Master/slave sub mode. either 'slony' or 'stream'. Default is 'slony'.
 master_slave_sub_mode = 'slony'
+
+# If the standby server delays more than delay_threshold,
+# any query goes to the primary only. The unit is in bytes.
+# 0 disables the check. Default is 0.
+# Note that health_check_period required to be greater than 0
+# to enable the functionality.
+delay_threshold = 0
+
+# if true, log the delay between the primary and the standby.
+log_standby_delay = false
 
 # If true, cache connection pool.
 connection_cache = true
