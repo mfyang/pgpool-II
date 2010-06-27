@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.6 2010/06/21 05:46:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.7 2010/06/27 22:39:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -29,6 +29,7 @@
 
 #include <string.h>
 #include <netinet/in.h>
+#include <stdlib.h>
 
 static bool is_should_be_sent_to_primary(Node *node);
 
