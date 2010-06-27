@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.5 2010/06/21 05:46:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.6 2010/06/27 13:02:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -58,6 +58,7 @@ typedef struct {
 	int log_connections;		/* 0:false, 1:true - logs incoming connections */
 	int log_hostname;		/* 0:false, 1:true - resolve hostname */
 	int enable_pool_hba;		/* 0:false, 1:true - enables pool_hba.conf file authentication */
+	char *pool_passwd;	/* pool_passwd file name. "" disables pool_passwd */
 
 	int load_balance_mode;		/* load balance mode */
 

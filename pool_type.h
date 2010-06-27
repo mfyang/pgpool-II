@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_type.h,v 1.13 2010/06/21 05:46:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_type.h,v 1.14 2010/06/27 13:02:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -254,11 +254,11 @@ typedef enum UserAuth
 	uaReject,
 	/*  uaKrb4, */
 	/*  uaKrb5, */
-	uaTrust
+	uaTrust,
 	/*  uaIdent, */
 	/*  uaPassword, */
 	/*  uaCrypt, */
-	/*  uaMD5 */
+	uaMD5
 #ifdef USE_PAM
 	,uaPAM
 #endif /* USE_PAM */

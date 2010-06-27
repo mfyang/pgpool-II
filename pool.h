@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.75 2010/06/20 07:41:14 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.76 2010/06/27 13:02:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -562,10 +562,16 @@ extern POOL_STATUS do_query(POOL_CONNECTION *backend, char *query, POOL_SELECT_R
 extern void free_select_result(POOL_SELECT_RESULT *result);
 extern int compare(const void *p1, const void *p2);
 
+/* pool_auth.c */
+extern void pool_random_salt(char *md5Salt);
+
 /* main.c */
 extern void pool_sleep(unsigned int second);
 
 /* pool_worker_child.c */
 void do_worker_child(void);
+
+/* md5.c */
+bool pg_md5_encrypt(const char *passwd, const char *salt, size_t salt_len, char *buf);
 
 #endif /* POOL_H */
