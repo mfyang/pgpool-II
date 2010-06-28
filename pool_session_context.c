@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.5 2010/06/10 10:05:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.6 2010/06/28 09:14:36 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -64,7 +64,7 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 		}
 
 		session_context->load_balance_node_id = 
-			process_info[backend->pool_index].connection_info->load_balancing_node =
+			process_info->connection_info->load_balancing_node =
 			select_load_balancing_node();
 
 		pool_debug("selected load balancing node: %d", backend->info->load_balancing_node);
