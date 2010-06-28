@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.76 2010/06/27 13:02:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.77 2010/06/28 10:15:33 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -706,7 +706,7 @@ static void usage(void)
 	fprintf(stderr, "Shutdown modes are:\n");
 	fprintf(stderr, "  smart       quit after all clients have disconnected\n");
 	fprintf(stderr, "  fast        quit directly, with proper shutdown\n");
-	fprintf(stderr, "  immediate   quit without complete shutdown; will lead to recovery on restart\n");
+	fprintf(stderr, "  immediate   the same mode as fast\n");
 }
 
 /*
