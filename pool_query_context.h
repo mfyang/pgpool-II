@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.3 2010/06/11 03:46:16 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.4 2010/06/30 00:12:11 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -47,8 +47,6 @@ typedef struct {
 	/* below are extended query only */
 	bool is_named_statement;		/* true if named statement */
 	bool is_named_portal;		/* true if named portal */
-	/* pointer to unnamed statement or named statement */
-	/* pointer to unnamed portal or named portal */
 	/* query state: either 0: before parse, 1: parse done, 2: bind
 	 * done, 3: describe done 4: execute done -1: in error -> or
 	 * should be a bitmap? */
@@ -68,6 +66,6 @@ extern void pool_clear_node_to_be_sent(POOL_QUERY_CONTEXT *query_context);
 extern void pool_setall_node_to_be_sent(POOL_QUERY_CONTEXT *query_context);
 extern void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *node);
 POOL_STATUS pool_send_and_wait(POOL_QUERY_CONTEXT *query_context, char *query, int len,
-							   int send_type, int node_id);
+							   int send_type, int node_id, char *kind);
 
 #endif /* POOL_QUERY_CONTEXT_H */

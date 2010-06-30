@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.7 2010/06/27 22:39:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.8 2010/06/30 00:12:11 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -392,9 +392,10 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
  *  -1: do not send this node_id
  *	0: send to all nodes
  *  >0: send to this node_id
+ * kind: simple query protocol is ""
  */
 POOL_STATUS pool_send_and_wait(POOL_QUERY_CONTEXT *query_context, char *query, int len,
-							   int send_type, int node_id)
+							   int send_type, int node_id, char *kind)
 {
 	POOL_SESSION_CONTEXT *session_context;
 	POOL_CONNECTION *frontend;
@@ -418,9 +419,15 @@ POOL_STATUS pool_send_and_wait(POOL_QUERY_CONTEXT *query_context, char *query, i
 
 		per_node_statement_log(backend, i, query);
 
-		if (send_simplequery_message(CONNECTION(backend, i), len, query, MAJOR(backend)) != POOL_CONTINUE)
+		if (*kind == '\0')
 		{
-			return POOL_END;
+			if (send_simplequery_message(CONNECTION(backend, i), len, query, MAJOR(backend)) != POOL_CONTINUE)
+				return POOL_END;
+		}			
+		else
+		{
+			if (send_extended_protocol_message(backend, i, kind, len, query) != POOL_CONTINUE)
+				return POOL_END;
 		}
 	}
 
