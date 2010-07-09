@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.53 2010/06/20 07:41:14 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.54 2010/07/09 01:08:51 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -147,8 +147,6 @@ void do_child(int unix_fd, int inet_fd)
 
 	timeout.tv_sec = pool_config->child_life_time;
 	timeout.tv_usec = 0;
-
-	init_prepared_list();
 
 	for (;;)
 	{
