@@ -485,7 +485,7 @@ char *yytext;
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.44 2010/06/27 13:02:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.45 2010/07/10 11:13:20 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -3206,7 +3206,9 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 
 	if (pool_config->parallel_mode || pool_config->enable_query_cache)
 	{
+#ifdef PGPOOL_MAIN
 		int dist_num;
+#endif
 		SystemDBInfo *info;
 		
 		system_db_info = malloc(sizeof(POOL_SYSTEMDB_CONNECTION_POOL));
