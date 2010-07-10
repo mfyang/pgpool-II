@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto2.c,v 1.1 2010/06/08 08:34:26 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto2.c,v 1.2 2010/07/10 11:18:28 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -385,10 +385,18 @@ POOL_STATUS ErrorResponse(POOL_CONNECTION *frontend,
 		return POOL_END;
 
 	/* change transaction state */
-	if (TSTATE(backend) == 'T')
-		TSTATE(backend) = 'E';
-	else
-		TSTATE(backend) = 'I';
+	for (i=0;i<NUM_BACKENDS;i++)
+	{
+		if (VALID_BACKEND(i))
+		{
+			if (TSTATE(backend, i) == 'T')
+				TSTATE(backend, i) = 'E';
+		}
+		else
+		{
+			TSTATE(backend, i) = 'I';
+		}
+	}
 
 	return POOL_CONTINUE;
 }

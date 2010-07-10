@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_rewrite_query.c,v 1.18 2010/06/06 11:14:18 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_rewrite_query.c,v 1.19 2010/07/10 11:18:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -389,7 +389,7 @@ RewriteQuery *rewrite_query_stmt(Node *node,POOL_CONNECTION *frontend,POOL_CONNE
 			}
 			else
 			{
-				if(TSTATE(backend) == 'T' &&
+				if(TSTATE(backend, MASTER_NODE_ID) == 'T' &&
 				   message->r_code == SELECT_RELATION_ERROR)
 				{
 					/*
@@ -440,7 +440,7 @@ RewriteQuery *rewrite_query_stmt(Node *node,POOL_CONNECTION *frontend,POOL_CONNE
 										message->rewrite_query, "", __FILE__,
 										__LINE__);
 
-				if(TSTATE(backend) == 'T')
+				if(TSTATE(backend, MASTER_NODE_ID) == 'T')
 				{
 					/* In Transaction, send the invalid message to backend to abort this transaction */
 					pool_debug("rewrite_query_stmt(insert): Inside transaction. Abort transaction");

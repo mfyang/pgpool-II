@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.6 2010/06/01 09:02:59 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_lobj.c,v 1.7 2010/07/10 11:18:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -172,7 +172,7 @@ char *pool_rewrite_lo_creat(char kind, char *packet, int packet_len,
 	/*
 	 * If transaction state is E, do_command failed to execute command
 	 */
-	if (TSTATE(backend) == 'E')
+	if (TSTATE(backend, MASTER_NODE_ID) == 'E')
 	{
 		pool_log("pool_check_lo_creat: failed to execute: %s", qbuf);
 		return NULL;

@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_cache.c,v 1.13 2010/06/04 07:39:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_cache.c,v 1.14 2010/07/10 11:18:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1004,7 +1004,7 @@ POOL_STATUS pool_execute_query_cache_lookup(POOL_CONNECTION *frontend, POOL_CONN
 		}
 
 
-		if (pool_query_cache_lookup(frontend, parsed_query, backend->info->database, TSTATE(backend)) == POOL_CONTINUE)
+		if (pool_query_cache_lookup(frontend, parsed_query, backend->info->database, TSTATE(backend, MASTER_NODE_ID)) == POOL_CONTINUE)
 		{
 			free(parsed_query);
 			parsed_query = NULL;

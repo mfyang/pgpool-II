@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.54 2010/07/09 01:08:51 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.55 2010/07/10 11:18:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -983,7 +983,7 @@ static bool connect_using_existing_connection(POOL_CONNECTION *frontend,
 
 		len = htonl(5);
 		pool_write(frontend, &len, sizeof(len));
-		tstate = TSTATE(backend);
+		tstate = TSTATE(backend, MASTER_NODE_ID);
 		pool_write(frontend, &tstate, 1);
 	}
 

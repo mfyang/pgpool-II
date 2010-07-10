@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.11 2010/07/09 01:08:51 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.12 2010/07/10 11:18:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -32,10 +32,10 @@
 #include "parser/pg_list.h"
 #include "parser/parsenodes.h"
 #include "pool_rewrite_query.h"
+#include "pool_session_context.h"
 
 #define SPECIFIED_ERROR 1
 #define POOL_ERROR_QUERY "send invalid query from pgpool to abort transaction"
-
 
 extern int force_replication;
 extern int replication_was_enabled;		/* replication mode was enabled */
