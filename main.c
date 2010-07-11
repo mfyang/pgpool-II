@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.77 2010/06/28 10:15:33 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.78 2010/07/11 13:52:10 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -295,6 +295,11 @@ int main(int argc, char **argv)
 
 	if (pool_init_config())
 		exit(1);
+
+	/*
+	 * Override debug level
+	 */
+	pool_config->debug_level = debug_level;
 
 	if (pool_get_config(conf_file, INIT_CONFIG))
 	{
