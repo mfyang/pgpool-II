@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.8 2010/07/11 04:09:06 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.9 2010/07/11 13:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -116,6 +116,12 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 
 		pool_debug("selected load balancing node: %d", backend->info->load_balancing_node);
 	}
+
+	/* Unset query is in progress */
+	pool_unset_query_in_progress();
+
+	/* We don't have a write query in this transaction yet. */
+	pool_unset_writing_transaction();
 }
 
 /*
@@ -174,7 +180,7 @@ void pool_set_query_in_progress(void)
 }
 
 /*
- * Un set query is in progress
+ * Unset query is in progress
  */
 void pool_unset_query_in_progress(void)
 {
@@ -627,4 +633,43 @@ Portal *pool_get_portal_by_portal_name(const char *name)
 	}
 
 	return NULL;
+}
+
+/*
+ * We don't have a write query in this transaction yet.
+ */
+void pool_unset_writing_transaction(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_unset_writing_query: session context is not initialized");
+		return;
+	}
+	session_context->writing_trasnction = false;
+}
+
+/*
+ * We have a write query in this transaction.
+ */
+void pool_set_writing_transaction(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_set_writing_query: session context is not initialized");
+		return;
+	}
+	session_context->writing_trasnction = true;
+}
+
+/*
+ * Do we have a write query in this transaction?
+ */
+bool pool_is_writing_transaction(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_is_writing_query: session context is not initialized");
+		return false;
+	}
+	return session_context->writing_trasnction;
 }

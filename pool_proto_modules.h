@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.12 2010/07/10 11:18:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.13 2010/07/11 13:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -126,8 +126,6 @@ extern int is_start_transaction_query(Node *node);
 extern int is_commit_query(Node *node);
 extern int is_strict_query(Node *node); /* returns non 0 if this is strict query */
 extern int load_balance_enabled(POOL_CONNECTION_POOL *backend, Node* node, char *sql);
-extern void start_load_balance(POOL_CONNECTION_POOL *backend);
-extern void end_load_balance(void);
 extern int need_insert_lock(POOL_CONNECTION_POOL *backend, char *query, Node *node);
 extern POOL_STATUS insert_lock(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, char *query, InsertStmt *node);
 extern char *parse_copy_data(char *buf, int len, char delimiter, int col_id);

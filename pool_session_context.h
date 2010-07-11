@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.6 2010/07/11 04:09:06 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.7 2010/07/11 13:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -76,10 +76,16 @@ typedef struct {
 	POOL_PROCESS_CONTEXT *process_context;		/* belonging process */
 	POOL_CONNECTION *frontend;	/* connection to frontend */
 	POOL_CONNECTION_POOL *backend;		/* connection to backends */
-	bool in_progress;		/* If true, we are waiting for backend response.
-							 * For SELECT this flags should be kept until
-							 * all responses are returned from backend
-							 */
+
+	/* If true, we are waiting for backend response.  For SELECT this
+	 * flags should be kept until all responses are returned from
+	 * backend
+	 */
+	bool in_progress;
+
+	/* If true write query has been appeared in this transaction */
+	bool writing_trasnction;
+
 	POOL_QUERY_CONTEXT *query_context;	/* associated query context */
 	POOL_MEMORY_POOL *memory_context;	/* memory context for session */
 	PreparedStatement *unnamed_pstmt;	/* unnamed statement */
@@ -161,5 +167,9 @@ extern void pool_add_prepared_statement(void);
 extern void pool_add_portal(void);
 extern PreparedStatement *pool_get_prepared_statement_by_pstmt_name(const char *name);
 extern Portal *pool_get_portal_by_portal_name(const char *name);
+
+extern void pool_unset_writing_transaction(void);
+extern void pool_set_writing_transaction(void);
+bool pool_is_writing_transaction(void);
 
 #endif /* POOL_SESSION_CONTEXT_H */

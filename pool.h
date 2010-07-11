@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.77 2010/07/10 11:18:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.78 2010/07/11 13:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -160,9 +160,15 @@ typedef struct {
 	int isbackend;		/* this connection is for backend if non 0 */
 	int db_node_id;		/* DB node id for this connection */
 
-	char tstate;		/* transaction state (V3 only) */
+	char tstate;		/* Transaction state (V3 only) 'I' if idle
+						 * (not in a transaction block); 'T' if in a
+						 * transaction block; or 'E' if in a failed
+						 * transaction block
+						 */
 
-	bool is_internal_transaction_started;		/* True if an internal transaction has already started */
+	/* True if an internal transaction has already started */
+	bool is_internal_transaction_started;
+
 	/*
 	 * following are used to remember when re-use the authenticated connection
 	 */

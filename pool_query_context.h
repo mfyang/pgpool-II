@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.4 2010/06/30 00:12:11 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.5 2010/07/11 13:53:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -67,5 +67,7 @@ extern void pool_setall_node_to_be_sent(POOL_QUERY_CONTEXT *query_context);
 extern void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *node);
 POOL_STATUS pool_send_and_wait(POOL_QUERY_CONTEXT *query_context, char *query, int len,
 							   int send_type, int node_id, char *kind);
+extern Node *pool_get_parse_tree(void);
+extern char *pool_get_query_string(void);
 
 #endif /* POOL_QUERY_CONTEXT_H */
