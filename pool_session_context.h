@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.5 2010/06/30 00:31:55 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.6 2010/07/11 04:09:06 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -74,7 +74,6 @@ typedef struct {
  */
 typedef struct {
 	POOL_PROCESS_CONTEXT *process_context;		/* belonging process */
-	char transaction_state;		/* either 'U'(unknown), 'I' (idle), 'T'(in transaction), 'E'(error) */
 	POOL_CONNECTION *frontend;	/* connection to frontend */
 	POOL_CONNECTION_POOL *backend;		/* connection to backends */
 	bool in_progress;		/* If true, we are waiting for backend response.

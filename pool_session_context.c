@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.7 2010/06/30 00:31:55 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.8 2010/07/11 04:09:06 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -90,9 +90,6 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 	
 	/* Initialize local session id */
 	pool_incremnet_local_session_id();
-
-	/* Initialize transaction state to idle */
-	session_context->transaction_state = 'I';
 
 	/* Initialize prepared statement list */
 	init_prepared_statement_list();
