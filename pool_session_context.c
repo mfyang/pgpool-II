@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.9 2010/07/11 13:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.10 2010/07/12 02:37:21 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -645,7 +645,7 @@ void pool_unset_writing_transaction(void)
 		pool_error("pool_unset_writing_query: session context is not initialized");
 		return;
 	}
-	session_context->writing_trasnction = false;
+	session_context->writing_transaction = false;
 }
 
 /*
@@ -658,7 +658,7 @@ void pool_set_writing_transaction(void)
 		pool_error("pool_set_writing_query: session context is not initialized");
 		return;
 	}
-	session_context->writing_trasnction = true;
+	session_context->writing_transaction = true;
 }
 
 /*
@@ -671,5 +671,5 @@ bool pool_is_writing_transaction(void)
 		pool_error("pool_is_writing_query: session context is not initialized");
 		return false;
 	}
-	return session_context->writing_trasnction;
+	return session_context->writing_transaction;
 }

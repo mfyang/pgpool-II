@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.7 2010/07/11 13:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.8 2010/07/12 02:37:21 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -84,9 +84,15 @@ typedef struct {
 	bool in_progress;
 
 	/* If true write query has been appeared in this transaction */
-	bool writing_trasnction;
+	bool writing_transaction;
 
-	POOL_QUERY_CONTEXT *query_context;	/* associated query context */
+	/*
+	 * Associated query context, only used for non-extended
+	 * protocol. In extended protocol, the query context resides in
+	 * "PreparedStatementList *pstmt_list" (see below).
+	 */
+	POOL_QUERY_CONTEXT *query_context;
+
 	POOL_MEMORY_POOL *memory_context;	/* memory context for session */
 	PreparedStatement *unnamed_pstmt;	/* unnamed statement */
 	PreparedStatement *pending_pstmt;	/* used until receive backend response */
