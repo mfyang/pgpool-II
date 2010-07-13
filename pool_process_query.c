@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.218 2010/07/11 13:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.219 2010/07/13 08:36:45 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1233,6 +1233,7 @@ POOL_STATUS SimpleForwardToFrontend(char kind, POOL_CONNECTION *frontend, POOL_C
 		 */
 		pool_remove_pending_objects();
 	}
+
 	/* 
 	 * The response of Execute command will be EmptyQueryResponse(I),
 	 * if Bind error occurs.
@@ -4154,8 +4155,8 @@ POOL_STATUS start_internal_transaction(POOL_CONNECTION *frontend, POOL_CONNECTIO
 
 				/* Mark that we started new transaction */
 				INTERNAL_TRANSACTION_STARTED(backend, i) = true;
+				pool_unset_writing_transaction();
 			}
-			pool_unset_writing_transaction();
 		}
 	}
 	return POOL_CONTINUE;
