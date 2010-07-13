@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.5 2010/07/11 13:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.h,v 1.6 2010/07/13 08:41:13 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -69,5 +69,7 @@ POOL_STATUS pool_send_and_wait(POOL_QUERY_CONTEXT *query_context, char *query, i
 							   int send_type, int node_id, char *kind);
 extern Node *pool_get_parse_tree(void);
 extern char *pool_get_query_string(void);
+extern bool is_set_transaction_serializable(Node *ndoe, char *query);
+extern bool is_2pc_transaction_query(Node *node, char *query);
 
 #endif /* POOL_QUERY_CONTEXT_H */
