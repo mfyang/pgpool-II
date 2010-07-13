@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.55 2010/07/10 11:18:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.56 2010/07/13 08:33:17 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -270,12 +270,12 @@ void do_child(int unix_fd, int inet_fd)
 			 */
 			if (sp->len != MASTER_CONNECTION(backend)->sp->len)
 			{
-				pool_debug("pool_process_query: connection exists but startup packet length is not identical");
+				pool_debug("do_child: connection exists but startup packet length is not identical");
 				found = 0;
 			}
 			else if(memcmp(sp->startup_packet, MASTER_CONNECTION(backend)->sp->startup_packet, sp->len) != 0)
 			{
-				pool_debug("pool_process_query: connection exists but startup packet contents is not identical");
+				pool_debug("do_child: connection exists but startup packet contents is not identical");
 				found = 0;
 			}
 
