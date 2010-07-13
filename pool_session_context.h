@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.8 2010/07/12 02:37:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.9 2010/07/13 01:00:17 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -167,8 +167,8 @@ extern void pool_remove_prepared_statement(void);
 extern void pool_remove_portal(void);
 extern void pool_remove_pending_objects(void);
 extern void pool_clear_prepared_statement_list(void);
-extern void *pool_create_prepared_statement(const char *name, int num_tsparams, POOL_QUERY_CONTEXT *qc);
-extern void *pool_create_portal(const char *name, int num_tsparams, PreparedStatement *pstmt);
+extern PreparedStatement *pool_create_prepared_statement(const char *name, int num_tsparams, POOL_QUERY_CONTEXT *qc);
+extern Portal *pool_create_portal(const char *name, int num_tsparams, PreparedStatement *pstmt);
 extern void pool_add_prepared_statement(void);
 extern void pool_add_portal(void);
 extern PreparedStatement *pool_get_prepared_statement_by_pstmt_name(const char *name);

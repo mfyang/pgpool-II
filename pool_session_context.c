@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.10 2010/07/12 02:37:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.11 2010/07/13 01:00:17 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -421,9 +421,10 @@ void pool_clear_prepared_statement_list(void)
 /* 
  * Create a prepared statement
  */
-void *pool_create_prepared_statement(const char *name, int num_tsparams, POOL_QUERY_CONTEXT *qc)
+PreparedStatement *pool_create_prepared_statement(const char *name, int num_tsparams, POOL_QUERY_CONTEXT *qc)
 {
 	PreparedStatement *ps;
+	POOL_QUERY_CONTEXT *q;
 
 	if (!session_context)
 	{
@@ -435,7 +436,18 @@ void *pool_create_prepared_statement(const char *name, int num_tsparams, POOL_QU
 						   sizeof(PreparedStatement));
 	ps->name = pool_memory_strdup(session_context->memory_context, name);
 	ps->num_tsparams = num_tsparams;
-	ps->qctxt = qc;
+
+	/* 
+	 * duplicate query_context because session_context->query_context is 
+	 * freed by pool_query_context_destroy()
+	 */
+	q = malloc(sizeof(POOL_QUERY_CONTEXT));
+	if (q == NULL)
+	{
+		pool_error("pool_create_prepared_statement: malloc failed: %s", strerror(errno));
+		exit(1);
+	}
+	ps->qctxt = memcpy(q, qc, sizeof(POOL_QUERY_CONTEXT));
 
 	return ps;
 }
@@ -443,7 +455,7 @@ void *pool_create_prepared_statement(const char *name, int num_tsparams, POOL_QU
 /* 
  * Create a portal
  */
-void *pool_create_portal(const char *name, int num_tsparams, PreparedStatement *pstmt)
+Portal *pool_create_portal(const char *name, int num_tsparams, PreparedStatement *pstmt)
 {
 	Portal *portal;
 
