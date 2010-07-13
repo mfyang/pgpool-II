@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.2 2010/06/21 05:46:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.3 2010/07/13 08:34:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -198,6 +198,7 @@ static void check_replication_time_lag(void)
 		if (sts != POOL_CONTINUE)
 		{
 			pool_error("check_replication_time_lag: %s failed", query);
+			slots[i] = NULL;
 			return;
 		}
 		if (!res)
