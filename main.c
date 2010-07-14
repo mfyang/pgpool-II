@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.78 2010/07/11 13:52:10 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.79 2010/07/14 04:53:08 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2141,6 +2141,7 @@ static int trigger_failover_command(int node, const char *command_line)
 	char port_buf[6];
 	char buf[2];
 	BackendInfo *info;
+	BackendInfo *newmaster;
 
 	if (command_line == NULL || (strlen(command_line) == 0))
 		return 0;
@@ -2187,6 +2188,11 @@ static int trigger_failover_command(int node, const char *command_line)
 
 					case 'h': /* host name */
 						string_append_char(exec_cmd, info->backend_hostname);
+						break;
+
+					case 'H': /* new master host name */
+						newmaster = pool_get_node_info(get_next_master_node());
+						string_append_char(exec_cmd, newmaster->backend_hostname);
 						break;
 
 					case 'm': /* new master node id */
