@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.53 2010/07/13 08:41:12 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.54 2010/07/14 04:51:42 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1190,7 +1190,7 @@ POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend,
 #endif
 			/*
 			 * If 2PC commands, automatically close transaction on standbys since
-			 * 2PC commands close transaction on standby.
+			 * 2PC commands close transaction on primary.
 			 */
 			else if (is_2pc_transaction_query(node, query))
 			{
