@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.11 2010/07/13 08:41:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.12 2010/07/14 08:10:55 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -88,6 +88,7 @@ void pool_start_query(POOL_QUERY_CONTEXT *query_context, char *query, Node *node
 		session_context = pool_get_session_context();
 		query_context->original_query = query;
 		query_context->parse_tree = node;
+		query_context->virtual_master_node_id = REAL_MASTER_NODE_ID;
 		pool_set_query_in_progress();
 		session_context->query_context = query_context;
 	}
@@ -221,7 +222,9 @@ int pool_virtual_master_db_node_id(void)
 
 	sc = pool_get_session_context();
 	if (!sc)
-		return 0;
+	{
+		return REAL_MASTER_NODE_ID;
+	}
 
 	if (sc->query_context)
 	{
