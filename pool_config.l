@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.42 2010/07/10 11:13:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.43 2010/07/14 07:40:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -113,7 +113,7 @@ int pool_init_config(void)
 
 	memset(pool_config, 0, sizeof(POOL_CONFIG));
 
-#ifdef PGPOOL_MAIN
+#ifndef POOL_PRIVATE
 	pool_config->backend_desc = pool_shared_memory_create(sizeof(BackendDesc));
 	if (pool_config->backend_desc == NULL)
 	{
@@ -1481,7 +1481,7 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 
 	if (pool_config->parallel_mode || pool_config->enable_query_cache)
 	{
-#ifdef PGPOOL_MAIN
+#ifndef POOL_PRIVATE
 		int dist_num;
 #endif
 		SystemDBInfo *info;
@@ -1494,7 +1494,7 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 		}
 		memset(system_db_info, 0, sizeof(*system_db_info));
 
-#ifdef PGPOOL_MAIN
+#ifndef POOL_PRIVATE
 		system_db_info->system_db_status = pool_shared_memory_create(sizeof(BACKEND_STATUS));
 #else
 		system_db_info->system_db_status = malloc(sizeof(BACKEND_STATUS));
@@ -1524,7 +1524,7 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 		info->dist_def_num = 0;
 		info->dist_def_slot = NULL;
 
-#ifdef PGPOOL_MAIN
+#ifndef POOL_PRIVATE
 		if (pool_config->parallel_mode)
 		{
 
