@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.3 2010/07/13 08:34:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.4 2010/07/14 07:37:39 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -161,6 +161,7 @@ static void establish_persistent_connection(void)
 static void check_replication_time_lag(void)
 {
 	int i;
+	int active_nodes = 0;
 	POOL_STATUS sts;
 	POOL_SELECT_RESULT *res;
 	unsigned long long int lsn[MAX_NUM_BACKENDS];
@@ -171,6 +172,20 @@ static void check_replication_time_lag(void)
 	if (NUM_BACKENDS <= 1)
 	{
 		/* If there's only one node, there's no point to do checking */
+		return;
+	}
+
+	/* Count healthy nodes */
+	for (i=0;i<NUM_BACKENDS;i++)
+	{
+		if (VALID_BACKEND(i))
+			active_nodes++;
+	}
+
+	if (active_nodes <= 1)
+	{
+		/* If there's only one or less active node, there's no point
+		 * to do checking */
 		return;
 	}
 
