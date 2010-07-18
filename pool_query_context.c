@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.12 2010/07/14 08:10:55 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.13 2010/07/18 06:09:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -785,6 +785,14 @@ static POOL_DEST send_to_where(Node *node)
 				 */
 				return POOL_BOTH;
 			}
+		}
+
+		/*
+		 * DISCARD
+		 */
+		else if (IsA(node, DiscardStmt))
+		{
+			return POOL_BOTH;
 		}
 
 		/*
