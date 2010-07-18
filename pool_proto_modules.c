@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.55 2010/07/15 05:06:46 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.56 2010/07/18 06:11:39 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -181,9 +181,13 @@ static int is_temp_table(POOL_CONNECTION_POOL *backend, Node *node);
 		/*
 		 * Unable to parse the query. Probably syntax error or the
 		 * query is too new and our parser cannot understand. Treat as
-		 * if it were an ordinaly SET command(thus replicated).
+		 * if it were an INSERT command. Note that the INSERT command
+		 * does not execute, instead the original query will be sent
+		 * to backends, which may or may not cause an actual syntax errors.
+		 * The command will be sent to all backends in replication mode
+		 * or master/primary in master/slave mode.
 		 */
-		char *p = "SET DATESTYLE to ISO";
+		char *p = "INSERT INTO foo VALUES(1)";
 
 		pool_log("SimpleQuery: Unable to parse the query: %s", string);
 		parse_tree_list = raw_parser(p);
