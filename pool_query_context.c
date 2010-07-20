@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.15 2010/07/19 12:02:33 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.16 2010/07/20 08:03:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -382,7 +382,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 				/* DELLOCATE ALL? */
 				if (d->name == NULL)
 				{
-					return POOL_BOTH;
+					pool_setall_node_to_be_sent(query_context);
 				}
 
 				wts = pool_get_prep_where(d->name);
