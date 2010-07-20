@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_rewrite_outfuncs.c,v 1.23 2010/03/19 12:55:57 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_rewrite_outfuncs.c,v 1.24 2010/07/20 08:52:28 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -5764,21 +5764,21 @@ static void _rewriteTruncateStmt(Node *BaseSelect, RewriteQuery *message, ConInf
 
 static void _rewriteVacuumStmt(Node *BaseSelect, RewriteQuery *message, ConInfoTodblink *dblink, String *str, VacuumStmt *node)
 {
-	if (node->vacuum == true)
+	if (node->options & VACOPT_VACUUM)
 		delay_string_append_char(message, str, "VACUUM ");
 	else
 		delay_string_append_char(message, str, "ANALYZE ");
 
-	if (node->full == TRUE)
+	if (node->options & VACOPT_FULL)
 		delay_string_append_char(message, str, "FULL ");
 
-	if (node->freeze_min_age == 0)
+	if (node->options & VACOPT_FREEZE)
 		delay_string_append_char(message, str, "FREEZE ");
 
-	if (node->verbose == TRUE)
+	if (node->options & VACOPT_VERBOSE)
 		delay_string_append_char(message, str, "VERBOSE ");
 
-	if (node->analyze)
+	if (node->options & VACOPT_ANALYZE)
 		delay_string_append_char(message, str, "ANALYZE ");
 
 	_rewriteNode(BaseSelect, message, dblink, str, node->va_cols);
