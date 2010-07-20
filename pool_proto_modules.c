@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.57 2010/07/19 12:02:33 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.58 2010/07/20 14:08:39 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -374,19 +374,26 @@ static int is_temp_table(POOL_CONNECTION_POOL *backend, Node *node);
 		 */
 		if (!RAW_MODE)
 		{
-			/* start a transaction if needed */
-			if (start_internal_transaction(frontend, backend, (Node *)node) != POOL_CONTINUE)
-				return POOL_END;
-
-			/* check if need lock */
-			if (need_insert_lock(backend, string, node))
+			/*
+			 * If there's only one node to send the commad, there's no
+			 * point to start a transaction.
+			 */
+			if (pool_multi_node_to_be_sent(query_context))
 			{
-				/* if so, issue lock command */
-				status = insert_lock(frontend, backend, string, (InsertStmt *)node);
-				if (status != POOL_CONTINUE)
+				/* start a transaction if needed */
+				if (start_internal_transaction(frontend, backend, (Node *)node) != POOL_CONTINUE)
+					return POOL_END;
+
+				/* check if need lock */
+				if (need_insert_lock(backend, string, node))
 				{
-					free_parser();
-					return status;
+					/* if so, issue lock command */
+					status = insert_lock(frontend, backend, string, (InsertStmt *)node);
+					if (status != POOL_CONTINUE)
+					{
+						free_parser();
+						return status;
+					}
 				}
 			}
 		}
@@ -470,7 +477,9 @@ static int is_temp_table(POOL_CONNECTION_POOL *backend, Node *node);
 			}
 		}
 
-		/* Send query to other than master node */
+		/*
+		 * Send the query to other than master node.
+		 */
 		if (pool_send_and_wait(query_context, string, len, -1, MASTER_NODE_ID, "") != POOL_CONTINUE)
 		{
 			free_parser();
