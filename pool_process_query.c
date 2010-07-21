@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.223 2010/07/21 10:08:21 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.224 2010/07/21 12:16:20 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -181,7 +181,7 @@ POOL_STATUS pool_process_query(POOL_CONNECTION *frontend,
 		 * receiving data cache, then issue select(2) to wait for new
 		 * data arrival
 		 */
-		if (is_cache_empty(frontend, backend))
+		if (is_cache_empty(frontend, backend) && !pool_is_query_in_progress())
 		{
 			struct timeval timeoutdata;
 			struct timeval *timeout;
