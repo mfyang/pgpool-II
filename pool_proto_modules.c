@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.60 2010/07/21 05:31:39 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.61 2010/07/21 07:05:27 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -2028,8 +2028,10 @@ POOL_STATUS ProcessBackendResponse(POOL_CONNECTION *frontend,
 			case 'E':	/* ErrorResponse */
 				status = ErrorResponse3(frontend, backend);
 				if (pool_is_doing_extended_query_message())
+				{
 					pool_set_ignore_till_sync();
-				pool_unset_query_in_progress();
+					pool_unset_query_in_progress();
+				}
 				break;
 
 			case 'C':	/* CommandComplete */				
