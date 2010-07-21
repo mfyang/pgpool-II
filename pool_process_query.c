@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.222 2010/07/21 05:16:30 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.223 2010/07/21 10:08:21 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -334,7 +334,7 @@ POOL_STATUS pool_process_query(POOL_CONNECTION *frontend,
 							sleep(5);
 							break;
 						}
-						status = read_kind_from_backend(frontend, backend, &kind);
+						status = ProcessBackendResponse(frontend, backend, &state);
 						if (status != POOL_CONTINUE)
 							return status;
 						break;

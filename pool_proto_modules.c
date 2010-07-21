@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.63 2010/07/21 08:01:58 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.64 2010/07/21 10:08:22 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -2307,13 +2307,7 @@ POOL_STATUS CopyDataRows(POOL_CONNECTION *frontend,
 				{
 					char *contents = NULL;
 
-					if (pool_read(frontend, &kind, 1) < 0)
-					{
-						pool_log("ProcessFrontendResponse: failed to read kind from frontend. frontend abnormally exited");
-						return POOL_END;
-					}
-
-					pool_debug("read kind from frontend %c(%02x)", kind, kind);
+					pool_debug("CopyDataRows: read kind from frontend %c(%02x)", kind, kind);
 
 					if (pool_read(frontend, &len, sizeof(len)) < 0)
 						return POOL_END;
