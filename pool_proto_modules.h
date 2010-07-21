@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.13 2010/07/11 13:53:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.14 2010/07/21 05:31:39 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -62,16 +62,50 @@ extern char *parsed_query;
  * modules defined in pool_proto_modules.c
  */
 extern POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend, 
-						 POOL_CONNECTION_POOL *backend, char *query);
+							   POOL_CONNECTION_POOL *backend,
+							   int len, char *contents);
 
 extern POOL_STATUS Execute(POOL_CONNECTION *frontend, 
-						   POOL_CONNECTION_POOL *backend);
+						   POOL_CONNECTION_POOL *backend,
+						   int len, char *contents);
 
 extern POOL_STATUS Parse(POOL_CONNECTION *frontend,
-						 POOL_CONNECTION_POOL *backend);
+						 POOL_CONNECTION_POOL *backend,
+						 int len, char *contents);
+
+extern POOL_STATUS Bind(POOL_CONNECTION *frontend,
+						POOL_CONNECTION_POOL *backend,
+						int len, char *contents);
+
+extern POOL_STATUS Describe(POOL_CONNECTION *frontend,
+							POOL_CONNECTION_POOL *backend,
+							int len, char *contents);
+
+extern POOL_STATUS Close(POOL_CONNECTION *frontend,
+						 POOL_CONNECTION_POOL *backend,
+						 int len, char *contents);
+
+extern POOL_STATUS FunctionCall3(POOL_CONNECTION *frontend,
+								 POOL_CONNECTION_POOL *backend,
+								 int len, char *contents);
 
 extern POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend, 
 								 POOL_CONNECTION_POOL *backend, int send_ready);
+
+extern POOL_STATUS ParseComplete(POOL_CONNECTION *frontend,
+								 POOL_CONNECTION_POOL *backend);
+
+extern POOL_STATUS BindComplete(POOL_CONNECTION *frontend,
+								POOL_CONNECTION_POOL *backend);
+
+extern POOL_STATUS CloseComplete(POOL_CONNECTION *frontend,
+								 POOL_CONNECTION_POOL *backend);
+
+extern POOL_STATUS CommandComplete(POOL_CONNECTION *frontend,
+								   POOL_CONNECTION_POOL *backend);
+
+extern POOL_STATUS ErrorResponse3(POOL_CONNECTION *frontend,
+								  POOL_CONNECTION_POOL *backend);
 
 extern POOL_STATUS CopyInResponse(POOL_CONNECTION *frontend, 
 								  POOL_CONNECTION_POOL *backend);
@@ -87,6 +121,9 @@ extern POOL_STATUS FunctionCall(POOL_CONNECTION *frontend,
 
 extern POOL_STATUS ProcessFrontendResponse(POOL_CONNECTION *frontend, 
 										   POOL_CONNECTION_POOL *backend);
+
+extern POOL_STATUS ProcessBackendResponse(POOL_CONNECTION *frontend, 
+										  POOL_CONNECTION_POOL *backend, int *state);
 
 /*
  * modules defined in pool_proto2.c
