@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.66 2010/07/22 05:50:03 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.67 2010/07/22 08:50:51 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1580,8 +1580,7 @@ POOL_STATUS CommandComplete(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *bac
 		return POOL_END;
 	}
 
-	if (session_context->query_context != NULL &&
-		pool_is_doing_extended_query_message())
+	if (session_context->query_context != NULL)
 	{
 		Node *node = session_context->query_context->parse_tree;
 
