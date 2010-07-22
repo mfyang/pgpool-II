@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.12 2010/07/21 05:06:42 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.13 2010/07/22 04:24:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -144,7 +144,21 @@ typedef struct {
 	Portal *pending_portal;	/* used until receive backend response */
 	PreparedStatementList pstmt_list;	/* named statement list */
 	PortalList portal_list;	/* named portal list */
+
 	int load_balance_node_id;	/* selected load balance node id */
+
+	/*
+	 * If true, UPDATE/DELETE caused difference in number of affected
+	 * tuples in backends.
+	*/
+	bool mismatch_ntuples;
+
+	/*
+	 * If mismatch_ntuples true, this array holds the number of
+	 * affected tuples of each node.
+	 * -1 for down nodes.
+	 */
+	int ntuples[MAX_NUM_BACKENDS];
 
 #ifdef NOT_USED
 /* We need to override these gotchas... */

@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.14 2010/07/21 05:06:42 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.15 2010/07/22 04:24:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -103,6 +103,11 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 	/* Initialize where to send map for PREPARE statemets */
 	memset(&session_context->prep_where, 0, sizeof(session_context->prep_where));
 	session_context->prep_where.nelem = POOL_MAX_PREPARED_STATEMENTS;
+
+	/* Reset flag to indicate difference in number of affected tuples
+	 * in UPDATE/DELETE.
+	 */
+	session_context->mismatch_ntuples = false;
 }
 
 /*

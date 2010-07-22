@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.6 2010/06/27 13:02:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.7 2010/07/22 04:24:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -65,6 +65,13 @@ typedef struct {
 	int replication_stop_on_mismatch;		/* if there's a data mismatch between master and secondary
 											 * start degenration to stop replication mode
 											 */
+
+	/* If there's a disagreement with the number of affected tuples in
+	 * UPDATE/DELETE, then degenrate the node which is most likely
+	 * "minority".  # If false, just abort the transaction to keep the
+	 * consistency.*/
+	int failover_if_affected_tuples_mismatch;
+
 	int replicate_select; /* if non 0, replicate SELECT statement when load balancing is disabled. */
 	char **reset_query_list;		/* comma separated list of quries to be issued at the end of session */
 

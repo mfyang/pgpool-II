@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.14 2010/07/21 05:31:39 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.15 2010/07/22 04:24:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -42,7 +42,6 @@ extern int replication_was_enabled;		/* replication mode was enabled */
 extern int master_slave_was_enabled;	/* master/slave mode was enabled */
 extern int internal_transaction_started;		/* to issue table lock command a transaction
 												   has been started internally */
-extern int mismatch_ntuples;	/* number of updated tuples */
 extern char *copy_table;  /* copy table name */
 extern char *copy_schema;  /* copy table name */
 extern char copy_delimiter; /* copy delimiter char */
