@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.65 2010/07/22 04:24:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.66 2010/07/22 05:50:03 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -115,6 +115,7 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 	List *parse_tree_list;
 	Node *node = NULL;
 	POOL_STATUS status;
+	char *string;
 
 	POOL_SESSION_CONTEXT *session_context;
 	POOL_QUERY_CONTEXT *query_context;
@@ -150,9 +151,6 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 		pool_error("SimpleQuery: pool_init_query_context failed");
 		return POOL_END;
 	}
-
-	/* Start query processing */
-	pool_set_query_in_progress();
 
 	/* parse SQL string */
 	parse_tree_list = raw_parser(contents);
@@ -406,7 +404,6 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 		if (!commit)
 		{
 			char *rewrite_query;
-			char *string;
 
 			if (node)
 		   	{
@@ -463,7 +460,7 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 		/*
 		 * Send the query to other than master node.
 		 */
-		if (pool_send_and_wait(query_context, contents, len, -1, MASTER_NODE_ID, "") != POOL_CONTINUE)
+		if (pool_send_and_wait(query_context, string, len, -1, MASTER_NODE_ID, "") != POOL_CONTINUE)
 		{
 			free_parser();
 			return POOL_END;
@@ -472,7 +469,7 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 		/* Send "COMMIT" or "ROLLBACK" to only master node if query is "COMMIT" or "ROLLBACK" */
 		if (commit)
 		{
-			if (pool_send_and_wait(query_context, contents, len, 1, MASTER_NODE_ID, "") != POOL_CONTINUE)
+			if (pool_send_and_wait(query_context, string, len, 1, MASTER_NODE_ID, "") != POOL_CONTINUE)
 			{
 /*
 				free_parser();
@@ -484,7 +481,7 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 	}
 	else
 	{
-		if (pool_send_and_wait(query_context, contents, len, 1, MASTER_NODE_ID, "") != POOL_CONTINUE)
+		if (pool_send_and_wait(query_context, string, len, 1, MASTER_NODE_ID, "") != POOL_CONTINUE)
 		{
 			free_parser();
 			return POOL_END;
