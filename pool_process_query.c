@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.225 2010/07/22 04:24:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.226 2010/07/23 04:57:15 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -3385,7 +3385,6 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 	int degenerate_node[MAX_NUM_BACKENDS];		/* degeneration requested backend list */
 
 	POOL_MEMORY_POOL *old_context = NULL;
-//	POOL_MEMORY_POOL *parser_context = NULL;
 
 	POOL_SESSION_CONTEXT *session_context = pool_get_session_context();
 	POOL_QUERY_CONTEXT *query_context = session_context->query_context;
@@ -3507,7 +3506,10 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 	if (degenerate_node_num)
 	{
 		old_context = pool_memory;
-		pool_memory = query_context->memory_context;
+		if (query_context)
+			pool_memory = query_context->memory_context;
+		else
+			pool_memory = session_context->memory_context;
 
 		String *msg = init_string("kind mismatch among backends. ");
 
@@ -3547,9 +3549,11 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 						List *parse_tree_list;
 						Node *node;
 
+#ifdef NOT_USED
 						/* Switch to parser memory context */
-//						old_context = pool_memory;
-//						pool_memory = parser_context;
+						old_context = pool_memory;
+						pool_memory = parser_context;
+#endif
 
 						parse_tree_list = raw_parser(query_string_buffer);
 
@@ -3573,9 +3577,11 @@ POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_PO
 						}
 						free_parser();
 
+#ifdef NOT_USED
 						/* Switch to old memory context */
-//						parser_context = pool_memory;
-//						pool_memory = old_context;
+						parser_context = pool_memory;
+						pool_memory = old_context;
+#endif
 					}
 				}
 				else
