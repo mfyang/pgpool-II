@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.15 2010/07/22 04:24:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.16 2010/07/23 05:40:15 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -52,7 +52,10 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 	/* Set connection info */
 	session_context->frontend = frontend;
 	session_context->backend = backend;
-	
+
+	/* Initialize query context */
+	session_context->query_context = NULL;
+
 	/* Initialize local session id */
 	pool_incremnet_local_session_id();
 
