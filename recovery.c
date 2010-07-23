@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/recovery.c,v 1.15 2010/06/01 09:03:00 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/recovery.c,v 1.16 2010/07/23 09:40:19 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -76,14 +76,16 @@ int start_recovery(int recovery_node)
 	}
 
 	/* 1st stage */
-	if (exec_checkpoint(conn) != 0)
+	if (REPLICATION)
 	{
-		PQfinish(conn);
-		pool_error("start_recovery: CHECKPOINT failed");
-		return 1;
+		if (exec_checkpoint(conn) != 0)
+		{
+			PQfinish(conn);
+			pool_error("start_recovery: CHECKPOINT failed");
+			return 1;
+		}
+		pool_log("CHECKPOINT in the 1st stage done");
 	}
-
-	pool_log("CHECKPOINT in the 1st stage done");
 
 	if (exec_recovery(conn, recovery_backend, FIRST_STAGE) != 0)
 	{
@@ -93,33 +95,37 @@ int start_recovery(int recovery_node)
 
 	pool_log("1st stage is done");
 
-	pool_log("starting 2nd stage");
-
-	/* 2nd stage */
-	*InRecovery = 1;
-	if (wait_connection_closed() != 0)
+	if (REPLICATION)
 	{
-		PQfinish(conn);
-		pool_error("start_recovery: timeover for waiting connection closed");
-		return 1;
+		pool_log("starting 2nd stage");
+
+		/* 2nd stage */
+		*InRecovery = 1;
+		if (wait_connection_closed() != 0)
+		{
+			PQfinish(conn);
+			pool_error("start_recovery: timeover for waiting connection closed");
+			return 1;
+		}
+
+		pool_log("all connections from clients have been closed");
+
+		if (exec_checkpoint(conn) != 0)
+		{
+			PQfinish(conn);
+			pool_error("start_recovery: CHECKPOINT failed");
+			return 1;
+		}
+
+		pool_log("CHECKPOINT in the 2nd stage done");
+
+		if (exec_recovery(conn, recovery_backend, SECOND_STAGE) != 0)
+		{
+			PQfinish(conn);
+			return 1;
+		}
 	}
 
-	pool_log("all connections from clients have been closed");
-
-	if (exec_checkpoint(conn) != 0)
-	{
-		PQfinish(conn);
-		pool_error("start_recovery: CHECKPOINT failed");
-		return 1;
-	}
-
-	pool_log("CHECKPOINT in the 2nd stage done");
-
-	if (exec_recovery(conn, recovery_backend, SECOND_STAGE) != 0)
-	{
-		PQfinish(conn);
-		return 1;
-	}
 	if (exec_remote_start(conn, recovery_backend) != 0)
 	{
 		PQfinish(conn);
