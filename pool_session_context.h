@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.13 2010/07/22 04:24:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.14 2010/07/23 06:04:17 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -160,6 +160,11 @@ typedef struct {
 	 */
 	int ntuples[MAX_NUM_BACKENDS];
 
+	/*
+	 * If true, we are executing reset query list.
+	 */
+	bool reset_context;
+
 #ifdef NOT_USED
 /* We need to override these gotchas... */
 	int force_replication;
@@ -213,6 +218,7 @@ typedef struct {
 } POOL_SESSION_CONTEXT;
 
 extern void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend);
+extern void pool_session_context_destroy(void);
 extern POOL_SESSION_CONTEXT *pool_get_session_context(void);
 extern int pool_get_local_session_id(void);
 extern bool pool_is_query_in_progress(void);

@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.16 2010/07/23 05:40:15 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.17 2010/07/23 06:04:17 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -111,6 +111,15 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 	 * in UPDATE/DELETE.
 	 */
 	session_context->mismatch_ntuples = false;
+}
+
+/*
+ * Destroy session context.
+ */
+void pool_session_context_destroy(void)
+{
+	/* XXX For now, just zap memory */
+	memset(&session_context_d, 0, sizeof(session_context_d));
 }
 
 /*
