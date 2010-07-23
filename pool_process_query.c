@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.227 2010/07/23 06:08:33 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.228 2010/07/23 06:54:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2760,6 +2760,7 @@ POOL_STATUS do_query(POOL_CONNECTION *backend, char *query, POOL_SELECT_RESULT *
 		pool_error("do_query: malloc failed");
 		return POOL_ERROR;
 	}
+	memset(res->data, 0, DO_QUERY_ALLOC_NUM*sizeof(char *));
 
 	/* send a query to the backend */
 	if (send_simplequery_message(backend, strlen(query) + 1, query, major) != POOL_CONTINUE)
