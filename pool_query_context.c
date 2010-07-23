@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.19 2010/07/21 04:33:59 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.20 2010/07/23 06:08:33 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -563,9 +563,21 @@ POOL_STATUS pool_send_and_wait(POOL_QUERY_CONTEXT *query_context, char *string,
 
 		/*
 		 * If in master/slave mode, we do not send COMMIT/ABORT to
-		 * slaves/standbys if it's in I(idle) state.
+		 * slaves/standbys if it's not in I(idle in transaction)
+		 * state.
 		 */
 		if (is_commit && MASTER_SLAVE && !IS_MASTER_NODE_ID(i) && TSTATE(backend, i) == 'I')
+		{
+			pool_unset_node_to_be_sent(query_context, i);
+			continue;
+		}
+
+		/*
+		 * If in reset context, we send COMMIT/ABORT to nodes those
+		 * are not in I(idle) state.  This will ensure that
+		 * transactions are closed.
+		 */
+		if (is_commit && session_context->reset_context && TSTATE(backend, i) == 'I')
 		{
 			pool_unset_node_to_be_sent(query_context, i);
 			continue;
