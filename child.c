@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.57 2010/07/23 06:04:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.58 2010/07/23 09:38:55 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -390,6 +390,9 @@ void do_child(int unix_fd, int inet_fd)
 				default:
 					break;
 			}
+
+			/* Destroy session context */
+			pool_session_context_destroy();
 
 			if (status != POOL_CONTINUE)
 				break;
