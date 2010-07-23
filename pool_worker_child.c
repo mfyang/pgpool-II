@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.4 2010/07/14 07:37:39 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.5 2010/07/23 06:22:34 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -109,9 +109,15 @@ void do_worker_child(void)
 	{
 		CHECK_REQUEST;
 
+		if (pool_config->health_check_period <= 0)
+		{
+			sleep(30);
+		}
+
 		/*
 		 * If streaming replication mode, do time lag checking
 		 */
+
 		if (MASTER_SLAVE && !strcmp(pool_config->master_slave_sub_mode, MODE_STREAMREP))
 		{
 			/* Check and establish persistent connections to the backend */
@@ -120,7 +126,7 @@ void do_worker_child(void)
 			/* Do replication time lag checking */
 			check_replication_time_lag();
 		}
-		sleep(pool_config->health_check_period);		
+		sleep(pool_config->health_check_period);
 	}
 	exit(0);
 }
