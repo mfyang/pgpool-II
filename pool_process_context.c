@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.c,v 1.2 2010/06/02 08:51:19 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.c,v 1.3 2010/07/25 08:17:59 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -48,6 +48,8 @@ void pool_init_process_context(void)
 		child_exit(1);
 	}
 	process_context->backend_desc = pool_config->backend_desc;
+
+	process_context->proc_id = my_proc_id;
 
 	process_context->local_session_id = 0;		/* initialize local session counter */
 }
