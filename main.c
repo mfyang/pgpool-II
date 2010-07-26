@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.79 2010/07/14 04:53:08 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.80 2010/07/26 00:23:38 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -313,9 +313,12 @@ int main(int argc, char **argv)
 	if (strcmp("", pool_config->pool_passwd))
 	{
 		char pool_passwd[POOLMAXPATHLEN+1];
+		char dirnamebuf[POOLMAXPATHLEN+1];
 
+		strncpy(dirnamebuf, conf_file, sizeof(dirnamebuf));
+		dirname(dirnamebuf);
 		snprintf(pool_passwd, sizeof(pool_passwd), "%s/%s",
-				 dirname(conf_file), pool_config->pool_passwd);
+				 dirnamebuf, pool_config->pool_passwd);
 		pool_init_pool_passwd(pool_passwd);
 	}
 
