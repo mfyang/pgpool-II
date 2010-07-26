@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.228 2010/07/23 06:54:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.229 2010/07/26 09:52:38 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1854,7 +1854,7 @@ static int reset_backend(POOL_CONNECTION_POOL *backend, int qcnt)
 
 		for (i=0;i<NUM_BACKENDS;i++)
 		{
-			if (TSTATE(backend, i) != 'I')
+			if (VALID_BACKEND(i) && TSTATE(backend, i) != 'I')
 				need_to_abort = true;
 		}
 
