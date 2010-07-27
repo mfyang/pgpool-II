@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.229 2010/07/26 09:52:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.230 2010/07/27 23:26:51 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1072,6 +1072,14 @@ POOL_STATUS SimpleForwardToFrontend(char kind, POOL_CONNECTION *frontend,
 		pool_error("SimpleForwardToFrontend: cannot get session context");
 		return POOL_END;
 	}
+
+	/*
+	 * Check if packet kind == 'C'(Command complete), '1'(Parse
+	 * complete), '3'(Close complete). If so, remember that we
+	 * succeeded in executing command.
+	 */
+	if (kind == 'C' || kind == '1' || kind == '2' || kind == '3')
+		pool_set_command_success();
 
 #ifdef NOT_USED
 	/*
