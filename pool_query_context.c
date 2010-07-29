@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.21 2010/07/27 23:26:52 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.22 2010/07/29 04:04:07 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -435,6 +435,17 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 					{
 						/* Inherit same map from PREPARE */
 						pool_copy_prep_where(wts, query_context->where_to_send);
+					}
+					else
+					{
+						PreparedStatement *ps;
+
+						ps = pool_get_prepared_statement_by_pstmt_name(d->name);
+						if (ps)
+						{
+							if (ps->qctxt)
+								pool_copy_prep_where(ps->qctxt->where_to_send, query_context->where_to_send);
+						}
 					}
 				}
 			}
