@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.9 2010/04/22 08:10:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.10 2010/07/29 00:29:49 kitagawa Exp $
  *
  * Handles PCP connection, and protocol communication with pgpool-II
  * These are client APIs. Server program should use APIs in pcp_stream.c
@@ -481,8 +481,8 @@ pcp_node_info(int nid)
 				free(buf);
 				return NULL;
 			}
-			// FIXME
-//			rsize -= strlen("CommandComplete") + 1;
+			/* FIXME */
+			/* rsize -= strlen("CommandComplete") + 1; */
 
  			index = (char *) memchr(buf, '\0', rsize) + 1;
 			if (index != NULL)

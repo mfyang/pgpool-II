@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.17 2010/07/23 06:04:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.18 2010/07/29 00:29:49 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -579,7 +579,6 @@ PreparedStatement *pool_create_prepared_statement(const char *name,
 												  POOL_QUERY_CONTEXT *qc)
 {
 	PreparedStatement *ps;
-//	POOL_QUERY_CONTEXT *q;
 
 	if (!session_context)
 	{
