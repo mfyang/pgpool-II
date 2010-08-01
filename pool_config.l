@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.44 2010/07/22 04:24:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.45 2010/08/01 08:38:17 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -160,7 +160,10 @@ int pool_init_config(void)
 	pool_config->replicate_select = 0;
 	pool_config->reset_query_list = default_reset_query_list;
 	pool_config->num_reset_queries = sizeof(default_reset_query_list)/sizeof(char *);
-	pool_config->reset_query_list = default_reset_query_list;
+	pool_config->white_function_list = NULL;
+	pool_config->num_white_function_list = 0;
+	pool_config->black_function_list = NULL;
+	pool_config->num_black_function_list = 0;
 	pool_config->print_timestamp = 1;
 	pool_config->master_slave_mode = 0;
 	pool_config->master_slave_sub_mode = "slony";
@@ -666,6 +669,60 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 			}
 			pool_config->reset_query_list = extract_string_tokens(str, ";", &pool_config->num_reset_queries);
 			if (pool_config->reset_query_list == NULL)
+			{
+				fclose(fd);
+				return(-1);
+			}
+		}
+
+		else if (!strcmp(key, "white_function_list") &&
+				 CHECK_CONTEXT(INIT_CONFIG|RELOAD_CONFIG, context))
+		{
+			char *str;
+
+			if (token != POOL_STRING && token != POOL_UNQUOTED_STRING && token != POOL_KEY)
+			{
+				PARSE_ERROR();
+				fclose(fd);
+				return(-1);
+			}
+			str = extract_string(yytext, token);
+			if (str == NULL)
+			{
+				fclose(fd);
+				return(-1);
+			}
+			pool_config->white_function_list =
+				extract_string_tokens(str, ",", &pool_config->num_white_function_list);
+
+			if (pool_config->white_function_list == NULL)
+			{
+				fclose(fd);
+				return(-1);
+			}
+		}
+
+		else if (!strcmp(key, "black_function_list") &&
+				 CHECK_CONTEXT(INIT_CONFIG|RELOAD_CONFIG, context))
+		{
+			char *str;
+
+			if (token != POOL_STRING && token != POOL_UNQUOTED_STRING && token != POOL_KEY)
+			{
+				PARSE_ERROR();
+				fclose(fd);
+				return(-1);
+			}
+			str = extract_string(yytext, token);
+			if (str == NULL)
+			{
+				fclose(fd);
+				return(-1);
+			}
+			pool_config->black_function_list =
+				extract_string_tokens(str, ",", &pool_config->num_black_function_list);
+
+			if (pool_config->black_function_list == NULL)
 			{
 				fclose(fd);
 				return(-1);
@@ -1689,19 +1746,24 @@ int eval_logical(char *str)
 }
 
 /*
- * extract tokens separated by delimi from str. return value is an
+ * Extract tokens separated by delimi from str. Return value is an
  * array of pointers to malloced strings. number of tokens is set to
- * n; note that str will be destroyed by strtok(). Also return value
- * points to static data, that means subsequent call will change the
- * return value.
+ * n; note that str will be destroyed by strtok().
  */
 #define MAXTOKENS 1024
 static char **extract_string_tokens(char *str, char *delimi, int *n)
 {
 	char *token;
-	static char *tokens[MAXTOKENS];
+	static char **tokens;
 
 	*n = 0;
+
+	tokens = malloc(MAXTOKENS*sizeof(char *));
+	if (tokens == NULL)
+	{
+		pool_error("extract_string_tokens: out of memory");
+		return NULL;
+	}
 
 	for (token = strtok(str, delimi); token != NULL && *n < MAXTOKENS; token = strtok(NULL, delimi))
 	{

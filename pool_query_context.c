@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.23 2010/07/29 10:05:16 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.24 2010/08/01 08:38:17 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -368,6 +368,15 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 						 */
 						if (pool_config->delay_threshold &&
 							bkinfo->standby_delay > pool_config->delay_threshold)
+						{
+							pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+						}
+
+						/*
+						 * If a writing function call is used, 
+						 * we prefer to send to the primary.
+						 */
+						else if (pool_has_function_call(node))
 						{
 							pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
 						}
