@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.21 2010/06/27 13:02:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.22 2010/08/02 10:06:16 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -819,7 +819,7 @@ static int do_md5(POOL_CONNECTION *backend, POOL_CONNECTION *frontend, int reaut
 	static char password[MAX_PASSWORD_SIZE];
 	int kind;
 	char encbuf[POOL_PASSWD_LEN+1];
-	char *pool_passwd;
+	char *pool_passwd = NULL;
 
 	if (!RAW_MODE && NUM_BACKENDS > 1)
 	{
