@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.19 2010/08/02 02:29:22 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.20 2010/08/02 10:16:06 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1046,7 +1046,7 @@ void pool_delete_prep_where(char *name)
 	{
 		if (!strcmp(session_context->prep_where.name[i], name))
 		{
-			memcpy(&session_context->prep_where.where_to_send[i], 0, sizeof(bool)*MAX_NUM_BACKENDS);
+			memset(&session_context->prep_where.where_to_send[i], 0, sizeof(bool)*MAX_NUM_BACKENDS);
 			*session_context->prep_where.name[i] = '\0';
 			return;
 		}
