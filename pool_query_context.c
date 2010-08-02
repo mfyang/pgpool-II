@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.24 2010/08/01 08:38:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.25 2010/08/02 09:13:26 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -314,8 +314,12 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 		if (!strcmp(pool_config->master_slave_sub_mode, MODE_STREAMREP))
 		{
 			POOL_DEST dest;
+			POOL_MEMORY_POOL *old_context = pool_memory;
 
+			pool_memory = query_context->memory_context;
 			dest = send_to_where(node, query);
+			pool_memory = old_context;
+
 			pool_debug("send_to_where: %d query: %s", dest, query);
 
 			/* Should be sent to primary only? */
