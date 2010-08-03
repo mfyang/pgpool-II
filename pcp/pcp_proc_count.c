@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_count.c,v 1.5 2010/05/16 12:37:53 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_count.c,v 1.6 2010/08/03 09:01:40 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -143,7 +143,7 @@ usage(void)
 	fprintf(stderr, "Usage: pcp_node_info -h\n\n");
 	fprintf(stderr, "  timeout  - connection timeout value in seconds. command exits on timeout\n");
 	fprintf(stderr, "  hostname - pgpool-II hostname\n");
-	fprintf(stderr, "  port#    - pgpool-II port number\n");
+	fprintf(stderr, "  port#    - PCP port number\n");
 	fprintf(stderr, "  username - username for PCP authentication\n");
 	fprintf(stderr, "  password - password for PCP authentication\n");
 	fprintf(stderr, "  -h       - print this help\n");
