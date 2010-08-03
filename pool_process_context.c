@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.c,v 1.3 2010/07/25 08:17:59 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.c,v 1.4 2010/08/03 01:25:27 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -93,4 +93,60 @@ void pool_incremnet_local_session_id(void)
 		return;
 	}
 	p->local_session_id++;
+}
+
+/*
+ * Return byte size of connection info(ConnectionInfo) on shmem.
+ */
+int pool_coninfo_size(void)
+{
+	int size;
+	size = pool_config->num_init_children *
+		pool_config->max_pool *
+		MAX_NUM_BACKENDS *
+		sizeof(ConnectionInfo);
+
+	return size;
+}
+
+/*
+ * Return number of elements of connection info(ConnectionInfo) on shmem.
+ */
+int pool_coninfo_num(void)
+{
+	int nelm;
+	nelm = pool_config->num_init_children *
+		pool_config->max_pool *
+		MAX_NUM_BACKENDS;
+
+	return nelm;
+}
+
+/*
+ * Return pointer to i th child, j th connection pool and k th backend
+ * of connection info on shmem.
+ */
+ConnectionInfo *pool_coninfo(int child, int connection_pool, int backend)
+{
+	if (child < 0 || child >= pool_config->num_init_children)
+	{
+		pool_error("pool_coninfo: invalid child number: %d", child);
+		return NULL;
+	}
+
+	if (connection_pool < 0 || connection_pool >= pool_config->max_pool)
+	{
+		pool_error("pool_coninfo: invalid connection_pool number: %d", connection_pool);
+		return NULL;
+	}
+
+	if (backend < 0 || backend >= MAX_NUM_BACKENDS)
+	{
+		pool_error("pool_coninfo: invalid backend number: %d", backend);
+		return NULL;
+	}
+
+	return &con_info[child*pool_config->max_pool*MAX_NUM_BACKENDS+
+					 connection_pool*MAX_NUM_BACKENDS+
+					 backend];
 }
