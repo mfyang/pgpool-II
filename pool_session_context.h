@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.14 2010/07/23 06:04:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.15 2010/08/04 02:58:38 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -167,9 +167,6 @@ typedef struct {
 
 #ifdef NOT_USED
 /* We need to override these gotchas... */
-	int force_replication;
-	int replication_was_enabled;		/* replication mode was enabled */
-	int master_slave_was_enabled;	/* master/slave mode was enabled */
 	int internal_transaction_started;		/* to issue table lock command a transaction
 											   has been started internally */
 	int mismatch_ntuples;	/* number of updated tuples */
