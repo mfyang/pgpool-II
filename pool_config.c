@@ -485,7 +485,7 @@ char *yytext;
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.49 2010/08/01 08:38:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.50 2010/08/04 07:27:44 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -3348,6 +3348,20 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 		}
 		SYSDB_STATUS = CON_UP;
 #endif
+	}
+
+	if (strcmp(pool_config->recovery_1st_stage_command, "") || 
+		strcmp(pool_config->recovery_2nd_stage_command, ""))
+	{
+		for (i=0;i<MAX_CONNECTION_SLOTS;i++)
+		{
+			if (pool_config->backend_desc->backend_info[i].backend_port != 0 &&
+				!strcmp(pool_config->backend_desc->backend_info[i].backend_data_directory, ""))
+			{
+				pool_error("pool_config: recovery_1st_stage_command and recovery_2nd_stage_command requires backend_data_directory to be set");
+				return -1;
+			}
+		}
 	}
 
 	return 0;
