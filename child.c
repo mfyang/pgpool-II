@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.59 2010/08/03 01:25:27 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.60 2010/08/05 03:03:53 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1025,7 +1025,8 @@ void cancel_request(CancelPacket *sp)
 			for (k=0;k<NUM_BACKENDS;k++)
 			{
 				c = pool_coninfo(i, j, k);
-				pool_debug("con_info: address:%x pid:%d key:%d i:%d", c, ntohl(c->pid), ntohl(c->key),i);
+				pool_debug("con_info: address:%x database:%s user:%s pid:%d key:%d i:%d",
+						   c, c->database, c->user, ntohl(c->pid), ntohl(c->key),i);
 
 				if (c->pid == sp->pid && c->key == sp->key)
 				{
