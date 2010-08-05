@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.10 2010/07/29 00:29:49 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.11 2010/08/05 03:07:04 t-ishii Exp $
  *
  * Handles PCP connection, and protocol communication with pgpool-II
  * These are client APIs. Server program should use APIs in pcp_stream.c
@@ -726,6 +726,10 @@ pcp_process_info(int pid, int *array_size)
 				index = (char *) memchr(index, '\0', rsize) + 1;
 				if (index != NULL)
 					process_info->connection_info[offset].counter = atoi(index);
+
+				index = (char *) memchr(index, '\0', rsize) + 1;
+				if (index != NULL)
+					process_info->connection_info[offset].pid = atoi(index);
 
 				offset++;
 			}

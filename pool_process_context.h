@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.h,v 1.3 2010/08/03 01:25:27 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.h,v 1.4 2010/08/05 03:07:04 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -55,5 +55,6 @@ extern void pool_incremnet_local_session_id(void);
 extern int pool_coninfo_size(void);
 extern int pool_coninfo_num(void);
 extern ConnectionInfo *pool_coninfo(int child, int connection_pool, int backend);
+extern ConnectionInfo *pool_coninfo_pid(int pid, int connection_pool, int backend);
 
 #endif /* POOL_PROCESS_CONTEXT_H */
