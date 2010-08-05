@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.c,v 1.5 2010/08/05 03:07:04 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_context.c,v 1.6 2010/08/05 23:37:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -196,4 +196,46 @@ ConnectionInfo *pool_coninfo_pid(int pid, int connection_pool, int backend)
 	return &con_info[child*pool_config->max_pool*MAX_NUM_BACKENDS+
 					 connection_pool*MAX_NUM_BACKENDS+
 					 backend];
+}
+
+/*
+ * Set frontend connected flag
+ */
+void pool_coninfo_set_frontend_connected(int proc_id, int pool_index)
+{
+	ConnectionInfo *con;
+	int i;
+
+	for (i=0;i<NUM_BACKENDS;i++)
+	{
+		con = pool_coninfo(proc_id, pool_index, i);
+
+		if (con == NULL)
+		{
+			pool_error("pool_coninfo_set_frontend_connected: cannot get ConnectionInfo");
+			return;
+		}
+		con->connected = true;
+	}
+}
+
+/*
+ * Unset frontend connected flag
+ */
+void pool_coninfo_unset_frontend_connected(int proc_id, int pool_index)
+{
+	ConnectionInfo *con;
+	int i;
+
+	for (i=0;i<NUM_BACKENDS;i++)
+	{
+		con = pool_coninfo(proc_id, pool_index, i);
+
+		if (con == NULL)
+		{
+			pool_error("pool_coninfo_unset_frontend_connected: cannot get ConnectionInfo");
+			return;
+		}
+		con->connected = false;
+	}
 }

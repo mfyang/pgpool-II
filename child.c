@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.60 2010/08/05 03:03:53 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.61 2010/08/05 23:37:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -317,6 +317,10 @@ void do_child(int unix_fd, int inet_fd)
 		 */
 		pool_init_session_context(frontend, backend);
 
+		/* Mark this connection pool is conncted from frontend */
+		pool_coninfo_set_frontend_connected(pool_get_process_context()->proc_id,
+											pool_connection_pool->pool_index);
+
 		/* query process loop */
 		for (;;)
 		{
@@ -391,12 +395,16 @@ void do_child(int unix_fd, int inet_fd)
 					break;
 			}
 
-			/* Destroy session context */
-			pool_session_context_destroy();
-
 			if (status != POOL_CONTINUE)
 				break;
 		}
+
+		/* Destroy session context */
+		pool_session_context_destroy();
+
+		/* Mark this connection pool is not conncted from frontend */
+		pool_coninfo_unset_frontend_connected(pool_get_process_context()->proc_id,
+											pool_connection_pool->pool_index);
 
 		accepted = 0;
 		connection_count_down();

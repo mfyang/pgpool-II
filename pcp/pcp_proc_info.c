@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_info.c,v 1.6 2010/08/05 03:07:04 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_info.c,v 1.7 2010/08/05 23:37:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -141,7 +141,7 @@ main(int argc, char **argv)
 			if (process_info->connection_info[i].database[0] == '\0')
 				continue;
 			
-			printf("%s %s %ld %ld %d %d %d %d\n",
+			printf("%s %s %ld %ld %d %d %d %d %d\n",
 				   process_info->connection_info[i].database,
 				   process_info->connection_info[i].user,
 				   process_info->start_time,
@@ -149,7 +149,8 @@ main(int argc, char **argv)
 				   process_info->connection_info[i].major,
 				   process_info->connection_info[i].minor,
 				   process_info->connection_info[i].counter,
-				   process_info->connection_info[i].pid);
+				   process_info->connection_info[i].pid,
+				   process_info->connection_info[i].connected);
 		}
 		free(process_info);
 	}
