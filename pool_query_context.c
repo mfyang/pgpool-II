@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.26 2010/08/03 07:02:02 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.27 2010/08/06 13:17:24 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -351,6 +351,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 					 */
 					if (TSTATE(backend, MASTER_NODE_ID) == 'I' ||
 						(!pool_is_writing_transaction() &&
+						 !pool_is_failed_transaction() &&
 						 pool_get_transaction_isolation() != POOL_SERIALIZABLE))
 					{
 						BackendInfo *bkinfo = pool_get_node_info(session_context->load_balance_node_id);

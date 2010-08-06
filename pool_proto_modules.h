@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.17 2010/08/04 02:58:38 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.18 2010/08/06 13:17:24 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -185,5 +185,6 @@ extern int synchronize(POOL_CONNECTION *cp);
 extern POOL_STATUS read_kind_from_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, char *decided_kind);
 extern POOL_STATUS read_kind_from_one_backend(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, char *kind, int node);
 extern POOL_STATUS do_error_command(POOL_CONNECTION *backend, int major);
+extern POOL_STATUS raise_intentional_error_if_need(POOL_CONNECTION_POOL *backend);
 
 #endif

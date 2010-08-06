@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.20 2010/08/02 10:16:06 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.21 2010/08/06 13:17:24 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -91,8 +91,11 @@ void pool_init_session_context(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *
 	/* The command in progress has not succeeded yet */
 	pool_unset_command_success();
 
-	/* We don't have a write query in this transaction yet. */
+	/* We don't have a write query in this transaction yet */
 	pool_unset_writing_transaction();
+
+	/* Error doesn't occur in this transaction yet */
+	pool_unset_failed_transaction();
 
 	/* Forget transaction isolation mode */
 	pool_unset_transaction_isolation();
@@ -845,6 +848,45 @@ bool pool_is_writing_transaction(void)
 		return false;
 	}
 	return session_context->writing_transaction;
+}
+
+/*
+ * Error doesn't occur in this transaction yet.
+ */
+void pool_unset_failed_transaction(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_unset_failed_query: session context is not initialized");
+		return;
+	}
+	session_context->failed_transaction = false;
+}
+
+/*
+ * Error occurred in this transaction.
+ */
+void pool_set_failed_transaction(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_set_failed_query: session context is not initialized");
+		return;
+	}
+	session_context->failed_transaction = true;
+}
+
+/*
+ * Did error occur in this transaction?
+ */
+bool pool_is_failed_transaction(void)
+{
+	if (!session_context)
+	{
+		pool_error("pool_is_failed_query: session context is not initialized");
+		return false;
+	}
+	return session_context->failed_transaction;
 }
 
 /*

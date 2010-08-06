@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto2.c,v 1.2 2010/07/10 11:18:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto2.c,v 1.3 2010/08/06 13:17:23 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -367,6 +367,7 @@ POOL_STATUS ErrorResponse(POOL_CONNECTION *frontend,
 	char *string = NULL;
 	int len;
 	int i;
+	POOL_STATUS ret;
 
 	for (i=0;i<NUM_BACKENDS;i++)
 	{
@@ -398,7 +399,9 @@ POOL_STATUS ErrorResponse(POOL_CONNECTION *frontend,
 		}
 	}
 
-	return POOL_CONTINUE;
+	ret = raise_intentional_error_if_need(backend);
+
+	return ret;
 }
 
 POOL_STATUS FunctionResultResponse(POOL_CONNECTION *frontend,
