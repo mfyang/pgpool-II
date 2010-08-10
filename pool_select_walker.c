@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_select_walker.c,v 1.2 2010/08/01 08:38:17 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_select_walker.c,v 1.3 2010/08/10 00:37:57 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -184,7 +184,7 @@ static bool is_temp_table(char *table_name)
  * Query to know if the target table is a temporary one.
  * This query is valid PostgreSQL 8.4 or later.
  */
-#define ISTEMPQUERY84 "SELECT count(*) FROM pg_catalog.pg_class AS c WHERE c.relname = '%s' AND c.relistemp"
+#define ISTEMPQUERY84 "SELECT count(*) FROM pg_catalog.pg_class AS c WHERE c.oid = '%s'::regclass::oid AND c.relistemp"
 
 	int hasrelistemp;
 	bool result;
