@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.10 2010/07/09 01:14:28 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.11 2010/08/10 00:36:14 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -112,7 +112,7 @@ relcache_lookup(TSRewriteContext *ctx)
 #define ATTRDEFQUERY "SELECT attname, coalesce(d.adsrc = 'now()' OR d.adsrc LIKE '%%''now''::text%%', false)" \
 	" FROM pg_catalog.pg_class c, pg_catalog.pg_attribute a " \
 	" LEFT JOIN pg_catalog.pg_attrdef d ON (a.attrelid = d.adrelid AND a.attnum = d.adnum)" \
-	" WHERE c.oid = a.attrelid AND a.attnum >= 1 AND a.attisdropped = 'f' AND c.relname = '%s'" \
+	" WHERE c.oid = a.attrelid AND a.attnum >= 1 AND a.attisdropped = 'f' AND c.oid = '%s'::regclass::oid" \
 	" ORDER BY a.attnum"
 
 	if (!ts_relcache)
