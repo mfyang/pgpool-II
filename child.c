@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.62 2010/08/06 02:09:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.63 2010/08/10 05:09:16 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1760,6 +1760,7 @@ static RETSIGTYPE wakeup_handler(int sig)
  */
 int select_load_balancing_node(void)
 {
+	int selected_slot;
 	double total_weight,r;
 	int i;
 

@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.234 2010/08/10 04:08:27 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.235 2010/08/10 05:09:16 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -77,8 +77,6 @@ static bool is_internal_transaction_needed(Node *node);
 
 /* timeout sec for pool_check_fd */
 static int timeoutsec;
-
-int selected_slot;		/* selected DB node */
 
 /*
  * Main module for query processing
