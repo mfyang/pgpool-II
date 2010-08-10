@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_hba.c,v 1.10 2010/07/10 11:10:34 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_hba.c,v 1.11 2010/08/10 15:08:32 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -202,7 +202,7 @@ void ClientAuthentication(POOL_CONNECTION *frontend)
 					 "no pool_hba.conf entry for host \"%s\", user \"%s\", database \"%s\"",
 					 hostinfo, frontend->username, frontend->database);
 #endif
-			pool_error(errmessage);
+			pool_error("%s", errmessage);
 			pool_send_error_message(frontend, frontend->protoVersion, "XX000", errmessage,
 									"", "", __FILE__, __LINE__);
 
@@ -418,7 +418,7 @@ static void auth_failed(POOL_CONNECTION *frontend)
 			break;
 	}
 
-	pool_error(errmessage);
+	pool_error("%s", errmessage);
 	if (send_error_to_frontend)
 		pool_send_error_message(frontend, frontend->protoVersion, "XX000", errmessage,
 								"", "", __FILE__, __LINE__);
