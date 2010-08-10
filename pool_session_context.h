@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.16 2010/08/06 13:17:24 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.17 2010/08/10 04:08:27 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -177,8 +177,6 @@ typedef struct {
 	char *copy_schema = NULL;  /* copy table name */
 	char copy_delimiter; /* copy delimiter char */
 	char *copy_null = NULL; /* copy null string */
-	int select_in_transaction = 0; /* non 0 if select query is in transaction */
-	int execute_select = 0; /* non 0 if select query is in transaction */
 
 /* non 0 if "BEGIN" query with extended query protocol received */
 	int receive_extended_begin = 0;
