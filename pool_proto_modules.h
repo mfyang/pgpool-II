@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.20 2010/08/10 13:21:51 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.21 2010/08/13 00:09:46 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -117,7 +117,8 @@ extern POOL_STATUS ProcessFrontendResponse(POOL_CONNECTION *frontend,
 										   POOL_CONNECTION_POOL *backend);
 
 extern POOL_STATUS ProcessBackendResponse(POOL_CONNECTION *frontend, 
-										  POOL_CONNECTION_POOL *backend, int *state);
+										  POOL_CONNECTION_POOL *backend,
+										  int *state, short *num_fields);
 
 /*
  * modules defined in pool_proto2.c
