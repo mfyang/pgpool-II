@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_stop_pgpool.c,v 1.5 2010/08/03 09:01:41 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_stop_pgpool.c,v 1.6 2010/08/13 16:48:14 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -153,15 +153,15 @@ usage(void)
 	fprintf(stderr, "pcp_stop_pgpool - terminate pgpool-II\n\n");
 	fprintf(stderr, "Usage: pcp_stop_pgpool [-d] timeout hostname port# username password mode\n");
 	fprintf(stderr, "Usage: pcp_stop_pgpool  -h\n\n");
-	fprintf(stderr, "  -d       - enable debug message (optional)\n");
-	fprintf(stderr, "  timeout  - connection timeout value in seconds. command exits on timeout\n");
-	fprintf(stderr, "  hostname - pgpool-II hostname\n");
-	fprintf(stderr, "  port#    - PCP port number\n");
-	fprintf(stderr, "  username - username for PCP authentication\n");
-	fprintf(stderr, "  password - password for PCP authentication\n");
-	fprintf(stderr, "  mode     - shutdown mode\n");
-	fprintf(stderr, "             s - smart shutdown  f - fast shutdown  i - immediate shutdown\n");
-	fprintf(stderr, "  -h       - print this help\n");
+	fprintf(stderr, "  -d, --debug : enable debug message (optional)\n");
+	fprintf(stderr, "  timeout     : connection timeout value in seconds. command exits on timeout\n");
+	fprintf(stderr, "  hostname    : pgpool-II hostname\n");
+	fprintf(stderr, "  port#       : PCP port number\n");
+	fprintf(stderr, "  username    : username for PCP authentication\n");
+	fprintf(stderr, "  password    : password for PCP authentication\n");
+	fprintf(stderr, "  mode        : shutdown mode\n");
+	fprintf(stderr, "                s - smart shutdown  f - fast shutdown  i - immediate shutdown\n");
+	fprintf(stderr, "  -h, --help  : print this help\n");
 }
 
 static void

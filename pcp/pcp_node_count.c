@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_node_count.c,v 1.5 2010/08/03 09:01:40 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_node_count.c,v 1.6 2010/08/13 16:48:14 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -134,13 +134,13 @@ usage(void)
 	fprintf(stderr, "pcp_node_count - display the total number of nodes under pgpool-II's control\n\n");
 	fprintf(stderr, "Usage: pcp_node_count [-d] timeout hostname port# username password\n");
 	fprintf(stderr, "Usage: pcp_node_count -h\n\n");
-	fprintf(stderr, "  -d       - enable debug message (optional)\n");
-	fprintf(stderr, "  timeout  - connection timeout value in seconds. command exits on timeout\n");
-	fprintf(stderr, "  hostname - pgpool-II hostname\n");
-	fprintf(stderr, "  port#    - PCP port number\n");
-	fprintf(stderr, "  username - username for PCP authentication\n");
-	fprintf(stderr, "  password - password for PCP authentication\n");
-	fprintf(stderr, "  -h       - print this help\n");
+	fprintf(stderr, "  -d, --debug : enable debug message (optional)\n");
+	fprintf(stderr, "  timeout     : connection timeout value in seconds. command exits on timeout\n");
+	fprintf(stderr, "  hostname    : pgpool-II hostname\n");
+	fprintf(stderr, "  port#       : PCP port number\n");
+	fprintf(stderr, "  username    : username for PCP authentication\n");
+	fprintf(stderr, "  password    : password for PCP authentication\n");
+	fprintf(stderr, "  -h, --help  : print this help\n");
 }
 
 static void

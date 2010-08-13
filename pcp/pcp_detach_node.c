@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_detach_node.c,v 1.6 2010/08/05 08:08:44 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_detach_node.c,v 1.7 2010/08/13 16:48:14 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -157,15 +157,15 @@ usage(void)
 	fprintf(stderr, "pcp_detach_node - detach a node from pgpool-II\n\n");
 	fprintf(stderr, "Usage: pcp_detach_node [-d][-g] timeout hostname port# username password nodeID\n");
 	fprintf(stderr, "Usage: pcp_detach_node -h\n\n");
-	fprintf(stderr, "  -d       - enable debug message (optional)\n");
-	fprintf(stderr, "  -g       - detach gracefully(optional)\n");
-	fprintf(stderr, "  timeout  - connection timeout value in seconds. command exits on timeout\n");
-	fprintf(stderr, "  hostname - pgpool-II hostname\n");
-	fprintf(stderr, "  port#    - PCP port number\n");
-	fprintf(stderr, "  username - username for PCP authentication\n");
-	fprintf(stderr, "  password - password for PCP authentication\n");
-	fprintf(stderr, "  nodeID   - ID of a node to be detached\n");
-	fprintf(stderr, "  -h       - print this help\n");
+	fprintf(stderr, "  -d, --debug      : enable debug message (optional)\n");
+	fprintf(stderr, "  -g, --gracefully : detach gracefully(optional)\n");
+	fprintf(stderr, "  timeout          : connection timeout value in seconds. command exits on timeout\n");
+	fprintf(stderr, "  hostname         : pgpool-II hostname\n");
+	fprintf(stderr, "  port#            : PCP port number\n");
+	fprintf(stderr, "  username         : username for PCP authentication\n");
+	fprintf(stderr, "  password         : password for PCP authentication\n");
+	fprintf(stderr, "  nodeID           : ID of a node to be detached\n");
+	fprintf(stderr, "  -h, --help       : print this help\n");
 }
 
 static void
