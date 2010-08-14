@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_node_info.c,v 1.7 2010/08/14 02:05:26 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_node_info.c,v 1.8 2010/08/14 18:01:09 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -168,15 +168,17 @@ usage(void)
 {
 	fprintf(stderr, "pcp_node_info - display a pgpool-II node's information\n\n");
 	fprintf(stderr, "Usage: pcp_node_info [-d] timeout hostname port# username password nodeID\n");
-	fprintf(stderr, "Usage: pcp_node_info -h\n\n");
-	fprintf(stderr, "  -d, --debug : enable debug message (optional)\n");
-	fprintf(stderr, "  timeout     : connection timeout value in seconds. command exits on timeout\n");
-	fprintf(stderr, "  hostname    : pgpool-II hostname\n");
-	fprintf(stderr, "  port#       : PCP port number\n");
-	fprintf(stderr, "  username    : username for PCP authentication\n");
-	fprintf(stderr, "  password    : password for PCP authentication\n");
-	fprintf(stderr, "  nodeID      : ID of a node to get information for\n");
-	fprintf(stderr, "  -h, --help  : print this help\n");
+	fprintf(stderr, "  -d, --debug    : enable debug message (optional)\n");
+	fprintf(stderr, "  timeout        : connection timeout value in seconds. command exits on timeout\n");
+	fprintf(stderr, "  hostname       : pgpool-II hostname\n");
+	fprintf(stderr, "  port#          : PCP port number\n");
+	fprintf(stderr, "  username       : username for PCP authentication\n");
+	fprintf(stderr, "  password       : password for PCP authentication\n");
+	fprintf(stderr, "  nodeID         : ID of a node to get information for\n\n");
+	fprintf(stderr, "Usage: pcp_node_info [options]\n");
+    fprintf(stderr, "  Options available are:\n");
+	fprintf(stderr, "  -h, --help     : print this help\n");
+	fprintf(stderr, "  -v, --verbose  : display one line per information with a header\n");
 }
 
 static void
