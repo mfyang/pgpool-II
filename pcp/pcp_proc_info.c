@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_info.c,v 1.9 2010/08/14 02:05:26 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_info.c,v 1.10 2010/08/14 06:42:08 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -25,6 +25,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <time.h>
 
 #include "pcp.h"
 
@@ -142,29 +143,33 @@ main(int argc, char **argv)
 		myexit(errorcode);
 	} else {
 		int i;
+        char strcreatetime[128];
+        char strstarttime[128];
+	    strftime(strstarttime, 128, "%Y-%m-%d %H:%M:%S", localtime(&process_info->start_time));
 		for (i = 0; i < array_size; i++)
 		{
 			if (process_info->connection_info[i].database[0] == '\0')
 				continue;
 			
+	        strftime(strcreatetime, 128, "%Y-%m-%d %H:%M:%S", localtime(&process_info->connection_info[i].create_time));
             if (verbose)
             {
-		    	printf("Database     : %s\nUsername     : %s\nStart time   : %ld\nCreation time: %ld\nMajor        : %d\nMinor        : %d\nCounter      : %d\nPID          : %d\nConnected    : %d\n",
+		    	printf("Database     : %s\nUsername     : %s\nStart time   : %s\nCreation time: %s\nMajor        : %d\nMinor        : %d\nCounter      : %d\nPID          : %d\nConnected    : %d\n",
 		    		   process_info->connection_info[i].database,
 		    		   process_info->connection_info[i].user,
-		    		   process_info->start_time,
-		    		   process_info->connection_info[i].create_time,
+		    		   strstarttime,
+		    		   strcreatetime,
 		    		   process_info->connection_info[i].major,
 		    		   process_info->connection_info[i].minor,
 		    		   process_info->connection_info[i].counter,
 		    		   process_info->connection_info[i].pid,
 		    		   process_info->connection_info[i].connected);
             } else {
-		    	printf("%s %s %ld %ld %d %d %d %d %d\n",
+		    	printf("%s %s %s %s %d %d %d %d %d\n",
 		    		   process_info->connection_info[i].database,
 		    		   process_info->connection_info[i].user,
-		    		   process_info->start_time,
-		    		   process_info->connection_info[i].create_time,
+		    		   strstarttime,
+		    		   strcreatetime,
 		    		   process_info->connection_info[i].major,
 		    		   process_info->connection_info[i].minor,
 		    		   process_info->connection_info[i].counter,
