@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_info.c,v 1.8 2010/08/13 16:48:14 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_proc_info.c,v 1.9 2010/08/14 02:05:26 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -44,17 +44,23 @@ main(int argc, char **argv)
 	int array_size;
 	int ch;
 	int	optindex;
+    bool verbose = false;
 
 	static struct option long_options[] = {
 		{"debug", no_argument, NULL, 'd'},
 		{"help", no_argument, NULL, 'h'},
+		{"verbose", no_argument, NULL, 'v'},
 		{NULL, 0, NULL, 0}
 	};
 	
-    while ((ch = getopt_long(argc, argv, "hd", long_options, &optindex)) != -1) {
+    while ((ch = getopt_long(argc, argv, "hdv", long_options, &optindex)) != -1) {
 		switch (ch) {
 		case 'd':
 			pcp_enable_debug();
+			break;
+
+		case 'v':
+			verbose = true;
 			break;
 
 		case 'h':
@@ -141,17 +147,31 @@ main(int argc, char **argv)
 			if (process_info->connection_info[i].database[0] == '\0')
 				continue;
 			
-			printf("%s %s %ld %ld %d %d %d %d %d\n",
-				   process_info->connection_info[i].database,
-				   process_info->connection_info[i].user,
-				   process_info->start_time,
-				   process_info->connection_info[i].create_time,
-				   process_info->connection_info[i].major,
-				   process_info->connection_info[i].minor,
-				   process_info->connection_info[i].counter,
-				   process_info->connection_info[i].pid,
-				   process_info->connection_info[i].connected);
-		}
+            if (verbose)
+            {
+		    	printf("Database     : %s\nUsername     : %s\nStart time   : %ld\nCreation time: %ld\nMajor        : %d\nMinor        : %d\nCounter      : %d\nPID          : %d\nConnected    : %d\n",
+		    		   process_info->connection_info[i].database,
+		    		   process_info->connection_info[i].user,
+		    		   process_info->start_time,
+		    		   process_info->connection_info[i].create_time,
+		    		   process_info->connection_info[i].major,
+		    		   process_info->connection_info[i].minor,
+		    		   process_info->connection_info[i].counter,
+		    		   process_info->connection_info[i].pid,
+		    		   process_info->connection_info[i].connected);
+            } else {
+		    	printf("%s %s %ld %ld %d %d %d %d %d\n",
+		    		   process_info->connection_info[i].database,
+		    		   process_info->connection_info[i].user,
+		    		   process_info->start_time,
+		    		   process_info->connection_info[i].create_time,
+		    		   process_info->connection_info[i].major,
+		    		   process_info->connection_info[i].minor,
+		    		   process_info->connection_info[i].counter,
+		    		   process_info->connection_info[i].pid,
+		    		   process_info->connection_info[i].connected);
+		    }
+        }
 		free(process_info);
 	}
 
