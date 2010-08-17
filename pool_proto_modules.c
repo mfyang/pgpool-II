@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.79 2010/08/17 01:36:51 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.80 2010/08/17 01:51:38 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -2312,7 +2312,7 @@ POOL_STATUS raise_intentional_error_if_need(POOL_CONNECTION_POOL *backend)
 		}
 		else
 		{
-			ret = do_error_command(CONNECTION(backend, REAL_MASTER_NODE_ID), PROTO_MAJOR_V3);
+			ret = do_error_command(CONNECTION(backend, REAL_MASTER_NODE_ID), MAJOR(backend));
 			if (ret != POOL_CONTINUE)
 				return ret;
 		}
@@ -2347,7 +2347,7 @@ POOL_STATUS raise_intentional_error_if_need(POOL_CONNECTION_POOL *backend)
 				}
 				else
 				{
-					ret = do_error_command(CONNECTION(backend, i), PROTO_MAJOR_V3);
+					ret = do_error_command(CONNECTION(backend, i), MAJOR(backend));
 					if (ret != POOL_CONTINUE)
 						return ret;
 				}
