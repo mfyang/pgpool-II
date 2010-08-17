@@ -485,7 +485,7 @@ char *yytext;
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.51 2010/08/12 00:27:19 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.52 2010/08/17 02:09:00 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -3255,8 +3255,8 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 		}
 	}
 
-	pool_debug("num_backends: %d num_backends: %d total_weight: %f",
-			   pool_config->backend_desc->num_backends, pool_config->backend_desc->num_backends, total_weight);
+	pool_debug("num_backends: %d total_weight: %f",
+			   pool_config->backend_desc->num_backends, total_weight);
 	/*
 	 * Normalize load balacing weights. What we are doing here is,
 	 * assign 0 to RAND_MAX to each backend's weight according to the
