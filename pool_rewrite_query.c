@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_rewrite_query.c,v 1.19 2010/07/10 11:18:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_rewrite_query.c,v 1.20 2010/08/17 09:23:18 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -699,6 +699,7 @@ POOL_STATUS pool_do_parallel_query(POOL_CONNECTION *frontend,
 
 			if(r_query->r_code != INSERT_DIST_NO_RULE) {
 				pool_unset_query_in_progress();
+				pool_set_skip_reading_from_backends();
 				return r_query->status;
 			}
 		}
@@ -706,6 +707,7 @@ POOL_STATUS pool_do_parallel_query(POOL_CONNECTION *frontend,
 		{
 			free_parser();
 			pool_unset_query_in_progress();
+			pool_set_skip_reading_from_backends();
 			return r_query->status;
 		}
 	}
