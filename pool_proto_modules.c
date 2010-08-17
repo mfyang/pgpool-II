@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.78 2010/08/13 00:09:46 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.79 2010/08/17 01:36:51 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -158,13 +158,13 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 		/*
 		 * Unable to parse the query. Probably syntax error or the
 		 * query is too new and our parser cannot understand. Treat as
-		 * if it were an INSERT command. Note that the INSERT command
+		 * if it were an DELETE command. Note that the DELETE command
 		 * does not execute, instead the original query will be sent
 		 * to backends, which may or may not cause an actual syntax errors.
 		 * The command will be sent to all backends in replication mode
 		 * or master/primary in master/slave mode.
 		 */
-		char *p = "INSERT INTO foo VALUES(1)";
+		char *p = "DELETE FROM foo WHERE col = 'pgpool: unable to parse the query'";
 
 		pool_log("SimpleQuery: Unable to parse the query: %s", contents);
 		parse_tree_list = raw_parser(p);
