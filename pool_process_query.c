@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.240 2010/08/17 09:23:18 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.241 2010/08/17 09:51:36 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1443,7 +1443,8 @@ POOL_STATUS ParameterStatus(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *bac
  */
 void reset_variables(void)
 {
-	pool_unset_query_in_progress();
+	if(pool_get_session_context())
+		pool_unset_query_in_progress();
 
 	internal_transaction_started = 0;
 	receive_extended_begin = 0;
