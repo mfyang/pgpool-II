@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.24 2010/08/05 03:07:04 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.25 2010/08/17 02:22:17 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -347,7 +347,7 @@ from pool_read_message_length and recheck the pg_hba.conf settings.");
 				return -1;
 			}
 
-			pool_debug("pool_do_auth: cp->info[i]:%x pid:%u", &cp->info[i], ntohl(pid));
+			pool_debug("pool_do_auth: cp->info[i]:%p pid:%u", &cp->info[i], ntohl(pid));
 
 			CONNECTION_SLOT(cp, i)->pid = cp->info[i].pid = pid;
 
