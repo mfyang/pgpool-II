@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.241 2010/08/17 09:51:36 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.242 2010/08/18 07:12:43 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2743,7 +2743,7 @@ int need_insert_lock(POOL_CONNECTION_POOL *backend, char *query, Node *node)
  * Query to know if the target table has SERIAL column or not.
  * This query is valid through PostgreSQL 7.3 to 8.3.
  */
-#define NEXTVALQUERY "SELECT count(*) FROM pg_catalog.pg_attrdef AS d, pg_catalog.pg_class AS c WHERE d.adrelid = c.oid AND d.adsrc ~ 'nextval' AND c.relname = '%s'"
+#define NEXTVALQUERY "SELECT count(*) FROM pg_catalog.pg_attrdef AS d, pg_catalog.pg_class AS c WHERE d.adrelid = c.oid AND d.adsrc ~ 'nextval' AND c.oid = '%s'::regclass::oid"
 
 	char *str;
 	int result;
