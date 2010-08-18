@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample for Stream replication/Hot standby.
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-stream,v 1.3 2010/08/01 08:38:17 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-stream,v 1.4 2010/08/18 01:33:32 kitagawa Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -66,8 +66,9 @@ replication_mode = false
 # This is ignored if replication_mode is false.
 load_balance_mode = true
 
-# if there's a data mismatch between master and secondary
-# start degeneration to stop replication mode
+# If there's a disagreement with the packet kind sent from backend,
+# then degenrate the node which is most likely "minority".  If false,
+# just force to exit this session.
 replication_stop_on_mismatch = false
 
 # If there's a disagreement with the number of affected tuples in
