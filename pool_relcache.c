@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.10 2010/08/10 00:37:57 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.11 2010/08/19 09:25:40 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -224,4 +224,29 @@ void *int_unregister_func(void *data)
 {
 	/* Nothing to do since no memory was allocated */
 	return NULL;
+}
+
+void *string_register_func(POOL_SELECT_RESULT *res)
+{
+	char	*ret = NULL;
+	int		 i;
+
+	if (res->numrows == 0)
+		return NULL;
+
+	for (i = 0; i < res->numrows; i++)
+	{
+		ret = malloc(strlen(res->data[i])+1);
+		if (ret)
+			ret = strdup(res->data[i]);
+		break;
+	}
+
+	return (void *)ret;
+}
+
+void *string_unregister_func(void *data)
+{
+	free(data);
+	return data;
 }

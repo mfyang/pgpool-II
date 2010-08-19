@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.h,v 1.2 2010/06/01 09:03:00 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.h,v 1.3 2010/08/19 09:25:40 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -70,5 +70,7 @@ extern void pool_discard_relcache(POOL_RELCACHE *relcache);
 extern void *pool_search_relcache(POOL_RELCACHE *relcache, POOL_CONNECTION_POOL *backend, char *table);
 extern void *int_register_func(POOL_SELECT_RESULT *res);
 extern void *int_unregister_func(void *data);
+extern void *string_register_func(POOL_SELECT_RESULT *res);
+extern void *string_unregister_func(void *data);
 
 #endif /* POOL_RELCACHE_H */
