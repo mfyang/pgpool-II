@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.82 2010/08/19 09:25:39 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.83 2010/08/20 01:57:46 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -337,7 +337,8 @@ POOL_STATUS SimpleQuery(POOL_CONNECTION *frontend,
 
 		for (i=0;i<NUM_BACKENDS;i++)
 		{
-			TSTATE(backend, i) = 'T';
+			if(VALID_BACKEND(i))
+				TSTATE(backend, i) = 'T';
 		}
 	}
 
