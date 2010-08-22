@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pg_md5.c,v 1.7 2010/06/27 23:18:11 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pg_md5.c,v 1.8 2010/08/22 08:24:01 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -34,6 +34,8 @@
 #include <termios.h>
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>
+#else
+#include "getopt_long.h"
 #endif
 #include <pwd.h>
 #include <libgen.h>

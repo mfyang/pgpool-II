@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_recovery_node.c,v 1.7 2010/08/13 16:48:14 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp_recovery_node.c,v 1.8 2010/08/22 08:24:02 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -24,7 +24,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#ifdef HAVE_GETOPT_H
 #include <getopt.h>
+#else
+#include "getopt_long.h"
+#endif
 
 #include "pcp.h"
 
