@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/sql/pgpool-recovery/pgpool-recovery.c,v 1.8 2010/08/09 10:53:52 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/sql/pgpool-recovery/pgpool-recovery.c,v 1.9 2010/08/23 04:42:31 kitagawa Exp $
  *
  * pgpool-recovery: exec online recovery script from SELECT statement.
  *
@@ -126,7 +126,7 @@ pgpool_remote_start(PG_FUNCTION_ARGS)
 Datum
 pgpool_switch_xlog(PG_FUNCTION_ARGS)
 {
-	char *basedir;
+	char *archive_dir;
 	char *filename;
 	char path[MAXPGPATH];
 	struct stat fst;
@@ -136,16 +136,16 @@ pgpool_switch_xlog(PG_FUNCTION_ARGS)
 	Oid switch_xlog_oid;
 	Oid xlogfile_name_oid;
 
-	basedir = DatumGetCString(DirectFunctionCall1(textout,
-												  PointerGetDatum(PG_GETARG_TEXT_P(0))));
+	archive_dir = DatumGetCString(DirectFunctionCall1(textout,
+													  PointerGetDatum(PG_GETARG_TEXT_P(0))));
 
-	if (stat(basedir, &fst) < 0)
+	if (stat(archive_dir, &fst) < 0)
 #ifdef ERRCODE_INSUFFICIENT_PRIVILEGE
 		ereport(ERROR,
                 (errcode_for_file_access(),
-                 errmsg("could not stat file \"%s\": %m", basedir)));
+                 errmsg("could not stat file \"%s\": %m", archive_dir)));
 #else
-		elog(ERROR, "could not stat file \"%s\"", basedir);	
+		elog(ERROR, "could not stat file \"%s\"", archive_dir);	
 #endif
 
 	switch_xlog_oid = get_function_oid("pg_switch_xlog", NULL, "pg_catalog");
@@ -159,10 +159,11 @@ pgpool_switch_xlog(PG_FUNCTION_ARGS)
 	filename = DatumGetCString(DirectFunctionCall1(textout,
 												   PointerGetDatum(filename_t)));
 
-	snprintf(path, MAXPGPATH, "%s/%s", basedir, filename);
+	snprintf(path, MAXPGPATH, "%s/%s", archive_dir, filename);
 	elog(LOG, "pgpool_switch_xlog: waiting for \"%s\"", path);
 
-	while(stat(path, &fst) < 0)
+	while(stat(path, &fst) != 0 || fst.st_size == 0 ||
+		  fst.st_size % (1024 * 1024) != 0)
 	{
 		CHECK_FOR_INTERRUPTS();
 		sleep(1);
