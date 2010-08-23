@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.245 2010/08/20 02:04:28 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.246 2010/08/23 06:43:25 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1942,9 +1942,10 @@ POOL_STATUS do_command(POOL_CONNECTION *frontend, POOL_CONNECTION *backend,
 			}
 			len = ntohl(len) - 4;
 			
-			if (kind != 'N' && kind != 'E' && kind != 'S' && kind != 'C')
+			if (kind != 'C' && kind != 'T' && kind != 'D' && kind != 'N' &&
+				kind != 'E' && kind != 'S' )
 			{
-				pool_error("do_command: error, kind is not N, E, S or C(%02x)", kind);
+				pool_error("do_command: unexpected kind from backend %c(%02x)", kind, kind);
 				return POOL_END;
 			}
 			string = pool_read2(backend, len);
