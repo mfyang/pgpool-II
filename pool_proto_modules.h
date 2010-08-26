@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.22 2010/08/19 09:25:39 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.23 2010/08/26 09:23:06 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -169,6 +169,7 @@ extern int detect_active_sql_transaction_error(POOL_CONNECTION *backend, int maj
 extern int detect_query_cancel_error(POOL_CONNECTION *backend, int major);
 extern bool is_partition_table(POOL_CONNECTION_POOL *backend, Node *node);
 extern POOL_STATUS pool_discard_packet(POOL_CONNECTION_POOL *cp);
+extern void query_cache_register(char kind, POOL_CONNECTION *frontend, char *database, char *data, int data_len);
 
 extern int is_drop_database(Node *node);		/* returns non 0 if this is a DROP DATABASE command */
 extern void config_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend);
