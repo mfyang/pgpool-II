@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_select_walker.h,v 1.3 2010/08/10 08:45:10 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_select_walker.h,v 1.4 2010/09/06 05:03:21 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -32,6 +32,7 @@
 extern bool pool_has_function_call(Node *node);
 extern bool pool_has_system_catalog(Node *node);
 extern bool pool_has_temp_table(Node *node);
+extern bool pool_has_pgpool_regclass(void);
 extern bool raw_expression_tree_walker(Node *node, bool (*walker) (), void *context);
 
 #endif /* POOL_SELECT_WALKER_H */
