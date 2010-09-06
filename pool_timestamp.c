@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.13 2010/09/06 05:03:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.14 2010/09/06 08:33:32 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -147,7 +147,7 @@ relcache_lookup(TSRewriteContext *ctx)
 
 	if (!ts_relcache)
 	{
-		ts_relcache = pool_create_relcache(MAX_RELCACHE, ATTRDEFQUERY, ts_register_func, ts_unregister_func, false);
+		ts_relcache = pool_create_relcache(MAX_RELCACHE, query, ts_register_func, ts_unregister_func, false);
 
 		if (ts_relcache == NULL)
 		{
