@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.23 2010/08/26 09:23:06 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.24 2010/09/27 02:01:57 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -35,6 +35,7 @@
 #include "pool_session_context.h"
 
 #define SPECIFIED_ERROR 1
+#define POOL_DUMMY_QUERY "DELETE FROM foo WHERE col = 'pgpool: unable to parse the query'"
 #define POOL_ERROR_QUERY "send invalid query from pgpool to abort transaction"
 
 extern char *copy_table;  /* copy table name */
