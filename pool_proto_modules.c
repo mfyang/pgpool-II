@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.86 2010/09/27 02:01:57 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.87 2010/10/12 11:39:37 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -978,6 +978,7 @@ POOL_STATUS Describe(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend,
 	return POOL_CONTINUE;
 }
 
+
 POOL_STATUS Close(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend,
 				  int len, char *contents)
 {
@@ -1005,6 +1006,7 @@ POOL_STATUS Close(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend,
 		}
 
 		session_context->pending_pstmt = pstmt;
+		query_context = pstmt->qctxt;
 	}
 	/* Portal */
 	else if (*contents == 'P')
@@ -1017,6 +1019,7 @@ POOL_STATUS Close(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend,
 		}
 
 		session_context->pending_portal = portal;
+		query_context = portal->qctxt;
 	}
 	else
 	{
@@ -1024,15 +1027,14 @@ POOL_STATUS Close(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend,
 		return POOL_END;
 	}
 
-	query_context = pstmt->qctxt;
 	if (query_context == NULL)
 	{
 		pool_error("Close: cannot get query context");
 		return POOL_END;
 	}
 
-	pool_where_to_send(query_context, query_context->original_query,
-					   query_context->parse_tree);
+	session_context->query_context = query_context;
+	/* pool_where_to_send(query_context, query_context->original_query, query_context->parse_tree); */
 
 	pool_debug("Close: waiting for master completing the query");
 	if (pool_send_and_wait(query_context, contents, len, 1, MASTER_NODE_ID, "C")

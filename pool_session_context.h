@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.19 2010/08/19 09:25:40 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.h,v 1.20 2010/10/12 11:39:37 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -61,6 +61,7 @@ typedef struct {
 	char *name;		/* portal name */
 	int num_tsparams;
 	PreparedStatement *pstmt;
+	POOL_QUERY_CONTEXT *qctxt;
 } Portal;
 
 /*
