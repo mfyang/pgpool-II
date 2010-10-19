@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.24 2010/10/12 11:39:37 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_session_context.c,v 1.25 2010/10/19 08:57:18 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -548,7 +548,11 @@ void pool_remove_pending_objects(void)
 		pool_memory_free(session_context->memory_context, ps->name);
 
 	if (ps && ps->qctxt)
-		pool_query_context_destroy(ps->qctxt);
+	{
+		if (can_prepared_statement_destroy(ps->qctxt) &&
+			can_portal_destroy(ps->qctxt))
+			pool_query_context_destroy(ps->qctxt);
+	}
 
 	if (ps)
 		pool_memory_free(session_context->memory_context, ps);
@@ -560,6 +564,13 @@ void pool_remove_pending_objects(void)
 
 	if (p && p->pstmt)
 		pool_memory_free(session_context->memory_context, p->pstmt);
+
+	if (p && p->qctxt)
+	{
+		if (can_portal_destroy(p->qctxt) &&
+			can_prepared_statement_destroy(p->qctxt))
+			pool_query_context_destroy(p->qctxt);
+	}
 
 	if (p)
 		pool_memory_free(session_context->memory_context, p);

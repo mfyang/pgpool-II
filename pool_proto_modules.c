@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.87 2010/10/12 11:39:37 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.88 2010/10/19 08:57:18 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1679,11 +1679,6 @@ POOL_STATUS ErrorResponse3(POOL_CONNECTION *frontend,
 {
 	POOL_STATUS ret;
 
-	/* An error occurred with PREPARE or DEALLOCATE command.
-	 * Free pending portal object.
-	 */
-	pool_remove_pending_objects();
-
 	ret = SimpleForwardToFrontend('E', frontend, backend);
 	if (ret != POOL_CONTINUE)
 		return ret;
@@ -1746,6 +1741,11 @@ POOL_STATUS ErrorResponse3(POOL_CONNECTION *frontend,
 		}
 	}
 #endif
+
+	/* An error occurred with PREPARE or DEALLOCATE command.
+	 * Free pending portal object.
+	 */
+	pool_remove_pending_objects();
 
 	return POOL_CONTINUE;
 }
