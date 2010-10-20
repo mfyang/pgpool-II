@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.31 2010/09/01 06:10:08 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.32 2010/10/20 01:08:55 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -323,7 +323,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 		/* Should be sent to primary only? */
 		if (dest == POOL_PRIMARY)
 		{
-			pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+			pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 		}
 		/* Should be sent to both primary and standby? */
 		else if (dest == POOL_BOTH)
@@ -364,7 +364,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 						pool_config->delay_threshold &&
 						bkinfo->standby_delay > pool_config->delay_threshold)
 					{
-						pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+						pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 					}
 
 					/*
@@ -373,7 +373,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 					 */
 					else if (pool_has_function_call(node))
 					{
-						pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+						pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 					}
 
 					/*
@@ -390,7 +390,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 					 */
 					else if (pool_has_system_catalog(node))
 					{
-						pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+						pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 					}
 
 					/*
@@ -399,7 +399,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 					 */
 					else if (pool_has_temp_table(node))
 					{
-						pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+						pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 					}
 
 					else
@@ -411,13 +411,13 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 				else
 				{
 					/* Send to the primary only */
-					pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+					pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 				}
 			}
 			else
 			{
 				/* Send to the primary only */
-				pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+				pool_set_node_to_be_sent(query_context, PRIMARY_NODE_ID);
 			}
 		}
 
