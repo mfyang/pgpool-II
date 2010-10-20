@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.88 2010/10/19 08:57:18 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.89 2010/10/20 00:34:22 t-ishii Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1156,6 +1156,10 @@ POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend,
 
 				degenerate_backend_set(victim_nodes, number_of_nodes);
 				child_exit(1);
+			}
+			else
+			{
+				pool_error("ReadyForQuery: find_victim_nodes returned no victim node");
 			}
 		}
 
@@ -2804,7 +2808,7 @@ static void overwrite_map_for_deallocate(POOL_QUERY_CONTEXT *query_context)
  * master_node: The master node id. Less than 0 means ignore this parameter.
  * number_of_nodes: Number of elements in victim nodes array.
  *
- * Note: If no one wins and master_node > 0, winner would be the
+ * Note: If no one wins and master_node >= 0, winner would be the
  * master and other nodes who has same number of tuples as the master.
  *
  * Caution: Returned victim node array is allocated in static memory
@@ -2900,7 +2904,7 @@ static int* find_victim_nodes(int *ntuples, int nmembers, int master_node, int *
 	/* Make victim nodes list */
 	for (i=0;i<nmembers;i++)
 	{
-		if (ntuples[i] > 0 && ntuples[i] != majority_ntuples)
+		if (ntuples[i] >= 0 && ntuples[i] != majority_ntuples)
 		{
 			victim_nodes[(*number_of_nodes)++] = i;
 		}
