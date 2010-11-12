@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.86 2010/10/30 11:12:42 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.87 2010/11/12 05:47:01 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2316,7 +2316,7 @@ static int find_primary_node(void)
 		{
 			pool_log("find_primary_node: do_query returns NULL");
 		}
-		if (!strcmp(res->data[0], "t"))
+		if (res->data[0] && !strcmp(res->data[0], "t"))
 		{
 			is_standby = true;
 		}   
