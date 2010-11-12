@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.85 2010/11/04 09:54:16 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.86 2010/11/12 08:09:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -534,7 +534,7 @@ extern int pool_clear_cache_by_time(Interval *interval, int size);
 extern POOL_STATUS pool_execute_query_cache_lookup(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, Node *node);
 
 /* pool_hba.c */
-extern void load_hba(char *hbapath);
+extern int load_hba(char *hbapath);
 extern void ClientAuthentication(POOL_CONNECTION *frontend);
 
 /* pool_ip.c */
