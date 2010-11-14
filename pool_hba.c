@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_hba.c,v 1.11 2010/08/10 15:08:32 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_hba.c,v 1.12 2010/11/14 07:33:49 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -99,7 +99,7 @@ static POOL_CONNECTION *pam_frontend_kludge; /* Workaround for passing
 /*
  * read in hba config file
  */
-void load_hba(char *hbapath)
+int load_hba(char *hbapath)
 {
 	FILE *file;
 
@@ -110,7 +110,7 @@ void load_hba(char *hbapath)
 		if (hba_memory_context == NULL)
 		{
 			pool_error("load_hba: pool_memory_create() failed");
-			exit(1);
+			return -1;
 		}
 	}
 	/* switch memory context */
@@ -125,7 +125,12 @@ void load_hba(char *hbapath)
 	{
 		pool_error("could not open \"%s\". reason: %s",
 				   hbapath, strerror(errno));
-		exit(1);
+		pool_memory_delete(hba_memory_context, 0);
+
+		/* switch to old memory context */
+		pool_memory = old_context;
+
+		return -1;
 	}
 
 	pool_debug("loading \"%s\" for client authentication configuration file",
@@ -136,8 +141,10 @@ void load_hba(char *hbapath)
 
 	hbaFileName = pstrdup(hbapath);
 
-	/* switch old memory context */
+	/* switch to old memory context */
 	pool_memory = old_context;
+
+	return 0;
 }
 
 
