@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.250 2010/11/14 10:59:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.251 2010/11/17 06:57:38 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2713,8 +2713,7 @@ int need_insert_lock(POOL_CONNECTION_POOL *backend, char *query, Node *node)
 }
 
 /*
- * If a transaction has not already started, start a new one.
- * issue LOCK TABLE IN SHARE ROW EXCLUSIVE MODE if lock_kind == 1.
+ * Issue LOCK TABLE IN SHARE ROW EXCLUSIVE MODE if lock_kind == 1.
  * Issue row lock if lock_kind == 2.
  */
 POOL_STATUS insert_lock(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend, char *query, InsertStmt *node, int lock_kind)
@@ -2837,6 +2836,8 @@ POOL_STATUS insert_lock(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend
 									MASTER_CONNECTION(backend)->pid, MASTER_CONNECTION(backend)->key, 0);
 			else
 			{
+				per_node_statement_log(backend, i, qbuf);
+
 				if (lock_kind == 1)
 				{
 					status = do_command(frontend, CONNECTION(backend, i), qbuf, PROTO_MAJOR_V3, 
