@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_passwd.c,v 1.1 2010/06/27 23:18:11 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_passwd.c,v 1.2 2010/11/28 11:00:21 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -147,7 +147,7 @@ int pool_create_passwdent(char *username, char *passwd)
 char *pool_get_passwd(char *username)
 {
 	int c;
-	char name[32];
+	char name[33];
 	static char passwd[POOL_PASSWD_LEN+1];
 	char *p;
 	int readlen;
@@ -166,7 +166,7 @@ char *pool_get_passwd(char *username)
 		p = name;
 		readlen = 0;
 
-		while (readlen < sizeof(name))
+		while (readlen < (sizeof(name)-1))
 		{
 			c = fgetc(passwd_fd);
 			if (c == EOF)
