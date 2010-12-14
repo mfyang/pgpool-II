@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.26 2010/09/28 08:00:48 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.27 2010/12/14 00:53:39 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1063,6 +1063,7 @@ static int read_password_packet(POOL_CONNECTION *frontend, int protoMajor, 	char
  * Send password packet to backend and receive authentication response
  * packet.  Return value is the last field of authentication
  * response. If it's 0, authentication was successfull.
+ * "password" must be null-terminated.
  */
 static int send_password_packet(POOL_CONNECTION *backend, int protoMajor, char *password)
 {
