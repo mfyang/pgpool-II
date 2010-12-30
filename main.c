@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.88 2010/12/30 00:47:05 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.89 2010/12/30 13:06:38 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -343,7 +343,8 @@ int main(int argc, char **argv)
 	/*
 	 * Override debug level
 	 */
-	pool_config->debug_level = debug_level;
+	if (pool_config->debug_level == 0)
+		pool_config->debug_level = debug_level;
 
 	if (pool_config->enable_pool_hba)
 		load_hba(hba_file);
