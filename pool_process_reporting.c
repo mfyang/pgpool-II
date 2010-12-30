@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.16 2010/11/28 14:57:17 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.17 2010/12/30 00:47:05 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -173,7 +173,22 @@ void config_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 
 	strncpy(status[i].name, "logdir", POOLCONFIG_MAXNAMELEN);
 	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->logdir);
-	strncpy(status[i].desc, "logging directory", POOLCONFIG_MAXDESCLEN);
+	strncpy(status[i].desc, "PgPool status file logging directory", POOLCONFIG_MAXDESCLEN);
+	i++;
+
+	strncpy(status[i].name, "log_destination", POOLCONFIG_MAXNAMELEN);
+	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->log_destination);
+	strncpy(status[i].desc, "logging destination", POOLCONFIG_MAXDESCLEN);
+	i++;
+
+	strncpy(status[i].name, "syslog_facility", POOLCONFIG_MAXNAMELEN);
+	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "LOCAL%d", (pool_config->syslog_facility/8) - 16);
+	strncpy(status[i].desc, "syslog local faclity", POOLCONFIG_MAXDESCLEN);
+	i++;
+
+	strncpy(status[i].name, "syslog_ident", POOLCONFIG_MAXNAMELEN);
+	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->syslog_ident);
+	strncpy(status[i].desc, "syslog program ident string", POOLCONFIG_MAXDESCLEN);
 	i++;
 
 	strncpy(status[i].name, "pid_file_name", POOLCONFIG_MAXNAMELEN);

@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.87 2010/11/12 05:47:01 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.88 2010/12/30 00:47:05 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -312,6 +312,17 @@ int main(int argc, char **argv)
 		pool_error("Unable to get configuration. Exiting...");
 		exit(1);
 	}
+
+	/*
+	 * Open syslog connection if required
+	 */
+	if (!strcmp(pool_config->log_destination, "syslog")) {
+		openlog(pool_config->syslog_ident, LOG_PID|LOG_NDELAY|LOG_NOWAIT, pool_config->syslog_facility);
+		/* set a flag to allow pool_error.c to begin writing to syslog
+		   instead of stdout now that pool_get_config() is done */
+		pool_config->logsyslog = 1;
+	}
+
 
 	/*
 	 * Locate pool_passwd

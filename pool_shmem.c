@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_shmem.c,v 1.5 2009/08/22 04:04:21 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_shmem.c,v 1.6 2010/12/30 00:47:05 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -127,6 +127,8 @@ void
 pool_shmem_exit(int code)
 {
 	shmem_exit(code);
+	/* Close syslog connection here as this function is always called on exit */
+	closelog();
 }
 
 /*

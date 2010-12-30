@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.86 2010/11/12 08:09:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.87 2010/12/30 00:47:05 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -43,6 +43,8 @@
 #include <openssl/err.h>
 #endif
 
+#include <syslog.h>
+
 /* undef this if you have problems with non blocking accept() */
 #define NONE_BLOCK
 
@@ -68,6 +70,9 @@
 
 /* status file name */
 #define STATUS_FILE_NAME "pgpool_status"
+
+/* default string used to identify pgpool on syslog output */
+#define DEFAULT_SYSLOG_IDENT "pgpool"
 
 typedef enum {
 	POOL_CONTINUE = 0,

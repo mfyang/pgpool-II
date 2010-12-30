@@ -1,6 +1,6 @@
 #
 # pgpool-II configuration file sample for replication mode
-# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-replication,v 1.12 2010/10/30 11:12:43 t-ishii Exp $
+# $Header: /cvsroot/pgpool/pgpool-II/pgpool.conf.sample-replication,v 1.13 2010/12/30 00:47:05 t-ishii Exp $
 
 # Host name or IP address to listen on: '*' for all, '' for no TCP/IP
 # connections
@@ -53,8 +53,17 @@ client_idle_limit = 0
 # 0 means no timeout.
 authentication_timeout = 60
 
-# Logging directory
+# PgPool status file logging directory
 logdir = '/tmp'
+
+# Where to Log. Valid values are stderr and syslog. Default to stderr.
+log_destination = 'stderr'
+
+# Select syslog local facility for logging. Default: LOCAL0
+syslog_facility = 'LOCAL0'
+
+# Set the syslog program ident string. Default to 'pgpool'
+syslog_ident = 'pgpool'
 
 # pid file name
 pid_file_name = '/var/run/pgpool/pgpool.pid'
