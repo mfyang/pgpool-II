@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.65 2010/10/20 01:08:55 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.66 2011/01/06 09:35:58 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1303,6 +1303,7 @@ void pool_free_startup_packet(StartupPacket *sp)
 			free(sp->user);
 		free(sp);
 	}
+	sp = NULL;
 }
 
 /*
