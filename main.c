@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.89 2010/12/30 13:06:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.90 2011/01/11 00:43:30 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -920,7 +920,10 @@ static int read_status_file(bool discard_status)
 	for (i=0;i< pool_config->backend_desc->num_backends;i++)
 	{
 		if (backend_rec.status[i] == CON_DOWN)
+		{
 			BACKEND_INFO(i).backend_status = CON_DOWN;
+			pool_log("read_status_file: %d th backend is set to down status", i);
+		}
 		else
 		{
 			BACKEND_INFO(i).backend_status = CON_CONNECT_WAIT;
