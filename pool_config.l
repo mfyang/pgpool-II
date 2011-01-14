@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.50 2010/12/30 00:47:05 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.51 2011/01/14 06:42:02 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -745,9 +745,9 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				fclose(fd);
 				return(-1);
 			}
-			pool_config->replication_mode = pool_config->replication_enabled = v;
+			pool_config->replication_mode = v;
 
-			if (pool_config->master_slave_enabled && pool_config->replication_enabled)
+			if (pool_config->master_slave_mode && pool_config->replication_mode)
 			{
 				pool_error("pool_config: replication_mode and master_slave_mode cannot be enabled at the same time");
 				fclose(fd);
@@ -919,9 +919,9 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				fclose(fd);
 				return(-1);
 			}
-			pool_config->master_slave_mode = pool_config->master_slave_enabled = v;
+			pool_config->master_slave_mode = v;
 
-			if (pool_config->master_slave_enabled && pool_config->replication_enabled)
+			if (pool_config->master_slave_mode && pool_config->replication_mode)
 			{
 				pool_error("pool_config: replication_mode and master_slave_mode cannot be enabled at the same time");
 				fclose(fd);
@@ -1788,7 +1788,7 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				pool_error("failed to get systemdb info");
 				return(-1);
 			}
-			if (!pool_config->replication_enabled && !pool_config->load_balance_mode)
+			if (!pool_config->replication_mode && !pool_config->load_balance_mode)
 			{
 				pool_error("pool_config: parallel_mode requires replication_mode or load_balance_mode turned on");
 				return(-1);
