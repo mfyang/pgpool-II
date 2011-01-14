@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.19 2011/01/14 06:42:02 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.20 2011/01/14 06:58:10 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -388,11 +388,6 @@ void config_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 	strncpy(status[i].desc, "online recovery user", POOLCONFIG_MAXDESCLEN);
 	i++;
 
-	strncpy(status[i].name, "recovery_password", POOLCONFIG_MAXNAMELEN);
-	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->recovery_password);
-	strncpy(status[i].desc, "online recovery password", POOLCONFIG_MAXDESCLEN);
-	i++;
-
 	strncpy(status[i].name, "recovery_1st_stage_command", POOLCONFIG_MAXNAMELEN);
 	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->recovery_1st_stage_command);
 	strncpy(status[i].desc, "execute a command in first stage.", POOLCONFIG_MAXDESCLEN);
@@ -476,11 +471,6 @@ void config_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 	strncpy(status[i].name, "system_db_user", POOLCONFIG_MAXNAMELEN);
 	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->system_db_user);
 	strncpy(status[i].desc, "user name to access system DB", POOLCONFIG_MAXDESCLEN);
-	i++;
-
-	strncpy(status[i].name, "system_db_password", POOLCONFIG_MAXNAMELEN);
-	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->system_db_password);
-	strncpy(status[i].desc, "password to access system DB", POOLCONFIG_MAXDESCLEN);
 	i++;
 
 	for (j = 0; j < NUM_BACKENDS; j++)
