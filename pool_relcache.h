@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.h,v 1.3 2010/08/19 09:25:40 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.h,v 1.4 2011/01/16 10:31:38 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -42,6 +42,7 @@ typedef struct {
 	void *data;	/* user data */
 	int refcnt;		/* reference count */
 	int session_id;		/* LocalSessionId */
+	time_t expire;		/* cache expiration absolute time in seconds */
 } PoolRelCache;
 
 typedef struct {
