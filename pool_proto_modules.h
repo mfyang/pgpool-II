@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.24 2010/09/27 02:01:57 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.h,v 1.25 2011/01/20 06:28:42 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -42,9 +42,6 @@ extern char *copy_table;  /* copy table name */
 extern char *copy_schema;  /* copy table name */
 extern char copy_delimiter; /* copy delimiter char */
 extern char *copy_null; /* copy null string */
-
-/* non 0 if "BEGIN" query with extended query protocol received */
-extern int receive_extended_begin;
 
 extern int is_select_pgcatalog;
 extern int is_select_for_update; /* also for SELECT ... INTO */

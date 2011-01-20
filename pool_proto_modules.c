@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.89 2010/10/20 00:34:22 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.90 2011/01/20 06:28:42 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -60,9 +60,6 @@ char *copy_table = NULL;  /* copy table name */
 char *copy_schema = NULL;  /* copy table name */
 char copy_delimiter; /* copy delimiter char */
 char *copy_null = NULL; /* copy null string */
-
-/* non 0 if "BEGIN" query with extended query protocol received */
-int receive_extended_begin = 0;
 
 /*
  * Non 0 if allow to close internal transaction.  This variable was
@@ -1954,7 +1951,6 @@ POOL_STATUS ProcessFrontendResponse(POOL_CONNECTION *frontend,
 
 		case 'S':  /* Sync */
 			pool_set_doing_extended_query_message();
-			receive_extended_begin = 0;
 			if (pool_is_ignore_till_sync())
 				pool_unset_ignore_till_sync();
 			if (!pool_is_query_in_progress())
