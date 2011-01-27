@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.31 2011/01/06 09:35:58 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_connection_pool.c,v 1.32 2011/01/27 07:55:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -449,7 +449,7 @@ int connect_unix_domain_socket(int slot, bool retry)
 	char *socket_dir;
 
 	port = pool_config->backend_desc->backend_info[slot].backend_port;
-	socket_dir = pool_config->backend_socket_dir;
+	socket_dir = pool_config->backend_desc->backend_info[slot].backend_hostname;
 
 	return connect_unix_domain_socket_by_port(port, socket_dir, retry);
 }
@@ -576,7 +576,7 @@ static POOL_CONNECTION_POOL_SLOT *create_cp(POOL_CONNECTION_POOL_SLOT *cp, int s
 	BackendInfo *b = &pool_config->backend_desc->backend_info[slot];
 	int fd;
 
-	if (*b->backend_hostname == '\0')
+	if (*b->backend_hostname == '/')
 	{
 		fd = connect_unix_domain_socket(slot, TRUE);
 	}

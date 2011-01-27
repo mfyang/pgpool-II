@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.21 2011/01/16 10:31:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.22 2011/01/27 07:55:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -196,10 +196,13 @@ void config_reporting(POOL_CONNECTION *frontend, POOL_CONNECTION_POOL *backend)
 	strncpy(status[i].desc, "path to pid file", POOLCONFIG_MAXDESCLEN);
 	i++;
 
-	strncpy(status[i].name, "backend_socket_dir", POOLCONFIG_MAXNAMELEN);
-	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->backend_socket_dir);
-	strncpy(status[i].desc, "Unix domain socket directory for the PostgreSQL server", POOLCONFIG_MAXDESCLEN);
-	i++;
+	/* backend_socket_dir is deprecated. backend_hostname should be used instead */
+	if (pool_config->backend_socket_dir != NULL) {
+		strncpy(status[i].name, "backend_socket_dir", POOLCONFIG_MAXNAMELEN);
+		snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%s", pool_config->backend_socket_dir);
+		strncpy(status[i].desc, "DEPRECATED, use backend_hostname parameter instead", POOLCONFIG_MAXDESCLEN);
+		i++;
+	}
 
 	strncpy(status[i].name, "replication_mode", POOLCONFIG_MAXNAMELEN);
 	snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%d", pool_config->replication_mode);

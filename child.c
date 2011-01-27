@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.66 2011/01/06 09:35:58 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.67 2011/01/27 07:55:28 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1371,9 +1371,9 @@ POOL_CONNECTION_POOL_SLOT *make_persistent_db_connection(
 	/*
 	 * create socket
 	 */
-	if (*hostname == '\0')
+	if (*hostname == '/')
 	{
-		fd = connect_unix_domain_socket_by_port(port, pool_config->backend_socket_dir, TRUE);
+		fd = connect_unix_domain_socket_by_port(port, hostname, TRUE);
 	}
 	else
 	{
