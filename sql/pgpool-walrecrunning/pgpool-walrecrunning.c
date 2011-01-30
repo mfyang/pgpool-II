@@ -1,8 +1,8 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/sql/pgpool-walrecvrunning/pgpool-walrecrunning.c,v 1.1 2010/10/20 01:08:55 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/sql/pgpool-walrecrunning/pgpool-walrecrunning.c,v 1.1 2011/01/30 00:17:54 t-ishii Exp $
  *
- * Copyright (c) 2003-2010	PgPool Global Development Group
+ * Copyright (c) 2003-2011	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
