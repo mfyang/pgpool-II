@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.12 2011/01/16 10:31:38 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_relcache.c,v 1.13 2011/01/31 14:47:06 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -148,7 +148,7 @@ void *pool_search_relcache(POOL_RELCACHE *relcache, POOL_CONNECTION_POOL *backen
 			{
 				if (now > relcache->cache[i].expire)
 				{
-					pool_debug("pool_search_relcache: relcache for database:%s table:%s expired. now:%d expiration time:%d", dbname, rel, now, relcache->cache[i].expire);
+					pool_debug("pool_search_relcache: relcache for database:%s table:%s expired. now:%ld expiration time:%ld", dbname, rel, now, relcache->cache[i].expire);
 					relcache->cache[i].refcnt = 0;
 					break;
 				}
