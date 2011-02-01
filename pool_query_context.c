@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.32 2010/10/20 01:08:55 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.33 2011/02/01 08:18:23 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -238,6 +238,9 @@ bool pool_is_node_to_be_sent(POOL_QUERY_CONTEXT *query_context, int node_id)
 bool pool_is_node_to_be_sent_in_current_query(int node_id)
 {
 	POOL_SESSION_CONTEXT *sc;
+
+	if (RAW_MODE)
+		return node_id == REAL_MASTER_NODE_ID;
 
 	sc = pool_get_session_context();
 	if (!sc)
