@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.34 2011/02/10 02:08:26 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.35 2011/02/18 13:39:46 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -301,7 +301,8 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 	 */
 	if (!strncasecmp(query, NO_LOAD_BALANCE, NO_LOAD_BALANCE_COMMENT_SZ))
 	{
-		pool_set_node_to_be_sent(query_context, REAL_MASTER_NODE_ID);
+		pool_set_node_to_be_sent(query_context,
+								 MASTER_SLAVE ? PRIMARY_NODE_ID : REAL_MASTER_NODE_ID);
 		return;
 	}
 
@@ -349,7 +350,7 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 				 *	transaction isolation level is not SERIALIZABLE)
 				 * we might be able to load balance.
 				 */
-				if (TSTATE(backend, MASTER_NODE_ID) == 'I' ||
+				if (TSTATE(backend, PRIMARY_NODE_ID) == 'I' ||
 					(!pool_is_writing_transaction() &&
 					 !pool_is_failed_transaction() &&
 					 pool_get_transaction_isolation() != POOL_SERIALIZABLE))
