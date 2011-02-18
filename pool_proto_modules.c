@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.91 2011/01/25 09:25:51 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.92 2011/02/18 13:48:36 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1227,7 +1227,8 @@ POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend,
 		/*
 		 * Set transaction state for each node
 		 */
-		state = TSTATE(backend, MASTER_NODE_ID);
+		state = TSTATE(backend,
+					   MASTER_SLAVE ? PRIMARY_NODE_ID : REAL_MASTER_NODE_ID);
 
 		for (i=0;i<NUM_BACKENDS;i++)
 		{
@@ -1243,7 +1244,7 @@ POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend,
 			 * The transaction state to be returned to frontend is
 			 * master's.
 			 */
-			if (i == MASTER_NODE_ID)
+			if (i == (MASTER_SLAVE ? PRIMARY_NODE_ID : REAL_MASTER_NODE_ID))
 			{
 				state = kind;
 			}
