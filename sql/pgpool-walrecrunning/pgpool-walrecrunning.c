@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/sql/pgpool-walrecrunning/pgpool-walrecrunning.c,v 1.1 2011/01/30 00:17:54 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/sql/pgpool-walrecrunning/pgpool-walrecrunning.c,v 1.2 2011/02/18 03:27:36 kitagawa Exp $
  *
  * Copyright (c) 2003-2011	PgPool Global Development Group
  *
@@ -15,7 +15,7 @@
  * suitability of this software for any purpose.  It is provided "as
  * is" without express or implied warranty.
  *
- * pgpool-walrecvrunning checks the walreceiver state to it's running.
+ * pgpool-walrecrunning checks the walreceiver state to it's running.
  * pgpool needs to know if the backend is running as a standby by
  * using pg_is_in_recover(). Problem is, it returns true even if
  * walreceiver is going to shutdown. This function checks the internal
