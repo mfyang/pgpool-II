@@ -1,12 +1,12 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.87 2010/12/30 00:47:05 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool.h,v 1.88 2011/02/22 04:14:04 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2010	PgPool Global Development Group
+ * Copyright (c) 2003-2011	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -118,6 +118,7 @@ typedef struct
 	int minor;	/* protocol minor version */
 	char *database;	/* database name in startup_packet (malloced area) */
 	char *user;	/* user name in startup_packet (malloced area) */
+	char *application_name;		/* not malloced are. pointing to in startup_packet */
 } StartupPacket;
 
 typedef struct CancelPacket
