@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.69 2011/02/22 04:14:04 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/child.c,v 1.70 2011/02/23 03:50:01 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1513,7 +1513,7 @@ POOL_CONNECTION_POOL_SLOT *make_persistent_db_connection(
 }
 
 /*
- * Discard connection and memroy allocated by
+ * Discard connection and memory allocated by
  * make_persistent_db_connection().
  */
 void discard_persistent_db_connection(POOL_CONNECTION_POOL_SLOT *cp)
