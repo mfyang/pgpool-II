@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.94 2011/03/07 06:48:26 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_proto_modules.c,v 1.95 2011/03/07 07:00:13 kitagawa Exp $
  * 
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1322,7 +1322,7 @@ POOL_STATUS ReadyForQuery(POOL_CONNECTION *frontend,
 					if (CONNECTION_SLOT(backend, i) &&
 						TSTATE(backend, i) == 'T' &&
 						BACKEND_INFO(i).backend_status == CON_UP &&
-						REAL_MASTER_NODE_ID != i)
+						(MASTER_SLAVE ? PRIMARY_NODE_ID : REAL_MASTER_NODE_ID) != i)
 					{
 						per_node_statement_log(backend, i, "COMMIT");
 						if (do_command(frontend, CONNECTION(backend, i), "COMMIT", MAJOR(backend), 

@@ -1,11 +1,11 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp_child.c,v 1.20 2010/08/05 23:37:43 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp_child.c,v 1.21 2011/03/07 07:00:13 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2010	PgPool Global Development Group
+ * Copyright (c) 2003-2011	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -779,7 +779,7 @@ pcp_do_child(int unix_fd, int inet_fd, char *pcp_conf_file)
 					   !strcmp(pool_config->master_slave_sub_mode, MODE_STREAMREP))) ||
 					(MASTER_SLAVE &&
 					 !strcmp(pool_config->master_slave_sub_mode, MODE_STREAMREP) &&
-					 node_id == REAL_MASTER_NODE_ID))
+					 node_id == PRIMARY_NODE_ID))
 				{
 					int len;
 					char *msg;
