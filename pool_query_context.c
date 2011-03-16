@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.36 2011/03/07 05:56:57 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_query_context.c,v 1.37 2011/03/16 05:55:12 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -303,6 +303,14 @@ void pool_where_to_send(POOL_QUERY_CONTEXT *query_context, char *query, Node *no
 	{
 		pool_set_node_to_be_sent(query_context,
 								 MASTER_SLAVE ? PRIMARY_NODE_ID : REAL_MASTER_NODE_ID);
+		for (i=0;i<NUM_BACKENDS;i++)
+		{
+			if (query_context->where_to_send[i])
+			{
+				query_context->virtual_master_node_id = i;
+				break;
+			}
+		}
 		return;
 	}
 
