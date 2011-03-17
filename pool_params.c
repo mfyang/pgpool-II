@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_params.c,v 1.5 2010/12/14 09:21:08 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_params.c,v 1.6 2011/03/17 02:12:09 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "pool.h"
+#include "parser/parser.h"
 
 #define MAX_PARAM_ITEMS 128
 
