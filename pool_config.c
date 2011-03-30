@@ -485,7 +485,7 @@ char *yytext;
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.57 2011/01/27 07:55:28 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.c,v 1.58 2011/03/30 02:13:07 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -1904,6 +1904,7 @@ int pool_init_config(void)
 	pool_config->health_check_period = 0;
 	pool_config->health_check_user = "nobody";
 	pool_config->failover_command = "";
+	pool_config->follow_master_command = "";
 	pool_config->failback_command = "";
 	pool_config->fail_over_on_backend_error = 1;
 	pool_config->insert_lock = 1;
@@ -2809,6 +2810,26 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				return(-1);
 			}
 			pool_config->failover_command = str;
+		}
+
+		else if (!strcmp(key, "follow_master_command") &&
+				 CHECK_CONTEXT(INIT_CONFIG|RELOAD_CONFIG, context))
+		{
+			char *str;
+
+			if (token != POOL_STRING && token != POOL_UNQUOTED_STRING && token != POOL_KEY)
+			{
+				PARSE_ERROR();
+				fclose(fd);
+				return(-1);
+			}
+			str = extract_string(yytext, token);
+			if (str == NULL)
+			{
+				fclose(fd);
+				return(-1);
+			}
+			pool_config->follow_master_command = str;
 		}
 
 		else if (!strcmp(key, "failback_command") &&
