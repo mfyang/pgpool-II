@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.h,v 1.5 2010/08/05 08:08:44 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.h,v 1.6 2011/04/21 01:02:51 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -65,6 +65,8 @@ extern void pcp_set_timeout(long sec);
 extern int pcp_recovery_node(int nid);
 extern void pcp_enable_debug(void);
 extern void pcp_disable_debug(void);
+extern int pcp_promote_node(int nid);
+extern int pcp_promote_node_gracefully(int nid);
 
 /* ------------------------------
  * pcp_error.c
