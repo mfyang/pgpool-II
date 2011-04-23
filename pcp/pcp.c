@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.15 2011/04/22 07:33:33 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/pcp.c,v 1.16 2011/04/23 05:10:46 t-ishii Exp $
  *
  * Handles PCP connection, and protocol communication with pgpool-II
  * These are client APIs. Server program should use APIs in pcp_stream.c
@@ -8,7 +8,7 @@
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2010	PgPool Global Development Group
+ * Copyright (c) 2003-2011	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -168,6 +168,7 @@ pcp_connect(char *hostname, int port, char *username, char *password)
 	if (pcp_authorize(username, password) < 0)
 	{
 		pcp_close(pc);
+		pc = NULL;
 		return -1;
 	}
 
@@ -1539,4 +1540,3 @@ static int _pcp_promote_node(int nid, bool gracefully)
 	free(buf);
 	return -1;
 }
-
