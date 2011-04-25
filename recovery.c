@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/recovery.c,v 1.20 2011/03/07 07:00:14 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/recovery.c,v 1.21 2011/04/25 22:58:04 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -71,8 +71,7 @@ int start_recovery(int recovery_node)
 	conn = connect_backend_libpq(backend);
 	if (conn == NULL)
 	{
-		PQfinish(conn);
-		pool_error("start_recover: could not connect master node.");
+		pool_error("start_recovery: could not connect master node (%d)", node_id);
 		return 1;
 	}
 
