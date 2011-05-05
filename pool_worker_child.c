@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.7 2011/02/23 06:47:48 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.8 2011/05/05 02:39:14 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -233,7 +233,7 @@ static void check_replication_time_lag(void)
 		}
 		else
 		{
-			query = "SELECT pg_last_xlog_receive_location()";
+			query = "SELECT pg_last_xlog_replay_location()";
 		}
 
 		sts = do_query(slots[i]->con, query, &res, PROTO_MAJOR_V3);
@@ -307,6 +307,12 @@ static void check_replication_time_lag(void)
  */
 static long text_to_lsn(char *text)
 {
+/*
+ * WAL segment size in bytes.  XXX We should fetch this from
+ * PostgreSQL, rather than having fixed value.
+ */
+#define WALSEGMENTSIZE 16 * 1024 * 1024
+
 	unsigned int xlogid;
 	unsigned int xrecoff;
 	unsigned long long int lsn;
@@ -316,7 +322,10 @@ static long text_to_lsn(char *text)
 		pool_error("text_to_lsn: wrong log location format: %s", text);
 		return 0;
 	}
-	lsn = xlogid * 16 * 1024 * 1024 * 255 + xrecoff;
+	lsn = xlogid * ((unsigned long long int)0xffffffff - WALSEGMENTSIZE) + xrecoff;
+#ifdef DEBUG
+	pool_log("lsn: %X %X %llX", xlogid, xrecoff, lsn);
+#endif
 	return lsn;
 }
 
