@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.55 2011/05/06 22:33:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.56 2011/05/06 23:43:26 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -344,6 +344,10 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 	for(;;)
 	{
 		token = yylex();
+		if (token == 0)
+		{
+			break; 	 
+		}
 		if (token == POOL_PARSE_ERROR)
 		{
 			PARSE_ERROR();
