@@ -1,12 +1,12 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.54 2011/03/30 02:13:07 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.55 2011/05/06 22:33:32 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
  *
- * Copyright (c) 2003-2010	PgPool Global Development Group
+ * Copyright (c) 2003-2011	PgPool Global Development Group
  *
  * Permission to use, copy, modify, and distribute this software and
  * its documentation for any purpose and without fee is hereby
@@ -344,12 +344,6 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 	for(;;)
 	{
 		token = yylex();
-		if (token == 0)
-		{
-			pool_log("pool_get_config: no token available. parsing pgpool.conf done");
-			break;
-		}
-
 		if (token == POOL_PARSE_ERROR)
 		{
 			PARSE_ERROR();
