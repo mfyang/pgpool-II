@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.258 2011/03/31 08:12:43 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_query.c,v 1.259 2011/05/13 06:53:05 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -260,7 +260,7 @@ POOL_STATUS pool_process_query(POOL_CONNECTION *frontend,
 						pool_log("pool_process_query: child connection forced to terminate due to client_idle_limit(%d) reached",
 								 pool_config->client_idle_limit);
 						pool_send_error_message(frontend, MAJOR(backend),
-												"57000", "connection terminated due to online recovery",
+												"57000", "connection terminated due to client idle limit reached",
 												"","",  __FILE__, __LINE__);
 						return POOL_END;
 					}
