@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.25 2011/04/22 07:33:32 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_process_reporting.c,v 1.26 2011/05/23 09:35:01 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -534,7 +534,7 @@ POOL_REPORT_CONFIG* get_config(int *nrows)
 		snprintf(status[i].desc, POOLCONFIG_MAXDESCLEN, "weight of backend #%d", j);
 		i++;
 
-		snprintf(status[i].name, POOLCONFIG_MAXNAMELEN, "backend status%d", j);
+		snprintf(status[i].name, POOLCONFIG_MAXNAMELEN, "backend_status%d", j);
 		snprintf(status[i].value, POOLCONFIG_MAXVALLEN, "%d", BACKEND_INFO(j).backend_status);
 		snprintf(status[i].desc, POOLCONFIG_MAXDESCLEN, "status of backend #%d", j);
 		i++;
