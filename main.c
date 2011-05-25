@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.101 2011/05/23 10:55:36 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.102 2011/05/25 17:14:24 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -2478,7 +2478,7 @@ static int find_primary_node(void)
 										  "");
 		if (!s)
 		{
-			pool_error("find_primary_node: make_persistent_connetcion failed");
+			pool_error("find_primary_node: make_persistent_connection failed");
 			return -1;
 		}
 		con = s->con;
