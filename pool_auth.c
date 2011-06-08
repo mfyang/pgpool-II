@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.29 2010/12/30 00:47:05 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_auth.c,v 1.30 2011/06/08 11:14:26 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -867,7 +867,7 @@ static int do_md5(POOL_CONNECTION *backend, POOL_CONNECTION *frontend, int reaut
 			/* Read password packet */
 			if (read_password_packet(frontend, protoMajor, password, &size))
 			{
-				pool_error("do_md5: read_password_packet failed");
+				pool_debug("do_md5: read_password_packet failed");
 				return -1;
 			}
 
@@ -957,7 +957,7 @@ static int do_md5(POOL_CONNECTION *backend, POOL_CONNECTION *frontend, int reaut
 		/* Read password packet */
 		if (read_password_packet(frontend, protoMajor, password, &size))
 		{
-			pool_error("do_md5: read_password_packet failed");
+			pool_debug("do_md5: read_password_packet failed");
 			return -1;
 		}
 	}
