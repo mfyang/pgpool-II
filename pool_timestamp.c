@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.16 2011/03/07 05:56:58 kitagawa Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_timestamp.c,v 1.17 2011/06/21 07:24:00 kitagawa Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -239,8 +239,9 @@ rewrite_timestamp_walker(Node *node, void *context)
 		/* `now()' FuncCall */
 		FuncCall	*fcall = (FuncCall *) node;
 
-		if (list_length(fcall->funcname) == 1 &&
-			strcmp("now", strVal(linitial(fcall->funcname))) == 0)
+		if (list_length(fcall->funcname) == 2 &&
+			strcmp("pg_catalog", strVal(linitial(fcall->funcname))) == 0 &&
+			strcmp("now", strVal(lsecond(fcall->funcname))) == 0)
 		{
 			TypeCast	*tc = makeNode(TypeCast);
 			tc->arg = makeTsExpr(ctx);
