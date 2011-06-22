@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.102 2011/05/25 17:14:24 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.103 2011/06/22 08:40:49 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1287,11 +1287,11 @@ void degenerate_backend_set(int *node_id_set, int count)
 		if (node_id_set[i] < 0 || node_id_set[i] >= MAX_NUM_BACKENDS ||
 			!VALID_BACKEND(node_id_set[i]))
 		{
-			pool_log("notice_backend_error: node %d is not valid backend.", i);
+			pool_log("degenerate_backend_set: node %d is not valid backend.", i);
 			continue;
 		}
 
-		pool_log("notice_backend_error: %d fail over request from pid %d", node_id_set[i], getpid());
+		pool_log("degenerate_backend_set: %d fail over request from pid %d", node_id_set[i], getpid());
 		Req_info->node_id[i] = node_id_set[i];
 	}
 	kill(parent, SIGUSR1);
