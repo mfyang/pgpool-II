@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.103 2011/06/22 08:40:49 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/main.c,v 1.104 2011/06/28 12:31:47 gleu Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -1331,7 +1331,8 @@ void send_failback_request(int node_id)
 	Req_info->kind = NODE_UP_REQUEST;
 	Req_info->node_id[0] = node_id;
 
-	if (node_id < 0 || node_id >= MAX_NUM_BACKENDS || VALID_BACKEND(node_id))
+    if (node_id < 0 || node_id >= MAX_NUM_BACKENDS || 
+		(RAW_MODE && BACKEND_INFO(node_id).backend_status != CON_DOWN && VALID_BACKEND(node_id)))
 	{
 		pool_error("send_failback_request: node %d is alive.", node_id);
 		return;
@@ -1511,7 +1512,8 @@ static void failover(void)
 	if (Req_info->kind == NODE_UP_REQUEST)
 	{
 		if (node_id >= MAX_NUM_BACKENDS ||
-			(Req_info->kind == NODE_UP_REQUEST && VALID_BACKEND(node_id)) ||
+			(Req_info->kind == NODE_UP_REQUEST && !(RAW_MODE &&
+            BACKEND_INFO(i).backend_status == CON_DOWN) && VALID_BACKEND(node_id)) ||
 			(Req_info->kind == NODE_DOWN_REQUEST && !VALID_BACKEND(node_id)))
 		{
 			pool_semaphore_unlock(REQUEST_INFO_SEM);
