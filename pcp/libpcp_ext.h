@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/libpcp_ext.h,v 1.2 2011/05/02 13:31:25 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/libpcp_ext.h,v 1.3 2011/06/29 02:44:13 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -57,6 +57,7 @@ typedef struct {
 	double backend_weight;	/* normalized backend load balance ratio */
 	double unnormalized_weight; /* descripted parameter */
 	char backend_data_directory[MAX_PATH_LENGTH];
+	unsigned short flag;		/* various flags */
 	unsigned long long int standby_delay;		/* The replication delay against the primary */
 } BackendInfo;
 
