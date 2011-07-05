@@ -1,5 +1,5 @@
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pcp/libpcp_ext.h,v 1.3 2011/06/29 02:44:13 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pcp/libpcp_ext.h,v 1.4 2011/07/05 09:11:00 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -69,6 +69,7 @@ typedef struct {
  * Connection pool information. Placed on shared memory area.
  */
 typedef struct {
+	int			backend_id;	/* backend id */
 	char		database[SM_DATABASE];	/* Database name */
 	char		user[SM_USER];	/* User name */
 	int			major;	/* protocol major version */
@@ -197,18 +198,18 @@ typedef struct {
 
 /* pools reporting struct */
 typedef struct {
-	char pool_pid[POOLCONFIG_MAXCOUNTLEN+1];
-	char start_time[POOLCONFIG_MAXDATELEN+1];
-	char pool_id[POOLCONFIG_MAXCOUNTLEN+1];
-	char backend_id[POOLCONFIG_MAXCOUNTLEN+1];
+	int pool_pid;
+	time_t start_time;
+	int pool_id;
+	int backend_id;
 	char database[POOLCONFIG_MAXIDENTLEN+1];
 	char username[POOLCONFIG_MAXIDENTLEN+1];
-	char create_time[POOLCONFIG_MAXDATELEN+1];
-	char pool_majorversion[POOLCONFIG_MAXCOUNTLEN+1];
-	char pool_minorversion[POOLCONFIG_MAXCOUNTLEN+1];
-	char pool_counter[POOLCONFIG_MAXCOUNTLEN+1];
-	char pool_backendpid[POOLCONFIG_MAXCOUNTLEN+1];
-    char pool_connected[POOLCONFIG_MAXCOUNTLEN+1];
+	time_t create_time;
+	int pool_majorversion;
+	int pool_minorversion;
+	int pool_counter;
+	int pool_backendpid;
+	int pool_connected;
 } POOL_REPORT_POOLS;
 
 /* version struct */
