@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.57 2011/06/29 02:44:12 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.l,v 1.58 2011/07/06 14:00:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -178,6 +178,7 @@ int pool_init_config(void)
 	pool_config->health_check_timeout = 20;
 	pool_config->health_check_period = 0;
 	pool_config->health_check_user = "nobody";
+	pool_config->health_check_password = "";
 	pool_config->failover_command = "";
 	pool_config->follow_master_command = "";
 	pool_config->failback_command = "";
@@ -1063,6 +1064,26 @@ int pool_get_config(char *confpath, POOL_CONFIG_CONTEXT context)
 				return(-1);
 			}
 			pool_config->health_check_user = str;
+		}
+
+		else if (!strcmp(key, "health_check_password") &&
+				 CHECK_CONTEXT(INIT_CONFIG|RELOAD_CONFIG, context))
+		{
+			char *str;
+
+			if (token != POOL_STRING && token != POOL_UNQUOTED_STRING && token != POOL_KEY)
+			{
+				PARSE_ERROR();
+				fclose(fd);
+				return(-1);
+			}
+			str = extract_string(yytext, token);
+			if (str == NULL)
+			{
+				fclose(fd);
+				return(-1);
+			}
+			pool_config->health_check_password = str;
 		}
 
 		else if (!strcmp(key, "failover_command") &&

@@ -1,7 +1,7 @@
 /* -*-pgsql-c-*- */
 /*
  *
- * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.14 2011/06/29 02:44:12 t-ishii Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_config.h,v 1.15 2011/07/06 14:00:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL 
  * written by Tatsuo Ishii
@@ -113,6 +113,7 @@ typedef struct {
 	int health_check_timeout;	/* health check timeout */
 	int health_check_period;	/* health check period */
 	char *health_check_user;		/* PostgreSQL user name for health check */
+	char *health_check_password; /* password for health check username */
 	char *failover_command;     /* execute command when failover happens */
 	char *follow_master_command; /* execute command when failover is ended */
 	char *failback_command;     /* execute command when failback happens */

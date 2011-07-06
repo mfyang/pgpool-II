@@ -1,6 +1,6 @@
 /* -*-pgsql-c-*- */
 /*
- * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.9 2011/05/23 19:44:00 gleu Exp $
+ * $Header: /cvsroot/pgpool/pgpool-II/pool_worker_child.c,v 1.10 2011/07/06 14:00:22 t-ishii Exp $
  *
  * pgpool: a language independent connection pool server for PostgreSQL
  * written by Tatsuo Ishii
@@ -156,7 +156,7 @@ static void establish_persistent_connection(void)
 											  bkinfo->backend_port,
 											  "postgres",
 											  pool_config->health_check_user,
-											  "");
+											  pool_config->health_check_password);
 			if (s)
 				slots[i] = s;
 			else
@@ -223,7 +223,9 @@ static void check_replication_time_lag(void)
 
 		if (!slots[i])
 		{
-			pool_error("check_replication_time_lag: DB node is valid but no persistent connection");
+			pool_debug("check_replication_time_lag: DB node is valid but no persistent connection");
+			pool_error("check_replication_time_lag: could not connect to DB node %d, check health check configuration", i);
+
 			return;
 		}
 
